@@ -176,4 +176,9 @@ height="5.791666666666667in"}
 | ---------------------------------------- | -------------  | -------------- | -------------------------------------      | ------------------- |
 | Login and Signup (account functionality)  |  Sam | P1 | 7| Time-boxed task -- I'll do as much as I can in the 3 days | 
 | Matchmaking quiz  | Robert  | P1  | 5  | Look up efficient ways for matching algorithms check out dating app types   |
-| Matchmaking Profile Tags  | Sam  | P2  | 1  | Pull matchmaking quiz stats and compare each added user in gc 
+| Matchmaking Profile Tags  | Sam  | P2  | 1  | Pull matchmaking quiz stats and compare each added user in gc |
+| Groupchat profile matching | Prithika | P1 | 10 | Profile matching will be based on results of the matchmaking quiz |
+| User Profile settings page | Cierra | P2 |4 | Settings page must contain profile information to change and be able to retake the matchmaking quiz|
+| Groupchats page | Robert | P2 | 10 | Groupchats page holds all of the study groups a user is in |
+
+
