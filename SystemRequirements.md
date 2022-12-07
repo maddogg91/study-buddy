@@ -145,10 +145,8 @@ invites, leave groups, set availability on a calendar.
 
 ## **3.2 External Interface Requirements**
 
-See attached file \"not_lyft.jpeg\" for visual specifications.
+![study app](https://github.com/maddogg91/study-buddy/blob/main/studymockup.png?raw=true)
 
-![](vertopal_5fa18a1cfd294c50a15b46331ef6e02b/media/image1.png){width="6.5in"
-height="5.791666666666667in"}
 
 ## **3.3 System Requirements**
 
