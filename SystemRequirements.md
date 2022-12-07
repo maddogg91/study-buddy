@@ -16,17 +16,9 @@ the technical design, and user features etc of SB.
 ## **1.4 Scope**
 
 
-Study buddy is a web application that individuals can use to find study
-groups with students from similar classes or backgrounds. The service
-will provide a platform for group chats to communicate study materials
-and course related materials with one another and connect to the user\'s
-calendar availabilities. to meet to study as a group. Also a match
-making quiz can be shared virtually and attempted by user to find the
-users best fit as a study buddy.
+Study buddy is a web application that individuals can use to find study groups with students from similar classes or backgrounds. The service will provide a platform for group chats to communicate study materials and course-related materials with one another and connect to the user's calendar availability to meet to study as a group. Also, a matchmaking quiz can be shared virtually and attempted by the user to find the user's best fit as a study buddy. 
+Many web applications are on the market to provide similar services for individuals like this, but Study Buddy will focus on being a relevant free platform for anyone. 
 
-Many web applications are on the market to provide similar services for
-individuals like this, but Study Buddy will focus on being a relevant
-free platform for anyone to use.
 
 ## **1.5 Definitions and Acronyms**
 
