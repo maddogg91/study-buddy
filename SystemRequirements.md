@@ -49,15 +49,15 @@ In addition:
 SB attempts to solve two core user problems:
 
 1.  Resources provided to students can be challenging, and often
-    > daunting when attempting to traverse, but with our app's
-    > matchmaking implementation, a studier will be able to pair with
-    > other studiers in order to find the best suited study buddy for
-    > their requirements.
+    daunting when attempting to study, but with our app's
+    matchmaking implementation, a studier will be able to pair with
+    other studiers in order to find the best suited study buddy for
+    their requirements.
 
 2.  There exist other platforms such as GroupMe and Discord but SB will
-    > be singularly focused on coordinating group discussions for
-    > scholastic-based endeavors directly suited to their individual
-    > needs.
+    be singularly focused on coordinating group discussions for
+    scholastic-based endeavors directly suited to their individual
+    needs.
 
 In essence both core issues will be streamlined into a query-based,
 matchmaking alignment system to appropriately link studier together.
@@ -69,21 +69,21 @@ group to fit the needs of the intended course, assignment, or project.
 This app makes 3 major assumptions:
 
 1.  Most students tend to do well in their academics when they study
-    > with another student, this is where SG comes in to make such
-    > students meet their demand.
+    with another student, this is where SG comes in to make such
+    students meet their demand.
 
 2.  Notifications from phones, computers and other websites are a big
-    > destruction as far as studying is concerned. Limited these
-    > destructions by restricting notification and also locking screens
-    > during studies causes less destructions
+    destruction as far as studying is concerned. Limited these
+    destructions by restricting notification and also locking screens
+    during studies causes less destructions
 
 3.  Being able to message, video chat with each other while studying
-    > makes it more fun and interactive.
+     makes it more fun and interactive.
 
 Other major dependencies:
 
 1.  Our intent is to use web services and google API's to launch the
-    > app, which makes web services make our dependency.
+    app, which makes web services make our dependency.
 
 2.  
 
@@ -99,16 +99,16 @@ required to leave a credit card on file before proceeding to the app.
 Acceptance criteria:
 
 -   If visiting app for the first time, a modal should appear asking the
-    > user to sign up
+    user to sign up
 
 -   Modal should contain options to sign up by creating username,
-    > password, email,birthday
+    password, email,birthday
 
 -   Confirmation text/email/treat should be sent to the user depending
-    > on their designated sign-in option
+    on their designated sign-in option
 
 -   Once user is confirmed, modal should transition to fill out a
-    > matchmaking quiz to fulfill their profile criteria
+    matchmaking quiz to fulfill their profile criteria
 
 ### **3.1.2 Functional Requirement 2: Matchmaking Quiz** 
 
@@ -118,24 +118,24 @@ feature will allow users to compare to other studiers and SGs.
 Acceptance criteria:
 
 -   After signup a user will be prompted with a screen of the quiz
-    > questions
+    questions
 
 -   Each question will be multiple choice that a user can click on but
-    > each question is mandatory to complete so that the final
-    > statistics can be used for new studier tags
+    each question is mandatory to complete so that the final
+    statistics can be used for new studier tags
 
 -   Once a user clicks the finish button, they will be lead to a results
-    > page
+    page
 
 -   Results page statistics will create different tags that will be
-    > featured on a user's profile so that other user's can see what
-    > type of studier that they are
+    featured on a user's profile so that other user's can see what
+    type of studier that they are
 
 -   Each tag on a studiers profile can be clicked which will show a
-    > short description of why they are this type of learner
+    short description of why they are this type of learner
 
 -   Matchmaking tags will be used for studiers to find SG that have
-    > similar studiers to the user when they search for a specific group
+    similar studiers to the user when they search for a specific group
 
 ### **3.1.3 Functional Requirement 3: Group Chats**
 
@@ -145,30 +145,30 @@ settings. Studiers should have the ability to accept invites, decline
 invites, leave groups, set availability on a calendar.
 
 -   SG contents should be accessible only to studiers who've joined the
-    > SG, through the set requirement of the scholar whether
-    > open-invitation (meaning studiers can join freely without
-    > approval) or closed-invitation (studiers will need a link from a
-    > scholar to join).
+    SG, through the set requirement of the scholar whether
+    open-invitation (meaning studiers can join freely without
+    approval) or closed-invitation (studiers will need a link from a
+    scholar to join).
 
 -   SG name and descriptions can be viewed after completing a
-    > matchmaking quiz, if public but if private the SG should only
-    > appear visible to invited users.
+    matchmaking quiz, if public but if private the SG should only
+    appear visible to invited users.
 
 -   Invites should be sent via timed links that should expire at a given
-    > time.
+    time.
 
 -   SG results should prioritize SG's using matchmaking tags primarily,
-    > and similar terms as a secondary means.
+    and similar terms as a secondary means.
 
 -   Calendars should be added to each SG to ensure studiers can fill out
-    > their availability for particular study activities.
+    their availability for particular study activities.
 
 -   Scholars should be able to add events, reminders to calendars.
 
 -   Scholars should have the ability to remove studiers, and moderate SG
-    > they've created to prevent unruly behavior. As well as delete SG,
-    > promote studiers to scholars in the specific group chat, and
-    > relinquish ownership to a studier if the scholar wishes.
+    they've created to prevent unruly behavior. As well as delete SG,
+    promote studiers to scholars in the specific group chat, and
+    relinquish ownership to a studier if the scholar wishes.
 
 ###  
 
@@ -184,19 +184,19 @@ height="5.791666666666667in"}
 ## **3.3 System Requirements**
 
 1.  If a user chooses to video chat then they need to have atleast 64mb
-    > of video memory (Mac or PC)
+    of video memory (Mac or PC)
 
 2.  User must have access to a browser to connect to the SGs that they
-    > have joined and a connection of at least 500 Kbps
+    have joined and a connection of at least 500 Kbps
 
 ## **3.4 Nonfunctional Requirements**
 
 1.  App layout should be simple, with a flow that easily connects users
-    > to groups that align with their study interests.
+    to groups that align with their study interests.
 
 2.  Message receiving and sending should be responsive, allowing users
-    > to see if a message failed to deliver in case of lack of network
-    > connection.
+    to see if a message failed to deliver in case of lack of network
+    connection.
 
 3.  Users should only be able to see group messages in SG they have
-    > joined to prevent privacy leaks or mishandling.
+    joined to prevent privacy leaks or mishandling.
