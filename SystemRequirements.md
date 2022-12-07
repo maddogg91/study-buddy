@@ -58,35 +58,26 @@ group to fit the needs of the intended course, assignment, or project.
 
 ## **2.2 Assumptions and Dependencies**
 This app makes 3 major assumptions:
-Most students tend to do well in their academics when they study with another student, this is where SG comes in to make such students meet their demand.
-Notifications from phones, computers and other websites are a big distraction as far as studying is concerned.We will limit these distractions by restricting notification and also locking screens during studies
-Being able to message, video chat with each other while studying makes it more fun and interactive.  
+1. Most students tend to do well in their academics when they study with another student, this is where SG comes in to make such students meet their demand.
+2. Notifications from phones, computers and other websites are a big distraction as far as studying is concerned.We will limit these distractions by restricting   notification and also locking screens during studies
+3. Being able to message, video chat with each other while studying makes it more fun and interactive.  
  
 Other major dependencies:
-Our intent is to use web services and Google API’s to create design elements such as our calendar feature
+1. Our intent is to use web services and Google API’s to create design elements such as our calendar feature
 
 # **3. System Features and Requirements**
 
 ## **3.1 Functional Requirements**
 
 ### **3.1.1 Functional Requirement 1: Login and Signup**
+Description: A studier should be able to sign up for an account using their existing email. They should be required to create an account with a password and enter it before proceeding to the app. Acceptance criteria:
+- If visiting app for the first time, a modal should appear asking the user to sign up
+- Modal should contain options to sign up by creating username, password, email,birthday
+- Confirmation text/email should be sent to the user depending on their designated sign-in option
+- Once user is confirmed, modal should transition  to fill out a matchmaking quiz to fulfill their profile criteria
 
-Description: A rider should be able to sign up for U4D using their
-existing phone number, social media, or paw print. They should be
-required to leave a credit card on file before proceeding to the app.
-Acceptance criteria:
 
--   If visiting app for the first time, a modal should appear asking the
-    user to sign up
 
--   Modal should contain options to sign up by creating username,
-    password, email,birthday
-
--   Confirmation text/email/treat should be sent to the user depending
-    on their designated sign-in option
-
--   Once user is confirmed, modal should transition to fill out a
-    matchmaking quiz to fulfill their profile criteria
 
 ### **3.1.2 Functional Requirement 2: Matchmaking Quiz** 
 
@@ -178,3 +169,11 @@ height="5.791666666666667in"}
 
 3.  Users should only be able to see group messages in SG they have
     joined to prevent privacy leaks or mishandling.
+    
+    
+    
+| TASK                                      |    OWNER      |    Priority    |     Level of Effort (Estimate of days)     |   Additional Notes  |
+| ---------------------------------------- | -------------  | -------------- | -------------------------------------      | ------------------- |
+| Login and Signup (account functionality)  |  Sam | P1 | 7| Time-boxed task -- I'll do as much as I can in the 3 days | 
+| Matchmaking quiz  | Robert  | P1  | 5  | Look up efficient ways for matching algorithms check out dating app types   |
+| Matchmaking Profile Tags  | Sam  | P2  | 1  | Pull matchmaking quiz stats and compare each added user in gc 
