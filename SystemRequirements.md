@@ -16,17 +16,9 @@ the technical design, and user features etc of SB.
 ## **1.4 Scope**
 
 
-Study buddy is a web application that individuals can use to find study
-groups with students from similar classes or backgrounds. The service
-will provide a platform for group chats to communicate study materials
-and course related materials with one another and connect to the user\'s
-calendar availabilities. to meet to study as a group. Also a match
-making quiz can be shared virtually and attempted by user to find the
-users best fit as a study buddy.
+Study buddy is a web application that individuals can use to find study groups with students from similar classes or backgrounds. The service will provide a platform for group chats to communicate study materials and course-related materials with one another and connect to the user's calendar availability to meet to study as a group. Also, a matchmaking quiz can be shared virtually and attempted by the user to find the user's best fit as a study buddy. 
+Many web applications are on the market to provide similar services for individuals like this, but Study Buddy will focus on being a relevant free platform for anyone. 
 
-Many web applications are on the market to provide similar services for
-individuals like this, but Study Buddy will focus on being a relevant
-free platform for anyone to use.
 
 ## **1.5 Definitions and Acronyms**
 
@@ -65,27 +57,13 @@ Scholars can create SG's and invite, manage, and properly theme their
 group to fit the needs of the intended course, assignment, or project.
 
 ## **2.2 Assumptions and Dependencies**
-
 This app makes 3 major assumptions:
-
-1.  Most students tend to do well in their academics when they study
-    with another student, this is where SG comes in to make such
-    students meet their demand.
-
-2.  Notifications from phones, computers and other websites are a big
-    destruction as far as studying is concerned. Limited these
-    destructions by restricting notification and also locking screens
-    during studies causes less destructions
-
-3.  Being able to message, video chat with each other while studying
-     makes it more fun and interactive.
-
+Most students tend to do well in their academics when they study with another student, this is where SG comes in to make such students meet their demand.
+Notifications from phones, computers and other websites are a big distraction as far as studying is concerned.We will limit these distractions by restricting notification and also locking screens during studies
+Being able to message, video chat with each other while studying makes it more fun and interactive.  
+ 
 Other major dependencies:
-
-1.  Our intent is to use web services and google API's to launch the
-    app, which makes web services make our dependency.
-
-2.  
+Our intent is to use web services and Google API’s to create design elements such as our calendar feature
 
 # **3. System Features and Requirements**
 
