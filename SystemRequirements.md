@@ -183,6 +183,18 @@ height="5.791666666666667in"}
 | Creation of Groupchat | Sam | P1 | 6 | Users should be able to create a groupchat name, picture, and if it is private or not |
 | Search bar functionality | Sam | P2 | 2 | Search 10 most relevant chats to their topic|
 | Home Page | Cierra | P1 | 3 | UI aesthetics |
+| Video Call |Robert |P2 |5 |User needs microphone and video access |
+| Google Calendar Integration | Sam | P2 |  5  | API integration to show other users weekly schedule |
+| Current Chats Page  | Prithika  | P1  | 11  | Collecting most recent texts on groupchat in view and new notifications of unread messages |
+| Groupchat Settings for Scholars  | Cierra  | P3  | 15  | Settings must be able to delete a chat, remove people, make admins, clear chat history, and change name of the chat |
+
+
+
+
+
+
+
+
 
 
 
