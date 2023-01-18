@@ -26,4 +26,8 @@ What stretch features will you implement?
 - Whiteboard integration
 - Flashcards
 
-
+If you are behind schedule, what items on the roadmap will you de-prioritize?
+- Calendar
+- Zoom 
+- Matchmaking Quiz
+- Tags
