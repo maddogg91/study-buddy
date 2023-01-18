@@ -15,4 +15,15 @@ Matchmaking Profile: Each user will take an informative quiz to see how compatib
 
 Suggestions: Query that notifies users on what groups they should join.
 
-Tags: Marking different groups as Academic, Sports, Video Games etc.
+Tags: Marking different groups as Academic, Sports, Video Games, etc.
+
+What stretch features will you implement?
+- Matchmaking quiz
+- Tags for user profiles
+- Zoom integration
+- Calendar support
+- Levels for profile customization
+- Whiteboard integration
+- Flashcards
+
+
