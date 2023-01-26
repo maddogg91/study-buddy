@@ -34,6 +34,10 @@ def currentConvo():
 def createGroup():
     return flask.render_template("createGroup.html")
 
+@app.route('/existingGroups')
+def existingGroups():
+    return flask.render_template("existingGroups.html")
+
 
 if __name__=='__main__':
     app.run()
