@@ -6,10 +6,13 @@ app = flask.Flask(__name__)
 
 #Database Code 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 #https://www.youtube.com/watch?v=HzW8ywijxtQ
+
 @app.route("/")
 def index():
     return flask.render_template("index.html")
+
 @app.route('/signUp')
 def signUp():
     return flask.render_template("signUp.html")
@@ -38,6 +41,7 @@ def createGroup():
 def existingGroups():
     return flask.render_template("existingGroups.html")
 
-
+#created a reloader for easier code running in localhost
+#debug to find bugs
 if __name__=='__main__':
-    app.run()
+    app.run(use_reloader= True, debug= True)

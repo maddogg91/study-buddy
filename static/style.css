@@ -1,0 +1,152 @@
+body{
+    background-color: #DAB49D;
+}
+/*For our logo in the middle*/
+.logoCircle{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 317px;
+    height: 297px;
+    left: 560px;
+    top: 24px;
+    background: #F3E9DC ;
+    border: 5px solid #5E3023;
+    border-radius: 50%;
+}
+
+
+
+/* Back segments are the base for each of the user signins, this one is the make account*/
+.firstBackSeg{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 554.69px;
+    height: 661.04px;
+    left: 81.31px;
+    top: 317px;
+    
+    background: #C08552;
+    border: 5px solid #5E3023;
+    border-radius: 20px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+/*Second back segment for old users */
+.secBackSeg{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 554.69px;
+    height: 661.04px;
+    left: 806.31px;
+    top: 317px;
+
+    background: #C08552;
+    border: 5px solid #5E3023;
+    border-radius: 20px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+/* The User Image boxes hold the temporary avatars*/
+.newUserImage{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 375px;
+    left: 128px;
+    top: 390px;
+    
+    background: #DAB49D;
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+.oldUserImage{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 375px;
+    left: 853px;
+    top: 390px;
+
+    background: #DAB49D;
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+/* Similar Buttons thawt will allow a user to login or make account*/
+.makeAccButton{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 100px;
+    left: 128px;
+    top: 826px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+}
+
+.oldUserSigninButton{
+    box-sizing: border-box;
+
+position: absolute;
+width: 448px;
+height: 100px;
+left: 853px;
+top: 826px;
+
+background: #895737;
+border: 3px solid #DAB49D;
+border-radius: 20px;
+}
+
+.innerTextLeft{
+    position: absolute;
+    width: 386px;
+    height: 48px;
+    left: 159px;
+    top: 810px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+.innerTextRight{
+    position: absolute;
+    width: 386px;
+    height: 48px;
+    left: 884px;
+    top: 810px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+/* can not get logo code to work on top of the circle */
+.middleLogo{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 381px;
+    height: 337px;
+    left: -181px;
+    top: -522px;
+    
+    background: url(StudyBuddyLogo.png);
+
+}
