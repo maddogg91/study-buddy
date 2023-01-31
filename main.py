@@ -1,6 +1,7 @@
 import os
 import flask 
-from flask_sqlalchemy import SQLAlchemy
+import db
+
 
 app = flask.Flask(__name__)
 
@@ -21,6 +22,20 @@ def signUp():
 def login():
     return flask.render_template("login.html")
 
+@app.route('/-login')
+def trylogin():
+    #TODO: Add a POST form to login HTML to return user and password
+    #Test values user and passw can be changed to test implementation until POST is added
+    user= "test"
+    password= "test"
+    login= db.login(user, password)
+    if (login== True):
+        return flask.render_template("home.html")
+    else:
+        print("Invalid user")
+        #We should add an alert for invalid login errors to HTML
+        return flask.render_template("login.html")
+   
 @app.route('/home')
 def home():
     return flask.render_template("home.html")
