@@ -30,25 +30,26 @@ width: 735px;
 height: 223px;
 left: 285px;
 top: 750px;
-
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+letter-spacing: -0.03em;
+text-align: center;   
+color: #DAB49D;
 background: #5E3023;
 border: 1px solid #000000;
 }
 .groupName{
 box-sizing: border-box;
-
-position: absolute;
-width: 620px;
-height: 67px;
-left: 332px;
-top: 541px;
     
 background: #895737;
 border: 2px solid #DAB49D;
 position: absolute;
-width: 194px;
+width: 650px;
 height: 74px;
-left: 560px;
+left: 332px;
 top: 551px;
     
 font-family: 'Inter';
@@ -57,34 +58,29 @@ font-weight: 500;
 font-size: 32px;
 line-height: 39px;
 letter-spacing: -0.03em;
-    
+text-align: center;   
 color: #DAB49D;
         
 }
 .description{
 box-sizing: border-box;
 
+
+background: #895737;
+border: 2px solid #DAB49D; 
 position: absolute;
-width: 620px;
+width: 650px;
 height: 68px;
 left: 332px;
 top: 648px;
     
-background: #895737;
-border: 2px solid #DAB49D; 
-position: absolute;
-width: 194px;
-height: 75px;
-left: 560px;
-top: 658px;
-
 font-family: 'Inter';
 font-style: normal;
 font-weight: 500;
 font-size: 32px;
 line-height: 39px;
 letter-spacing: -0.03em;
-
+text-align: center;
 color: #DAB49D;
   
 }
@@ -106,7 +102,7 @@ color: white;
 font-size: 20px;
 position: center;
   }
-  
+
 .navbar a:hover {
 background-color: #5E3023;
 position: center;
@@ -115,3 +111,39 @@ position: center;
 .active {
 background-color: #895737;
 }
+.addGrouppic{
+  position: absolute;
+  width: 156.21px;
+  height: 151.08px;
+  left: 578.64px;
+  top: 303.76px;
+  text-align: center;
+  font-size:150px;
+  color: bisque;
+}
+
+.bottompanel .search-container {
+  float: right;
+}
+.bottompanel input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.bottompanel .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.bottompanel .search-container button:hover {
+  background: #ccc;
+}
+

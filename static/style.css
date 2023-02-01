@@ -168,7 +168,8 @@ border-radius: 20px;
 
 .proPic{
     box-sizing: border-box;
-
+    text-align: center;
+    font-size:150px;
     position: absolute;
     width: 190px;
     height: 190px;
@@ -177,6 +178,7 @@ border-radius: 20px;
     border-radius: 50%;
     background: #DAB49D;
     border: 3px solid #5E3023;
+    color: #5E3023;
 
 }
 /* Add-one (添加) */
@@ -349,3 +351,29 @@ height: 80px;
 left: 1233px;
 top: 887px;
 }
+/*nav bar*/
+.navbar {
+    width: 100%;
+    background-color: #895737;
+    overflow: auto;
+    }
+      
+    .navbar a {
+    float: right;
+    width: 20%;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;
+    position: center;
+      }
+    
+    .navbar a:hover {
+    background-color: #5E3023;
+    position: center;
+    }
+      
+    .active {
+    background-color: #895737;
+    }
