@@ -1,0 +1,117 @@
+/* Create Study Group */
+
+body{
+position: relative;
+width: 1440px;
+height: 973px;
+
+background: #DAB49D;
+
+}
+/* C08552 */
+
+.panel{
+box-sizing: border-box;
+
+position: absolute;
+width: 737px;
+height: 759px;
+left: 283px;
+top: 208px;
+background: #C08552;
+mix-blend-mode: normal;
+border: 3px solid #000000;
+}
+.bottompanel{
+box-sizing: border-box;
+
+position: absolute;
+width: 735px;
+height: 223px;
+left: 285px;
+top: 750px;
+
+background: #5E3023;
+border: 1px solid #000000;
+}
+.groupName{
+box-sizing: border-box;
+
+position: absolute;
+width: 620px;
+height: 67px;
+left: 332px;
+top: 541px;
+    
+background: #895737;
+border: 2px solid #DAB49D;
+position: absolute;
+width: 194px;
+height: 74px;
+left: 560px;
+top: 551px;
+    
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+letter-spacing: -0.03em;
+    
+color: #DAB49D;
+        
+}
+.description{
+box-sizing: border-box;
+
+position: absolute;
+width: 620px;
+height: 68px;
+left: 332px;
+top: 648px;
+    
+background: #895737;
+border: 2px solid #DAB49D; 
+position: absolute;
+width: 194px;
+height: 75px;
+left: 560px;
+top: 658px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 39px;
+letter-spacing: -0.03em;
+
+color: #DAB49D;
+  
+}
+
+/*nav bar*/
+.navbar {
+width: 100%;
+background-color: #895737;
+overflow: auto;
+}
+  
+.navbar a {
+float: right;
+width: 20%;
+text-align: center;
+padding: 12px 0;
+transition: all 0.3s ease;
+color: white;
+font-size: 20px;
+position: center;
+  }
+  
+.navbar a:hover {
+background-color: #5E3023;
+position: center;
+}
+  
+.active {
+background-color: #895737;
+}
