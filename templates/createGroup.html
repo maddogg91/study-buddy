@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Create  Group</title>
-</head>
-<body>
+    <head> 
+        <link rel="stylesheet" href="/static/createGroup.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="navbar">
+            <a class="active" href="#"><a href="/home"><i class="fa fa-home"></a></i></a> 
+            <a href="#"><i class="fa fa-save"></i></a> 
+            <a href="#"><a href="/settings"><i class="fa fa-gear"></a></i></a>
+          </div>
+        <div class="panel"></div>
+        <div class="bottompanel"></div>
+        <div class="addGrouppic"><i class="fa fa-picture-o fa5px" aria-hidden="true"></i></a></i></div>
+        <div class="groupName">Group Name</div>
+        <div class="description">Description</div>
 
-<h1>Create Group</h1>
-<p>This is a paragraph.</p>
-<p><a href="/signUp">Go to signup</a></p>
-<p><a href="/login">Go to login</a></p>
-<p><a href="/currentConvo">Convo</a></p>
-<p><a href="/settings">Go to Setting</a></p>
-<p><a href="/createGroup">create Convo</a></p>
-<p><a href="/home">create Convo</a></p>
+        <div class="bottompanel">
+
+        <div class="search-container">
+            <form action="/action_page.php">
+              <input type="text" placeholder="Search.." name="search">
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+            Add Group Members
+          </div>
+        </div>
+    </body>
+</html>
 
 

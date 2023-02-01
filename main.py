@@ -9,8 +9,6 @@ app = flask.Flask(__name__)
 #Database Code 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-#https://www.youtube.com/watch?v=HzW8ywijxtQ
-
 @app.route("/")
 def index():
     return flask.render_template("index.html")
