@@ -3,6 +3,7 @@ import flask
 import db
 
 
+
 app = flask.Flask(__name__)
 
 #Database Code 
@@ -20,19 +21,18 @@ def signUp():
 def login():
     return flask.render_template("login.html")
 
-@app.route('/-login')
+@app.route('/login', methods=["POST"])
 def trylogin():
-    #TODO: Add a POST form to login HTML to return user and password
-    #Test values user and passw can be changed to test implementation until POST is added
-    user= "test"
-    password= "test"
+    data= flask.request.form
+    user= data.get("user")
+    password= data.get("password")
     login= db.login(user, password)
     if (login== True):
         return flask.render_template("home.html")
     else:
         print("Invalid user")
         #We should add an alert for invalid login errors to HTML
-        return flask.render_template("login.html")
+        return flask.render_template("login.html", alarm= "1")
    
 @app.route('/home')
 def home():

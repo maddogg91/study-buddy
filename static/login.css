@@ -20,22 +20,23 @@ body{
 
     position: absolute;
     width: 740px;
-    height: 120px;
-    left: 272px;
+    height: 60px;
+    left: 300px;
     top: 409px;
 
     background: #895737;
     border: 3px solid #DAB49D;
 }
 
+
 .passTextBox{
     box-sizing: border-box;
 
     position: absolute;
     width: 740px;
-    height: 120px;
-    left: 272px;
-    top: 671px;
+    height: 60px;
+    left: 300px;
+    top: 600px;
     
     background: #895737;
     border: 3px solid #DAB49D;
@@ -46,12 +47,12 @@ body{
     width: 586px;
     height: 69px;
     left: 372px;
-    top: 557px;
+    top: 507px;
     
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 50px;
+    font-size: 35px;
     line-height: 61px;
     text-align: center;
     
@@ -63,12 +64,12 @@ body{
     width: 586px;
     height: 69px;
     left: 367px;
-    top: 836px;
+    top: 695px;
     
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 50px;
+    font-size: 35px;
     line-height: 61px;
     text-align: center;
     

@@ -1,7 +1,13 @@
 import pymongo
+import enc
+
+
+
 
 def connectDB():
-    client = pymongo.MongoClient("mongodb+srv://studybuddy:OctG2CDRxy05yzOf@cluster0.4grai.mongodb.net/?retryWrites=true&w=majority")
+    with open('keys/db.txt', 'rb') as p:
+        conn = p.read()
+    client = pymongo.MongoClient(enc.decrypt(conn))
     db = client["studybuddy"]
     return db
 
@@ -9,6 +15,8 @@ def connectDB():
 def login(user, passw):
     db= connectDB() 
     collection= db["registration"]
+    #user= enc.decrypt(user)
+    #passw= enc.decrypt(passw)
     query = { "username" : user , "password" : passw }
     try:
         loginInfo = collection.find_one(query)
