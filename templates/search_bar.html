@@ -1,30 +1,25 @@
-<!DOCTYPE html>
-<html >
+<html>
 <head>
     <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
-    <title>Search Bar</title>
-    <link rel="stylesheet" href="Search.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
-<body>      
-
-
+<body>
+    <div class="navbar">
+        <ul>
+        <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
+        <li><a href="#"><i class="fa fa-save"></i></a></li>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
+        <li><a href="/search_bar"><i class="fa fa-search"></a></i></a></li>
+        </ul>
+    </div>      
     <div class="eat"> 
-        
     <div class="container">
-        <button class="btn">Setting</button>
-        <button class="btn2">Home</button>
-
-        
         <form action="/search" method"get" class="Search-bar">
             <input type="text" placeholder="search anything" name="q">
-            <button type="submit"><img src="images/search.png"></button>
-
-            
+            <button type="submit"><img src="images/search.png"></button>    
         </form>
     </div>
-     </div>
-    
-
+    </div>
 </body>
 </html>
