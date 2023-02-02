@@ -1,12 +1,13 @@
 import os
 import flask 
 import db
-
+from db import User
 
 
 app = flask.Flask(__name__)
 
 #Database Code 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 @app.route("/")
@@ -16,6 +17,13 @@ def index():
 @app.route('/signUp')
 def signUp():
     return flask.render_template("signUp.html")
+
+
+@app.route('/signUp',methods=['POST'])
+def trysignUp():
+    user=User()
+    return user.signUp()
+
 
 @app.route('/login')
 def login():
