@@ -1,4 +1,4 @@
-$("form[name=signUp_form").submit(function(e){
+$("form[name=signUp_form]").submit(function(e){
     
     var $form=$(this);
     var $error=$form.find(".error");

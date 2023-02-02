@@ -42,6 +42,7 @@ class User:
             "email":request.form.get('email'),
             "birthday":request.form.get('birthday')
         }
+        print(user)
         #encryption of data of password
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         if db.users.find_one({"email":user['email']}):
