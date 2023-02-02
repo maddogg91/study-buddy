@@ -34,7 +34,7 @@ def login(user, passw):
 class User:   
     def signUp(self):
         db=connectDB()
-            #Create user obj
+            #Create user obj for submitted fields
         user={
             "_id":uuid.uuid4().hex,
             "username":request.form.get('name'),
@@ -44,8 +44,10 @@ class User:
         }
         #encryption of data of password
         user['password']=pbkdf2_sha256.encrypt(user['password'])
+        #if user already signed up with error address they will have error
         if db.users.find_one({"email":user['email']}):
             return jsonify({"error":"email already in use"}),400
-        db.users.insert_one(user)
+        if db.users.insert_one(user):
+            return jsonify(user),200
 
-        return jsonify(user),200
+        return jsonify({"error:Signup failed"}),400

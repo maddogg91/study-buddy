@@ -2,8 +2,6 @@ import os
 import flask 
 import db
 from db import User
-
-
 app = flask.Flask(__name__)
 
 #Database Code 
@@ -21,8 +19,7 @@ def signUp():
 
 @app.route('/signUp',methods=['POST'])
 def trysignUp():
-    user=User()
-    return user.signUp()
+    return User().signUp()
 
 
 @app.route('/login')
