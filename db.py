@@ -1,14 +1,14 @@
 
-from urllib import request
 import pymongo
 import enc
 import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
+from flask import request
 
 
-client=pymongo.MongoClient('localhost',27017)
-db=client.studybuddy
+
+
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
         conn = p.read()
@@ -33,7 +33,7 @@ def login(user, passw):
     
 class User:   
     def signUp(self):
-        print(request.form)
+        db=connectDB()
             #Create user obj
         user={
             "_id":uuid.uuid4().hex,
@@ -42,7 +42,6 @@ class User:
             "email":request.form.get('email'),
             "birthday":request.form.get('birthday')
         }
-        print(user)
         #encryption of data of password
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         if db.users.find_one({"email":user['email']}):
