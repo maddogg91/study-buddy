@@ -15,12 +15,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    
     border-radius: 12px;
     padding: 5px;
-
 }
+
+/*nav bar*/
+.navbar {
+    width: 100%;
+    background-color: #895737;
+    overflow: hidden;
+}
+      
+.navbar a {
+    float: right;
+    width: 20%;
+    text-align: center;
+    padding: 20px;
+    display: inline;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;
+    position: center;
+}
+    
+.navbar a:hover {
+    background-color: #5E3023;
+    position: center;
+}
+
  .Search-bar{
     width: 60%;
     max-width: 400px;
@@ -31,6 +53,7 @@
     padding: 10px 20px;
     backdrop-filter: blur(4px) saturate(180%);
 }
+
 .Search-bar input{
     background:transparent;
     flex: 1;
@@ -41,6 +64,7 @@
     color: #cac7ff;
 
 }
+
  ::placeholder{
     color: #cac7ff;
 }
@@ -48,6 +72,7 @@
 .Search-bar button img{
     width: 25px;
 }
+
 .Search-bar button{
     border: 20;
     border-radius: 60%;
@@ -56,6 +81,7 @@
     background: #C08552;
     cursor: pointer;
 }
+
 .eat{
     width: 100%;
     min-height: 100vh;
@@ -68,55 +94,19 @@
 
 }
 
-
-
-.container .btn {
-    position: absolute;
-    top: 15%;
-    right: 10%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #5E3023;
-    color: black;
-    font-size: 16px;
-    padding: 16px 30px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-  }
-  .container .btn:hover {
-    background-color: #C08552;
-    color: white;
-    
-   
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
   
-
-
-
-  }
-  .container .btn2 {
-    position: absolute;
-    top: 15%;
-    right: 20%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #5E3023;
-    color: black;
-    font-size: 16px;
-    padding: 16px 30px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-  }
-  .container .btn2:hover {
-    background-color: #C08552;
-    color: white;
-    
-   
+li{
+    float: right;
+}
   
-
-
-
-  }
+li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
