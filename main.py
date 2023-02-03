@@ -7,6 +7,7 @@ app = flask.Flask(__name__)
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+session_start= False
 
 @app.route("/")
 def index():
@@ -19,7 +20,12 @@ def signUp():
 
 @app.route('/signUp',methods=['POST'])
 def trysignUp():
-    return User().signUp()
+   signup= User().signUp()
+   if(signup == True):
+    session_start= True
+    return flask.render_template("home.html")
+   else:
+    return flask.render_template("signUp.html", alarm= "1")   
 
 
 @app.route('/login')
@@ -33,6 +39,7 @@ def trylogin():
     password= data.get("password")
     login= db.login(user, password)
     if (login== True):
+        session_start= True
         return flask.render_template("home.html")
     else:
         print("Invalid user")
@@ -41,7 +48,10 @@ def trylogin():
    
 @app.route('/home')
 def home():
-    return flask.render_template("home.html")
+    if(session_start== True):
+        return flask.render_template("home.html")
+    else:
+        return flask.render_template("index.html")
 
 @app.route('/search')
 def search():

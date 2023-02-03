@@ -19,13 +19,13 @@ def connectDB():
 
 def login(user, passw):
     db= connectDB() 
-    collection= db["registration"]
+    collection= db["users"]
     #user= enc.decrypt(user)
     #passw= enc.decrypt(passw)
-    query = { "username" : user , "password" : passw }
+    query = { "username" : user }
     try:
         loginInfo = collection.find_one(query)
-        print(loginInfo["username"])
+        pbkdf2_sha256.verify(passw, loginInfo["password"])
         return True
     except:
         print("No user found, please try again.")
@@ -46,8 +46,9 @@ class User:
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         #if user already signed up with error address they will have error
         if db.users.find_one({"email":user['email']}):
-            return jsonify({"error":"email already in use"}),400
+           return False
         if db.users.insert_one(user):
-            return jsonify(user),200
+            #return jsonify(user),200
+            return True
 
-        return jsonify({"error:Signup failed"}),400
+        #return jsonify({"error:Signup failed"}),400
