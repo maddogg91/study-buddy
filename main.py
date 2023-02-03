@@ -73,10 +73,6 @@ def createGroup():
 def existingGroups():
     return flask.render_template("existingGroups.html")
 
-@app.route("/search_bar")
-def search_bar():
-    return flask.render_template("search_bar.html")
-
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
