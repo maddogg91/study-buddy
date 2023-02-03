@@ -43,6 +43,10 @@ def trylogin():
 def home():
     return flask.render_template("home.html")
 
+@app.route('/search')
+def search():
+    return flask.render_template("search.html")
+
 @app.route('/settings')
 def setting():
     return flask.render_template("settings.html")
