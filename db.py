@@ -16,24 +16,21 @@ def connectDB():
     db = client["studybuddy"]
     return db
 
+db= connectDB()
 
 def login(user, passw):
-    db= connectDB() 
     collection= db["users"]
-    #user= enc.decrypt(user)
-    #passw= enc.decrypt(passw)
     query = { "username" : user }
     try:
         loginInfo = collection.find_one(query)
         pbkdf2_sha256.verify(passw, loginInfo["password"])
-        return True
+        return loginInfo
     except:
         print("No user found, please try again.")
         return False
     
 class User:   
     def signUp(self):
-        db=connectDB()
             #Create user obj for submitted fields
         user={
             "_id":uuid.uuid4().hex,
@@ -48,7 +45,23 @@ class User:
         if db.users.find_one({"email":user['email']}):
            return False
         if db.users.insert_one(user):
-            #return jsonify(user),200
             return True
+            
+    # def lookUp(self):
+        # db.users.find_one
+# class Group:
+    # def createGroup(self):
+    # user= db["users"]
+    
+    
+    # group = {
+            # "_id": uuid.uuid4().hex,
+            # "users": [
+                # "user" : 
+            # ]
+    
+    # }
+    
+        
 
-        #return jsonify({"error:Signup failed"}),400
+        

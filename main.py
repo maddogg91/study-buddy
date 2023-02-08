@@ -7,7 +7,10 @@ app = flask.Flask(__name__)
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-session_start= False
+session= {
+"start": False,
+"user": ""
+}
 
 @app.route("/")
 def index():
@@ -22,7 +25,7 @@ def signUp():
 def trysignUp():
    signup= User().signUp()
    if(signup == True):
-    session_start= True
+    session["start"]= True
     return flask.render_template("home.html")
    else:
     return flask.render_template("signUp.html", alarm= "1")   
@@ -30,28 +33,34 @@ def trysignUp():
 
 @app.route('/login')
 def login():
+    if(session["start"]== True):
+        return flask.redirect('/home')
     return flask.render_template("login.html")
 
 @app.route('/login', methods=["POST"])
 def trylogin():
-    data= flask.request.form
-    user= data.get("user")
-    password= data.get("password")
-    login= db.login(user, password)
-    if (login== True):
-        session_start= True
-        return flask.render_template("home.html")
+    if(session["start"]== True):
+        return flask.redirect('/home')
     else:
-        print("Invalid user")
-        #We should add an alert for invalid login errors to HTML
-        return flask.render_template("login.html", alarm= "1")
+        data= flask.request.form
+        user= data.get("user")
+        password= data.get("password")
+        login= db.login(user, password)
+        if (login!= False):
+            session["start"]= True
+            session["user"]= login
+            return flask.redirect('/home')
+        else:
+            #Alarm set to 1 triggers alert on front end.
+            return flask.render_template("login.html", alarm= "1")
+    
    
 @app.route('/home')
 def home():
-    if(session_start== True):
-        return flask.render_template("home.html")
+    if(session["start"]== True):
+        return flask.render_template("home.html", user= session["user"]["username"])
     else:
-        return flask.render_template("index.html")
+        return flask.redirect('/')
 
 @app.route('/search')
 def search():
