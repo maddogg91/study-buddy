@@ -1,13 +1,6 @@
 import rsa
 
-#pbk, prk= rsa.newkeys(1024)
 
-#message= "mongodb+srv://studybuddy:OctG2CDRxy05yzOf@cluster0.4grai.mongodb.net/?retryWrites=true&w=majority"
-
-#encMessage = rsa.encrypt(message.encode(), pbk)
-
-#print(encMessage)
-#print(prk)
 
 
 
@@ -17,6 +10,7 @@ def generateKey():
         p.write(pbk.save_pkcs1('PEM'))
     with open('keys/privateKey.pem', 'wb') as p:
         p.write(prk.save_pkcs1('PEM'))
+    return pbk, prk
         
 def loadKey():
     with open('keys/publicKey.pem', 'rb') as p:
