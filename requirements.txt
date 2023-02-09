@@ -1,0 +1,6 @@
+pymongo
+enc
+jsonify
+uuid
+passlib
+flask

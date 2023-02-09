@@ -1,6 +1,7 @@
 body{
     background-color: #DAB49D;
 }
+
 /*For our logo in the middle*/
 .logoCircle{
     box-sizing: border-box;
@@ -14,8 +15,6 @@ body{
     border: 5px solid #5E3023;
     border-radius: 50%;
 }
-
-
 
 /* Back segments are the base for each of the user signins, this one is the make account*/
 .firstBackSeg{
@@ -32,6 +31,7 @@ body{
     border-radius: 20px;
     transform: matrix(1, 0, 0, 1, 0, 0);
 }
+
 /*Second back segment for old users */
 .secBackSeg{
     box-sizing: border-box;
@@ -47,6 +47,7 @@ body{
     border-radius: 20px;
     transform: matrix(1, 0, 0, 1, 0, 0);
 }
+
 /* The User Image boxes hold the temporary avatars*/
 .newUserImage{
     box-sizing: border-box;
@@ -61,6 +62,7 @@ body{
     border: 3px solid #000000;
     border-radius: 20px;
 }
+
 .oldUserImage{
     box-sizing: border-box;
 
@@ -74,6 +76,7 @@ body{
     border: 3px solid #000000;
     border-radius: 20px;
 }
+
 /* Similar Buttons thawt will allow a user to login or make account*/
 .makeAccButton{
     box-sizing: border-box;
@@ -91,16 +94,15 @@ body{
 
 .oldUserSigninButton{
     box-sizing: border-box;
+    position: absolute;
+    width: 448px;
+    height: 100px;
+    left: 853px;
+    top: 826px;
 
-position: absolute;
-width: 448px;
-height: 100px;
-left: 853px;
-top: 826px;
-
-background: #895737;
-border: 3px solid #DAB49D;
-border-radius: 20px;
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
 }
 
 .innerTextLeft{
@@ -150,6 +152,7 @@ border-radius: 20px;
     background: url(StudyBuddyLogo.png);
 
 }
+
 /*sign up page */
 .bodySign{
     box-sizing: border-box;
@@ -165,7 +168,6 @@ border-radius: 20px;
 }
 
 /* Add Profile Pic */
-
 .proPic{
     box-sizing: border-box;
     text-align: center;
@@ -181,12 +183,14 @@ border-radius: 20px;
     color: #5E3023;
 
 }
+
 /* Add-one (添加) */
 span {
     content: "\002B";
     font-size: 200px;
     position:absolute;
   }
+
 .add{
     position: absolute;
     width: 100px;
@@ -197,11 +201,7 @@ span {
 
 }
 
-
-
-
 /* Username */
-
 .userBox{
 box-sizing: border-box;
 
@@ -222,10 +222,9 @@ line-height: 44px;
 text-align: center;
 
 color: #DAB49D;
-
 }
-/* pass entery */
 
+/* pass entery */
 .passWord{
 position: absolute;
 width: 669px;
@@ -241,12 +240,9 @@ line-height: 44px;
 text-align: center;
 
 color: #DAB49D;
-
 }
 
-
 /* email */
-
 .email{
 box-sizing: border-box;
 
@@ -267,98 +263,102 @@ line-height: 44px;
 text-align: center;
 
 color: #DAB49D;
-
 }
+
 .bday{
     position: absolute;
-width: 821px;
-height: 77px;
-left: 312px;
-top: 782px;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 782px;
 
-background: #895737;
-border: 3px solid #DAB49D;
-border-radius: 20px;
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 36px;
-line-height: 44px;
-text-align: center;
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
 
-color: #DAB49D;
+    color: #DAB49D;
 }
+
 .sPass{
     box-sizing: border-box;
 
-position: absolute;
-width: 821px;
-height: 77px;
-left: 312px;
-top: 502px;
+    position: absolute;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 502px;
 
-background: #895737;
-border: 3px solid #DAB49D;
-border-radius: 20px;
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 36px;
-line-height: 44px;
-text-align: center;
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
 
-color: #DAB49D;
+    color: #DAB49D;
 }
+
 .email{
     box-sizing: border-box;
 
-position: absolute;
-width: 821px;
-height: 77px;
-left: 312px;
-top: 642px;
+    position: absolute;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 642px;
 
-background: #895737;
-border: 3px solid #DAB49D;
-border-radius: 20px;
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
 
-font-family: 'Inter';
-font-style: normal;
-font-weight: 400;
-font-size: 36px;
-line-height: 44px;
-text-align: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
 
-color: #DAB49D;
+    color: #DAB49D;
 }
 
 .saveCircle{
-box-sizing: border-box;
+    box-sizing: border-box;
 
-position: absolute;
-width: 170px;
-height: 170px;
-left: 1187px;
-top: 820px;
-background: #5E3023;
-border-radius: 50%;
-border: 1px solid #DAB49D;  
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    left: 1187px;
+    top: 820px;
+    background: #5E3023;
+    border-radius: 50%;
+    border: 1px solid #DAB49D;  
 }
+
 .savePosition{
-position: absolute;
-width: 80px;
-height: 80px;
-left: 1233px;
-top: 887px;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 1233px;
+    top: 887px;
 }
+
 /*nav bar*/
 .navbar {
     width: 100%;
     background-color: #895737;
     overflow: auto;
-    }
+}
       
-    .navbar a {
+.navbar a {
     float: right;
     width: 20%;
     text-align: center;
@@ -367,13 +367,9 @@ top: 887px;
     color: white;
     font-size: 20px;
     position: center;
-      }
+}
     
-    .navbar a:hover {
+.navbar a:hover {
     background-color: #5E3023;
     position: center;
-    }
-      
-    .active {
-    background-color: #895737;
-    }
+}
