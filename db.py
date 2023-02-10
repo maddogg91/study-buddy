@@ -5,6 +5,7 @@ import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
+from Group import Group
 
 
 
@@ -25,6 +26,7 @@ def login(user, passw):
         loginInfo = collection.find_one(query)
         pbkdf2_sha256.verify(passw, loginInfo["password"])
         return loginInfo
+
     except:
         print("No user found, please try again.")
         return False
@@ -47,21 +49,24 @@ class User:
         if db.users.insert_one(user):
             return True
             
-    # def lookUp(self):
-        # db.users.find_one
-# class Group:
-    # def createGroup(self):
-    # user= db["users"]
-    
-    
-    # group = {
-            # "_id": uuid.uuid4().hex,
-            # "users": [
-                # "user" : 
-            # ]
-    
-    # }
-    
-        
+ 
 
-        
+
+def searchForGroupChat(keyword, criteria):
+    groupChat= db["groupchat"]
+    returnedGroups= []
+    #finds keyword in db based off the criteria or filter. Currently set to name.
+    query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
+    try:
+        results= groupChat.find(query)
+        for result in results:
+            group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+            result["photo"], result["messages"])
+            returnedGroups.append(group) 
+        return returnedGroups
+    except:
+         print("Error with Group Chat search")
+         return "No results found..."
+      
+      
+ 
