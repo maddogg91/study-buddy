@@ -8,7 +8,6 @@ from flask import request
 
 
 
-
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
         conn = p.read()
@@ -30,7 +29,12 @@ def login(user, passw):
     except:
         print("No user found, please try again.")
         return False
-    
+def groups():
+    db=connectDB()
+    existing_groupchat= db["groupchat"]
+    query={'name':'Happy to be here group'}    
+    gc1=existing_groupchat.find_one(query)
+    return gc1
 class User:   
     def signUp(self):
         db=connectDB()

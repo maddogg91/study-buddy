@@ -1,7 +1,8 @@
 import os
 import flask 
 import db
-from db import User
+from flask_bootstrap import Bootstrap
+from db import User, groups
 app = flask.Flask(__name__)
 
 #Database Code 
@@ -71,7 +72,8 @@ def createGroup():
 
 @app.route('/existingGroups')
 def existingGroups():
-    return flask.render_template("existingGroups.html")
+    groups.first=groups
+    return flask.render_template("existingGroups.html",groups=groups)
 
 #created a reloader for easier code running in localhost
 #debug to find bugs
