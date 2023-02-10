@@ -1,11 +1,13 @@
 
+import os
 import pymongo
 import enc
 import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
-
+import logging
+logging.basicConfig(filename='logging1.txt', level=logging.DEBUG)
 
 
 def connectDB():
@@ -31,9 +33,10 @@ def login(user, passw):
         return False
 def groups():
     db=connectDB()
-    existing_groupchat= db["groupchat"]
-    query={'name':'Happy to be here group'}    
-    gc1=existing_groupchat.find_one(query)
+    cursor= db["groupchat"]
+    gc1=cursor.find().toArray()
+    db.logger.debug("debug log info")
+    #num=existing_groupchat.find().count()
     return gc1
 class User:   
     def signUp(self):

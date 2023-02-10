@@ -72,7 +72,7 @@ def createGroup():
 
 @app.route('/existingGroups')
 def existingGroups():
-    groups.first=groups
+    groups.gc1=groups
     return flask.render_template("existingGroups.html",groups=groups)
 
 #created a reloader for easier code running in localhost
