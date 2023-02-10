@@ -37,6 +37,8 @@ def groups():
     gc1=cursor.find().toArray()
     db.logger.debug("debug log info")
     #num=existing_groupchat.find().count()
+    #category _id
+    #
     return gc1
 class User:   
     def signUp(self):
