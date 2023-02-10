@@ -5,6 +5,7 @@ import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
+from Group import Group
 
 
 
@@ -16,24 +17,22 @@ def connectDB():
     db = client["studybuddy"]
     return db
 
+db= connectDB()
 
 def login(user, passw):
-    db= connectDB() 
     collection= db["users"]
-    #user= enc.decrypt(user)
-    #passw= enc.decrypt(passw)
     query = { "username" : user }
     try:
         loginInfo = collection.find_one(query)
         pbkdf2_sha256.verify(passw, loginInfo["password"])
-        return True
+        return loginInfo
+
     except:
         print("No user found, please try again.")
         return False
     
 class User:   
     def signUp(self):
-        db=connectDB()
             #Create user obj for submitted fields
         user={
             "_id":uuid.uuid4().hex,
@@ -48,7 +47,26 @@ class User:
         if db.users.find_one({"email":user['email']}):
            return False
         if db.users.insert_one(user):
-            #return jsonify(user),200
             return True
+            
+ 
 
-        #return jsonify({"error:Signup failed"}),400
+
+def searchForGroupChat(keyword, criteria):
+    groupChat= db["groupchat"]
+    returnedGroups= []
+    #finds keyword in db based off the criteria or filter. Currently set to name.
+    query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
+    try:
+        results= groupChat.find(query)
+        for result in results:
+            group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+            result["photo"], result["messages"])
+            returnedGroups.append(group) 
+        return returnedGroups
+    except:
+         print("Error with Group Chat search")
+         return "No results found..."
+      
+      
+ 

@@ -18,7 +18,6 @@
     border-radius: 12px;
     padding: 5px;
 }
-
 /*nav bar*/
 .navbar {
     width: 100%;
@@ -41,57 +40,6 @@
 .navbar a:hover {
     background-color: #5E3023;
     position: center;
-}
-
- .Search-bar{
-    width: 60%;
-    max-width: 400px;
-    background-color: #5E3023;
-    display:flex;
-    align-items: center;
-    border-radius: 60px;
-    padding: 10px 40px;
-    backdrop-filter: blur(4px) saturate(180%);
-}
-
-.Search-bar input{
-    background:transparent;
-    flex: 1;
-    bottom: 0;
-    outline:none;
-    padding: 10px 20px;
-    font-size: 20px;
-    color: #cac7ff;
-
-}
-
- ::placeholder{
-    color: #cac7ff;
-}
-
-.Search-bar button img{
-    width: 25px;
-}
-
-.Search-bar button{
-    border: 20;
-    border-radius: 60%;
-    width: 60%;
-    height: 60%;
-    background: #C08552;
-    cursor: pointer;
-}
-
-.eat{
-    width: 100%;
-    min-height: 100vh;
-    padding: 4%;
-    background-color: #DAB49D;
-    background-position: center;
-    background-size:cover;
-    display:flex;
-    border-style: double;
-
 }
 
 ul{
