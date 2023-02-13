@@ -67,4 +67,17 @@ def searchForGroupChat(keyword, criteria):
          return "No results found..."
       
       
- 
+def existingChats():
+    groupChat= db["groupchat"]
+    gc= []
+    #finds keyword in db based off the criteria or filter. Currently set to name.
+    try:
+        results= groupChat.find()
+        for result in results:
+            group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+            result["photo"], result["messages"])
+            gc.append(group) 
+        return results
+    except:
+         print("Error with Group Chat search")
+         return "No results found..."

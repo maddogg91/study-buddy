@@ -23,6 +23,15 @@
 <p><a href="/settings">Go to Setting</a></p>
 <p><a href="/createGroup">create Convo</a></p>
 <p><a href="/home">create Convo</a></p>
+	<br><br><br><br>
+	<!-- For loop for search results -->
+  {%for i in range(0, len)%}
+  <h4>{{results[i].name}}
+  <br>
+  {{results[i].description}}
+  </h4>
+  <br>
+{%endfor%}
 
 </body>
 </html>
