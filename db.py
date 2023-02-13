@@ -58,7 +58,7 @@ def searchForGroupChat(keyword, criteria):
     #finds keyword in db based off the criteria or filter. Currently set to name.
     query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
     try:
-        results= groupChat.find(query)
+        results= groupChat.find()
         for result in results:
             group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])

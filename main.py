@@ -73,7 +73,7 @@ def search():
     
 @app.route('/search1', methods=["GET"])
 def findGroupSearch():
-    keyword= flask.request.args.get('q')
+    keyword= flask.request.args.get('query')
     chats= []
     groupchats= db.searchForGroupChat(keyword, "name")
     return flask.render_template("results.html", len= len(groupchats),

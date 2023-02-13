@@ -7,20 +7,31 @@
 <body>
     <div class="navbar">
         <ul>
-        <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
+        <li><a href="/home"><i class="fa fa-home"></a></i></li>
         <li><a href="#"><i class="fa fa-save"></i></a></li>
-        <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-        <li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-        </ul>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
+		<br>
+		<form action="/search1" method="GET">
+		<li><button 
+		 type="submit" style="background-color#cac7ff" class="fa fa-search" href="/search"></button></li>
+		
+		<li>
+		<div class= "tooltip">
+		<span class="tooltiptext"> 
+			Search Options: For users 'user : [username]'
+			For groups 'group: [groupname]'
+			Groups by description 'gdesc : [keywords]'
+		</span>
+		<input placeholder= "search anything" style= "background-color: #5E3023;
+		border-radius: 60px; padding: 5px 30px; backdrop-filter: blur(4px) saturate(180%);" 
+		type="search1" id="form1" class="form-control" name= "query"/>
+		</div>
+		</li>
+       
+		</form>
+		</ul>
 		
     </div>      
-    <div class="eat"> 
-    <div class="container">
-        <form action="/search1" method"get" class="Search-bar">
-            <input type="text" placeholder="search anything" name="q">
-            <button type="submit"><img src="./static/search.png"></button>    
-        </form>
-    </div>
-    </div>
+    
 </body>
 </html>
