@@ -1,0 +1,1 @@
+{"version":2,"languages":{"python-python3-poetry":{"specfileHash":"0437d2dd83166fdb4eb8a636d194746e","lockfileHash":"15c61ca2ccca6e494fc141294b93a4e9","guessedImports":["jsonify","passlib","pymongo","rsa"],"guessedImportsHash":"4e3168ad1274cd84180d80fe5ade283b"}}}
