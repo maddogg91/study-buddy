@@ -93,10 +93,6 @@ def createGroup():
     return flask.render_template("createGroup.html")
 
 @app.route('/existingGroups')
-def existingGroups():
-    return flask.render_template("existingGroups.html")
-
-@app.route('/existingGroups')
 def currentGroups():
     chats= []
     groupchats= db.existingChats()

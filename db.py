@@ -77,7 +77,7 @@ def existingChats():
             group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
             gc.append(group) 
-        return results
+        return gc
     except:
          print("Error with Group Chat search")
          return "No results found..."
