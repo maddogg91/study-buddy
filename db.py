@@ -70,7 +70,7 @@ def searchForGroupChat(keyword, criteria):
 def existingChats():
     groupChat= db["groupchat"]
     gc= []
-    #finds keyword in db based off the criteria or filter. Currently set to name.
+    #reveals existing groupchats in database
     try:
         results= groupChat.find()
         for result in results:
@@ -79,5 +79,5 @@ def existingChats():
             gc.append(group) 
         return gc
     except:
-         print("Error with Group Chat search")
+         print("Error with Group Chat")
          return "No results found..."
