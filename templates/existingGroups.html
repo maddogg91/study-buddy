@@ -2,36 +2,79 @@
 <html>
 <head>
 <title>Login</title>
-<link rel="stylesheet" href="/static/createGroup.css"> 
+<link rel="stylesheet" href="/static/groupchats.css"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
-  <div class="navbar">
-    <ul>
-    <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
-    <li><a href="#"><i class="fa fa-save"></i></a></li></li>
-    <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-    <li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-    </ul>
-    </div>
-<h1>existing GROUP CHATS</h1>
-<p>This is a paragraph.</p>
-<p><a href="/signUp">Go to signup</a></p>
-<p><a href="/login">Go to login</a></p>
-<p><a href="/currentConvo">Convo</a></p>
-<p><a href="/settings">Go to Setting</a></p>
-<p><a href="/createGroup">create Convo</a></p>
-<p><a href="/home">create Convo</a></p>
-	<br><br><br><br>
-	<!-- For loop for search results -->
-  {%for i in range(0, len)%}
-  <h4>{{results[i].name}}
-  <br>
-  {{results[i].description}}
-  </h4>
-  <br>
-{%endfor%}
+<div class="container">
+<div class="row clearfix">
+    <div class="col-lg-12">
+        <div class="card chat-app">
+            <div id="plist" class="people-list">
+                <ul class="list-unstyled chat-list mt-2 mb-0">
+                  {%for i in range(0, len)%}
 
+                    <li class="clearfix">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                        <div class="about">
+                            <div class="name">{{results[i].name}}</div>
+                            <div class="status">  {{results[i].description}}</div>                                            
+                        </div>
+                    </li>
+                    {%endfor%}
+
+                </ul>
+            </div>
+            <div class="chat">
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                            </a>
+                            <div class="chat-about">
+                                <h6 class="m-b-0">Best Group</h6>
+                                <small>First Test Groupchat</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-history">
+                    <ul class="m-b-0">
+                        <li class="clearfix">
+                            <div class="message-data text-right">
+                                <span class="message-data-time">10:10 AM, Today</span>
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                            </div>
+                            <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="message-data">
+                                <span class="message-data-time">10:12 AM, Today</span>
+                            </div>
+                            <div class="message my-message">Are we meeting today?</div>                                    
+                        </li>                               
+                        <li class="clearfix">
+                            <div class="message-data">
+                                <span class="message-data-time">10:15 AM, Today</span>
+                            </div>
+                            <div class="message my-message">Project has been already finished and I have results to show you.</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chat-message clearfix">
+                    <div class="input-group mb-0">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-send"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter text here...">                                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
 </html>
