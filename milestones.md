@@ -23,16 +23,14 @@
 - Tags: Marking different groups as Academic, Sports, Video Games, etc.
 
 ### What stretch features will you implement?
-- Matchmaking quiz
 - Tags for user profiles
-- Zoom integration
-- Calendar support
 - Levels for profile customization
-- Whiteboard integration
-- Flashcards
 
 ### If you are behind schedule, what items on the roadmap will you de-prioritize?
 - Calendar
 - Zoom 
 - Matchmaking Quiz
 - Tags
+- Flashcards
+- Whiteboard integration
+- Matchmaking quiz

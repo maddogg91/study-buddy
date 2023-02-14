@@ -93,9 +93,10 @@ def createGroup():
     return flask.render_template("createGroup.html")
 
 @app.route('/existingGroups')
-def existingGroups():
-    return flask.render_template("existingGroups.html")
-
+def currentGroups():
+    chats= []
+    groupchats= db.existingChats()
+    return flask.render_template("existingGroups.html", len= len(groupchats),results= groupchats)
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
