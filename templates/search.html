@@ -10,28 +10,33 @@
         <li><a href="/home"><i class="fa fa-home"></a></i></li>
         <li><a href="#"><i class="fa fa-save"></i></a></li>
         <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
-		<br>
-		<form action="/search1" method="GET">
-		<li><button 
-		 type="submit" style="background-color#cac7ff" class="fa fa-search" href="/search"></button></li>
+		<form id= "search" action="/search1" method="GET">
+		<li><a  id="f"
+		  style="background-color#cac7ff" aria-hidden= "true" class="fa fa-search"></a></li>
 		
 		<li>
 		<div class= "tooltip">
 		<span class="tooltiptext"> 
-			Search Options: For users 'user : [username]'
+			For users 'user : [username]'
 			For groups 'group: [groupname]'
 			Groups by description 'gdesc : [keywords]'
 		</span>
+		
 		<input placeholder= "search anything" style= "background-color: #5E3023;
-		border-radius: 60px; padding: 5px 30px; backdrop-filter: blur(4px) saturate(180%);" 
+		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
 		type="search1" id="form1" class="form-control" name= "query"/>
+		
 		</div>
 		</li>
        
 		</form>
 		</ul>
-		
-    </div>      
+		<script>
+		document.getElementById("f").onclick = function() {
+		document.getElementById("search").submit();
+		}
+	</script>
+    </div>  
 
 </body>
 </html>

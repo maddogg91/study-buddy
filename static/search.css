@@ -115,8 +115,9 @@ li a {
 /* Tooltip container */
 .tooltip {
   position: relative;
+  
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
@@ -130,7 +131,8 @@ li a {
   border-radius: 6px;
  
   /* Position the tooltip text - see examples below! */
- 
+ position: relative;
+ right: 1000px;
   z-index: 1;
 }
 
@@ -139,8 +141,8 @@ li a {
   visibility: visible;
 }
 .tooltip .tooltiptext {
-  top: -5px;
-  right: 105%;
+  top: 15px;
+  right: 250px;
   
   
 }

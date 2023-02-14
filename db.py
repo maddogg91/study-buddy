@@ -46,17 +46,37 @@ class User:
            return False
         if db.users.insert_one(user):
             return True
-            
- 
 
-
-def searchForGroupChat(keyword, criteria):
-    groupChat= db["groupchat"]
-    returnedGroups= []
-    #finds keyword in db based off the criteria or filter. Currently set to name.
-    query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
+def search(keyword, criteria, collection):
+    #selects col or collection based off collection var
+    col= db[collection]
+    if(keyword=="" or criteria==""):
+        
+        #return all results
+        return col.find()
+    else:
+        #return specified results
+        query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
+        #print(query)
+        return col.find(query)
+    
+def searchUsers(keyword, criteria):
+    foundUsers= []
     try:
-        results= groupChat.find()
+        results= search(keyword, criteria, "users")
+        #print(results)
+        for result in results:
+            
+            foundUsers.append(result) 
+        return foundUsers
+    except:
+         print("Error with users search")
+         return "No results found..."
+
+def existingChats(keyword, criteria):
+    returnedGroups= []
+    try:
+        results= search(keyword, criteria, "groupchat")
         for result in results:
             group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
@@ -66,18 +86,3 @@ def searchForGroupChat(keyword, criteria):
          print("Error with Group Chat search")
          return "No results found..."
       
-      
-def existingChats():
-    groupChat= db["groupchat"]
-    gc= []
-    #reveals existing groupchats in database
-    try:
-        results= groupChat.find()
-        for result in results:
-            group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
-            result["photo"], result["messages"])
-            gc.append(group) 
-        return gc
-    except:
-         print("Error with Group Chat")
-         return "No results found..."
