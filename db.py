@@ -73,6 +73,7 @@ def searchUsers(keyword, criteria):
          print("Error with users search")
          return "No results found..."
 
+
 def existingChats(keyword, criteria):
     returnedGroups= []
     try:
