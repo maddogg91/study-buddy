@@ -1,22 +1,51 @@
 <html>
 <head>
     <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./static/results.css">
+	<link rel="stylesheet" href="./static/search.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="navbar">
+     <div class="navbar">
         <ul>
-        <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
+        <li><a href="/home"><i class="fa fa-home"></a></i></li>
         <li><a href="#"><i class="fa fa-save"></i></a></li>
-        <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-        <li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-        </ul>
-    </div>     
-	<div>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
+		<form id= "search" action="/search1" method="GET">
+		<li><a  id="f"
+		  style="background-color#cac7ff" aria-hidden= "true" class="fa fa-search"></a></li>
+		
+		<li>
+		<div class= "tooltip">
+		<span class="tooltiptext"> 
+			For users 'user : [username]'
+			For groups 'group: [groupname]'
+			Groups by description 'gdesc : [keywords]'
+		</span>
+		
+		<input placeholder= "search anything" style= "background-color: #5E3023;
+		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
+		type="search1" id="form1" class="form-control" name= "query"/>
+		
+		</div>
+		</li>
+       
+		</form>
+		</ul>
+		<script>
+		document.getElementById("f").onclick = function() {
+		document.getElementById("search").submit();
+		}
+	</script>
+    </div>  
 	Search results: {{len}} found
 	<br><br><br><br>
-	<!-- For loop for search results -->
+	<!-- For loop for user search results -->
+	{%for i in range(0, len)%}
+		<h4>{{results[i].username}}
+		</h4>
+		<br>
+	{%endfor%}
+	<!-- For loop for group search results -->
 	{%for i in range(0, len)%}
 		<h4>{{results[i].name}}
 		<br>
@@ -24,6 +53,8 @@
 		</h4>
 		<br>
 	{%endfor%}
-	</div>
+
+	
+	
 </body>
 </html>
