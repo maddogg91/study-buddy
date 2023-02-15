@@ -116,8 +116,10 @@ def savequiz():
 def currentConvo():
     return flask.render_template("currentConvo.html")
 
-@app.route('/createGroup')
+@app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
+    if flask.request.method == "POST":
+        db.createChat(flask.request.form)
     return flask.render_template("createGroup.html")
 
 @app.route('/existingGroups')
