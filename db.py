@@ -73,6 +73,15 @@ def searchUsers(keyword, criteria):
          print("Error with users search")
          return "No results found..."
 
+def createChat(data):
+    groupDB = db["groupchat"]
+    newChat= {
+        "users": ["admin","moderator","user"],
+        "name": data.get("groupName"),
+        "description": data.get("groupDescription"),
+        "photo": data.get("groupPhoto")   
+    }
+    return groupDB.insert(newChat)
 
 def existingChats(keyword, criteria):
     returnedGroups= []
