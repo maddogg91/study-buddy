@@ -8,6 +8,8 @@ from Group import Group
 from google.oauth2.credentials import Credentials
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from google.auth.transport import requests
+import google.auth.transport.requests
 app = flask.Flask(__name__)
 SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
 #Database Code 
