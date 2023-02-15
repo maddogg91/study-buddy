@@ -11,11 +11,11 @@ from Group import Group
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
         conn = p.read()
-    client = pymongo.MongoClient(enc.decrypt(conn))
+    client = pymongo.MongoClient("mongodb+srv://studybuddy:OctG2CDRxy05yzOf@cluster0.4grai.mongodb.net/?retryWrites=true&w=majority")
     db = client["studybuddy"]
     return db
 
-db= connectDB()
+db = connectDB()
 
 def login(user, passw):
     collection= db["users"]
@@ -76,12 +76,12 @@ def searchUsers(keyword, criteria):
 def createChat(data):
     groupDB = db["groupchat"]
     newChat= {
-        "users": ["admin","moderator","user"],
+        "users": "admin",
         "name": data.get("groupName"),
         "description": data.get("groupDescription"),
         "photo": data.get("groupPhoto")   
     }
-    return groupDB.insert(newChat)
+    return groupDB.insert_one(newChat)
 
 def existingChats(keyword, criteria):
     returnedGroups= []
