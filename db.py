@@ -73,6 +73,15 @@ def searchUsers(keyword, criteria):
          print("Error with users search")
          return "No results found..."
 
+def createChat(data):
+    groupDB = db["groupchat"]
+    newChat= {
+        "users": ["admin","moderator","user"],
+        "name": data.get("groupName"),
+        "description": data.get("groupDescription"),
+        "photo": data.get("groupPhoto")   
+    }
+    return groupDB.insert(newChat)
 
 def existingChats(keyword, criteria):
     returnedGroups= []
@@ -86,4 +95,20 @@ def existingChats(keyword, criteria):
     except:
          print("Error with Group Chat search")
          return "No results found..."
+         
+def savequiz(data, user):
+    coll= db["profile"]
+    answers= []
+    for i in data:
+        answers.append(data[i])
+    profile= db.profile.find_one({"userId": user})
+   
+    if(profile!= ""):
+       profile["quizAnswers"]= answers
+
+       coll.replace_one({"userId":profile["userId"]}, profile)
+       return answers
+    else:
+        db.profile.insert({"userId": user, "quizAnswers": answers})
+        return answers
       

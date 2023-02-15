@@ -109,7 +109,7 @@ def searchDB():
     query= flask.request.args.get('query')
     query= query.split(": ")
     if(len(query) < 2):
-        results= db.existingChats(query,"")
+        results = db.existingChats(query[0], "name")
     else:  
         flter= query[0].strip()
         keyword= query[1]
@@ -134,13 +134,25 @@ def searchDB():
 @app.route('/settings')
 def setting():
     return flask.render_template("settings.html")
+    
+@app.route('/quiz')
+def quiz():
+    return flask.render_template("quiz.html")
+    
+@app.route('/savequiz', methods= ["POST"])
+def savequiz():
+    data= flask.request.form
+    db.savequiz(data, 123)
+    return flask.render_template("quiz.html")
 
 @app.route('/currentConvo')
 def currentConvo():
     return flask.render_template("currentConvo.html")
 
-@app.route('/createGroup')
+@app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
+    if flask.request.method == "POST":
+        db.createChat(flask.request.form)
     return flask.render_template("createGroup.html")
 
 @app.route('/existingGroups')

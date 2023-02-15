@@ -1,0 +1,100 @@
+<html>
+<head>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./static/search.css">
+	<link rel="stylesheet" href="./static/quiz.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+     <div class="navbar">
+        <ul>
+        <li><a href="/home"><i class="fa fa-home"></a></i></li>
+        <li><a href="#"><i class="fa fa-save"></i></a></li>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
+		<form id= "search" action="/search1" method="GET">
+		<li><a  id="f"
+		   aria-hidden= "true" class="fa fa-search"></a></li>
+		
+		<li>
+		<div class= "tooltip">
+		<span class="tooltiptext"> 
+			For users 'user : [username]'
+			For groups 'group: [groupname]'
+			Groups by description 'gdesc : [keywords]'
+		</span>
+		
+		<input placeholder= "search anything" style= "background-color: #5E3023; 
+		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
+		type="search1" id="form1" class="form-control" name= "query"/>
+		
+		</div>
+		</li>
+       
+		</form>
+		</ul>
+		<script>
+		document.getElementById("f").onclick = function() {
+		document.getElementById("search").submit();
+		}
+	</script>
+    </div>
+<div class= "maincontainer">	
+<div class="quizcontainer">	
+<form action= "/savequiz" method= "POST">
+<div class="slidecontainer">
+
+  <h3 class= "centertext">Let's learn about you as a student</h3>
+  <h4 class="centertext">Please use the sliders below to customize your perfect learning style</h4>
+  <p class="centertext">Feel free to return at a later date to update your answers</p>
+  <br><br>
+  <p class="centertext">1. How do you prefer to work on assignments?</p>
+  <input type="range" name="q1" min="1" max="5" value="3" class="slider" id="q1">
+  <p class="leftans">I get things done quickly</p><p class="rightans">I take my time</p>
+  <br><br><br><br>
+  <p class="centertext">2. How do you seek help?</p>
+  <input type="range" name="q2" min="1" max="5" value="3" class="slider" id="q2">
+  <p class="leftans">Tutoring/Office Hours</p><p class="rightans">Self-Discovery/'G.T.S.'</p>
+   <br><br><br><br>
+  <p class="centertext">3. Are you an early bird or a night owl?</p>
+  <input type="range" name="q3" min="1" max="5" value="3" class="slider" id="q3">
+  <p class="leftans">Day</p><p class="rightans">Night</p>
+  <br><br><br><br>
+  <p class="centertext">4. Social style</p>
+  <input type="range" name="q4" min="1" max="5" value="3" class="slider" id="q4">
+  <p class="leftans">Introvert</p><p class="rightans">Extrovert</p>
+  <br><br><br><br>
+  <p class="centertext">5. Where do you prefer to meet/work?</p>
+  <input type="range" name="q5" min="1" max="5" value="3" class="slider" id="q5">
+  <p class="leftans">In-person</p><p class="rightans">Virtual</p>
+  <br><br><br><br>
+  <p class="centertext">6. Tactics during group assignments</p>
+  <input type="range" name="q6" min="1" max="5" value="3" class="slider" id="q6">
+  <p class="leftans">Divide and Conquer work</p><p class="rightans">Collaboration/Togetherness</p>
+  <br><br><br><br>
+  <p class="centertext">7. Thoughts about music during work?</p>
+  <input type="range" name="q7" min="1" max="5" value="3" class="slider" id="q7">
+  <p class="leftans">No music</p><p class="rightans">Turn it up!!!</p>
+  <br><br><br><br>
+  <p class="centertext">8. Leadership style</p>
+  <input type="range" name="q8" min="1" max="5" value="3" class="slider" id="q8">
+  <p class="leftans">I prefer to be a team member</p><p class="rightans">I like to take charge</p>
+  <br><br><br><br>
+  <p class="centertext">9. Learning medium</p>
+  <input type="range" name="q9" min="1" max="5" value="3" class="slider" id="q9">
+  <p class="leftans">Books/Manuals</p><p class="rightans">Videos/Internet</p>
+  <br><br><br><br>
+   <p class="centertext"><small>Left is generally considered logical, Right is considered creative</small></p>
+  <p class="centertext">10. Left or Right brained</p>
+ 
+  <input type="range" name="q10" min="1" max="5" value="3" class="slider" id="q10">
+  <p class="leftans">Left</p><p class="rightans">Right</p>
+  
+</div>
+<button class="save" type= "submit"></button>
+<br><br><br>
+ <h3 class="rightans">SAVE</h3> 
+  </form>
+</div>	
+	</div>
+</body>
+</html>
