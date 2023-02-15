@@ -1,46 +1,61 @@
 import os
-import pathlib
 from symbol import flow_stmt
-import flask 
+import flask
+from flask import Flask, redirect, url_for, session
 import db
 from db import User
-import time
 from Group import Group
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import Flow
-
+from google.oauth2 import id_token
+from google.auth.transport import requests
 app = flask.Flask(__name__)
-GOOGLE_CLIENT_ID="722336652195-mej9vpifk9raoivrvo579imk2v58jjhu.apps.googleusercontent.com"
-client_secrets_file=os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
-flow=Flow.from_client_secrets_file(
-    client_secrets_file=client_secrets_file,
-    scopes=["https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"],
-    redirect_uri="http://127.0.0.1:5000/callback"
-    )
-
+SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+
+CLIENT_ID = "722336652195-mej9vpifk9raoivrvo579imk2v58jjhu.apps.googleusercontent.com"
 
 session= {
 "start": False,
 "user": ""
 }
-
-
 @app.route("/")
 def index():
     return flask.render_template("index.html")
 
+@app.route("/google-login")
+def google_login():
+    return redirect(f"https://accounts.google.com/o/oauth2/v2/auth?"
+                    f"response_type=code&client_id={CLIENT_ID}&"
+                    f"redirect_uri={url_for('google_callback', _external=True)}&"
+                    f"scope=openid%20email%20profile")
+
+@app.route("/callback")
+def google_callback():
+    code = requests.args.get("code")
+    token_url = "https://oauth2.googleapis.com/token"
+    data = {
+        "code": code,
+        "client_id": CLIENT_ID,
+        "client_secret": "your_client_secret_here",
+        "redirect_uri": url_for('google_callback', _external=True),
+        "grant_type": "authorization_code"
+    }
+    r = requests.post(token_url, data=data)
+    id_token = r.json()["id_token"]
+    claims = id_token.verify_oauth2_token(
+        requests.Request(),
+        CLIENT_ID
+    )
+    session["email"] = claims["email"]
+    return redirect(url_for("home"))
 @app.route('/signUp')
 def signUp():
     return flask.render_template("signUp.html")
 
-@app.route('/signUp')
-def googleSignup():
-    authorization_url,state=flow.authorization_url()
-    session["state"]=state
-    return flask.redirect(authorization_url) 
+
 @app.route('/signUp',methods=['POST'])
 def trysignUp():
    signup= User().signUp()
