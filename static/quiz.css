@@ -1,0 +1,93 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppons', sans-serif;
+	
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  padding-top: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  background-image: url('coffee.png');
+   background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 50px;
+  height: 50px;
+  background-image: url('coffee.png');
+   background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.quizcontainer {
+  margin: auto;
+  position: relative;
+  width: 800px;
+  height: 1200px;
+  border: 4px solid #5E3023;
+  background-color: white;
+  box-shadow: 5px 5px 7px black ;
+}
+
+.maincontainer{
+	background-color: #C08552;
+}
+
+.centertext{
+	text-align: center;
+}
+.leftans{
+	text-align: left;
+	font-weight: bolder;
+	float: left;
+	padding-left: 10px;
+}
+
+.rightans{
+	text-align: right;
+	font-weight: bolder;
+	float: right;
+	padding-right: 10px;
+}
+
+.save{
+	background-image: url(saveButton.png);
+	background-size: cover;
+    width: 40px;
+   	height: 40px; 
+	font-size: 2rem;
+	margin: auto;
+	position: relative;
+	top: 100px;
+	left: 700px;
+}
