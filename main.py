@@ -45,6 +45,8 @@ def google_login():
 def google_callback():
     code = request.args.get("code")
     token_url = "https://oauth2.googleapis.com/token"
+    session["start"]= True
+
     data = {
         "code": code,
         "client_id": CLIENT_ID,
