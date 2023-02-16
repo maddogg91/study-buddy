@@ -7,6 +7,7 @@ import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
 from Group import Group
+import datetime
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
@@ -82,9 +83,11 @@ def createChat(data):
         "users": ["admin","moderator","user"],
         "name": data.get("groupName"),
         "description": data.get("groupDescription"),
-        "photo": data.get("groupPhoto")   
+        "photo": data.get("groupPhoto"),
+        "createTimestamp": datetime.datetime.now(),
+        "messages": ""
     }
-    return groupDB.insert(newChat)
+    return groupDB.insert_one(newChat)
 
 def existingChats(keyword, criteria):
     returnedGroups= []

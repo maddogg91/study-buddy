@@ -36,14 +36,14 @@
         <div class="panel"></div>
         <form name="createGroup_form"method = "POST", action="/createGroup">
           <label for="name" required></label>
-          <input type="text" class="groupName" placeholder="name" required>
+          <input type="text" name= "groupName" class="groupName" placeholder="name" required>
           <p class ="text-danger help-block"></p>
           
           <label for="description" required></label>
-          <input type="text" name="description" class="description" placeholder="description" required>
+          <input type="text" name="groupDescription" class="description" placeholder="description" required>
         
           <label for="photo" required></label>
-          <input type="file" accept="image/png, image/jpeg" name="description" class="photoAdder" required>
+          <input type="file" name= "groupPhoto" accept="image/png, image/jpeg" name="description" class="photoAdder" required>
           
         
           <input type="submit" style= "background: transparent; border: none;" value="Create new group chat" class="saveButton">
