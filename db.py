@@ -19,7 +19,10 @@ db= connectDB()
 
 def login(user, passw):
     collection= db["users"]
-    query = { "username" : user }
+    if "@" not in user: 
+        query = { "username" : user }
+    else:
+        query = { "email" : user }
     try:
         loginInfo = collection.find_one(query)
         pbkdf2_sha256.verify(passw, loginInfo["password"])
