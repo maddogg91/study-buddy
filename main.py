@@ -4,11 +4,17 @@ import db
 from db import User
 import time
 from Group import Group
+from werkzeug.utils import secure_filename
+
 app = flask.Flask(__name__)
 
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+app.config['UPLOAD_FOLDER']= basedir+ "/uploads"
+app.config['MAX_CONTENT_PATH']= 150000
+
 
 session= {
 "start": False,
@@ -119,8 +125,13 @@ def currentConvo():
 @app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
     if flask.request.method == "POST":
-        db.createChat(flask.request.form)
+        photo= flask.request.files['groupPhoto']
+        upload(photo)
+        db.createChat(flask.request, photo)
     return flask.render_template("createGroup.html")
+    
+def upload(file):
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
 @app.route('/existingGroups')
 def currentGroups():
