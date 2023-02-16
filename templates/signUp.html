@@ -42,9 +42,6 @@
             <a href="#"><i class="fa fa-save"></i></a> 
             <a href="#"><a href="/login"><i class="fa fa-gear"></a></i></a>
           </div>
-<div class = "proPic">
-    <i class="fa fa-plus" aria-hidden="true"></i>
-</div>
 
 <form name="signUp_form"method = "POST", action="/signUp">
   <label for="name" required></label>
@@ -66,7 +63,11 @@
   <input type="text" name="email" style= "background: rgb(114, 69, 36); border: none;"class="form-control form-control-lg"placeholder="email" required>
   <p class = "error error--hidden"></p>
 <input type="submit"style= "background: transparent; border: none;" value="Sign Up!" class="saveButton">
-
 </form>
+<br>
+<br>
+<a href="{{ url_for('google_login') }}" class="btn btn-outline-danger">
+  <i class="fa-brands fa-google"></i> Sign in with Google
+</a>
 </body>
 </html>
