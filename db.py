@@ -15,7 +15,7 @@ def connectDB():
     db = client["studybuddy"]
     return db
 
-db= connectDB()
+db = connectDB()
 
 def login(user, passw):
     collection= db["users"]
@@ -76,12 +76,14 @@ def searchUsers(keyword, criteria):
 def createChat(data):
     groupDB = db["groupchat"]
     newChat= {
-        "users": ["admin","moderator","user"],
+        "users": "admin",
         "name": data.get("groupName"),
         "description": data.get("groupDescription"),
-        "photo": data.get("groupPhoto")   
+        "photo": data.get("groupPhoto"),
+        "messages": None,
+        "timestamp": None
     }
-    return groupDB.insert(newChat)
+    return groupDB.insert_one(newChat)
 
 def existingChats(keyword, criteria):
     returnedGroups= []
