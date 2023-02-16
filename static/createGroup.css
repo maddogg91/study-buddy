@@ -1,112 +1,122 @@
 /* Create Study Group */
 
 body{
-position: relative;
-width: 1440px;
-height: 973px;
-
-background: #DAB49D;
+  position: relative;
+  width: 1440px;
+  height: 973px;
+  background: #DAB49D;
 }
 
 /* C08552 */
 .panel{
-box-sizing: border-box;
-
-position: absolute;
-width: 737px;
-height: 759px;
-left: 283px;
-top: 208px;
-background: #C08552;
-mix-blend-mode: normal;
-border: 3px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  width: 737px;
+  height: 759px;
+  left: 283px;
+  top: 208px;
+  background: #C08552;
+  mix-blend-mode: normal;
+  border: 3px solid #000000;
 }
 
 .bottompanel{
-box-sizing: border-box;
-
-position: absolute;
-width: 735px;
-height: 223px;
-left: 285px;
-top: 750px;
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 32px;
-line-height: 39px;
-letter-spacing: -0.03em;
-text-align: center;   
-color: #DAB49D;
-background: #5E3023;
-border: 1px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  width: 735px;
+  height: 223px;
+  left: 285px;
+  top: 750px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 39px;
+  letter-spacing: -0.03em;
+  text-align: center;   
+  color: #DAB49D;
+  background: #5E3023;
+  border: 1px solid #000000;
 }
 
 .groupName{
-box-sizing: border-box;
-    
-background: #895737;
-border: 2px solid #DAB49D;
-position: absolute;
-width: 650px;
-height: 74px;
-left: 332px;
-top: 551px;
-    
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 32px;
-line-height: 39px;
-letter-spacing: -0.03em;
-text-align: center;   
-color: #DAB49D;      
+  box-sizing: border-box; 
+  background: #895737;
+  border: 2px solid #DAB49D;
+  position: absolute;
+  width: 650px;
+  height: 74px;
+  left: 332px;
+  top: 551px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 39px;
+  letter-spacing: -0.03em;
+  text-align: center;   
+  color: #DAB49D;      
 }
 
 .description{
-box-sizing: border-box;
+  box-sizing: border-box;
 
 
-background: #895737;
-border: 2px solid #DAB49D; 
-position: absolute;
-width: 650px;
-height: 68px;
-left: 332px;
-top: 648px;
-    
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 32px;
-line-height: 39px;
-letter-spacing: -0.03em;
-text-align: center;
-color: #DAB49D;
-  
+  background: #895737;
+  border: 2px solid #DAB49D; 
+  position: absolute;
+  width: 650px;
+  height: 68px;
+  left: 332px;
+  top: 648px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 39px;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: #DAB49D;
 }
 
 /*nav bar*/
 .navbar {
-width: 100%;
-background-color: #895737;
-overflow: hidden;
+  width: 100%;
+  background-color: #895737;
+  overflow: hidden;
 }
   
 .navbar a {
-float: right;
-width: 20%;
-text-align: center;
-padding: 20 px;
-transition: all 0.3s ease;
-color: white;
-font-size: 20px;
-position: center;
+  float: right;
+  width: 20%;
+  text-align: center;
+  padding: 20 px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+  position: center;
 }
 
 .navbar a:hover {
-background-color: #5E3023;
-position: center;
+  background-color: #5E3023;
+  position: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li{
+  float: right;
+}
+
+li a{
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 .addGrouppic{
@@ -168,11 +178,6 @@ ul.thatlist li{
   border-radius: 32px;
 }
 
-
-
-
-
-
 .saveLogo{
   position: relative;
   height: 80px;
@@ -181,31 +186,26 @@ ul.thatlist li{
   top: 1632px;
   border-radius: 0px;
   background: url(saveButton.png);
-
 }
 
 .photoAdder{
   box-sizing: border-box;
-
-position: absolute;
-width: 620px;
-height: 182px;
-left: 332px;
-top: 291px;
-
-background: #FFFFFF;
-border: 6px solid #5E3023;
+  position: absolute;
+  width: 620px;
+  height: 182px;
+  left: 332px;
+  top: 291px;
+  background: #FFFFFF;
+  border: 6px solid #5E3023;
 }
 
 .saveButton{
   box-sizing: border-box;
-
   position: absolute;
   width: 170px;
   height: 170px;
   left: 1187px;
   top: 820px;
-
   background: #5E3023;
   border: 1px solid #DAB49D;
   border-radius: 50%;

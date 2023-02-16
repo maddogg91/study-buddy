@@ -79,7 +79,9 @@ def createChat(data):
         "users": "admin",
         "name": data.get("groupName"),
         "description": data.get("groupDescription"),
-        "photo": data.get("groupPhoto")   
+        "photo": data.get("groupPhoto"),
+        "messages": None,
+        "timestamp": None
     }
     return groupDB.insert_one(newChat)
 

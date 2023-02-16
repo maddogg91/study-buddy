@@ -1,6 +1,5 @@
 import os
 import pathlib
-from symbol import flow_stmt
 import flask
 from flask import Flask, redirect, request, url_for, session
 import db
@@ -167,6 +166,7 @@ def currentConvo():
 def createGroup():
     if flask.request.method == "POST":
         db.createChat(flask.request.form)
+        return flask.redirect('/existingGroups')
     return flask.render_template("createGroup.html")
 
 @app.route('/existingGroups')
