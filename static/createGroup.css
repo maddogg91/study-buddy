@@ -152,16 +152,26 @@ ul {
   padding: 0;
 }
 
-li{
+ul.thatlist li{
   float: right;
 }
 
-li a {
-  display: block;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+.container{
+  width: 50%;
+  min-height: 50vh;
+  padding: 0.3;
+  background-position:center ;
+  background-size:cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px;
 }
+
+
+
+
+
 
 .saveLogo{
   position: relative;
@@ -200,3 +210,4 @@ border: 6px solid #5E3023;
   border: 1px solid #DAB49D;
   border-radius: 50%;
 }
+
