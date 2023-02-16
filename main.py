@@ -1,25 +1,72 @@
 import os
-import flask 
+import pathlib
+from symbol import flow_stmt
+import flask
+from flask import Flask, redirect, request, url_for, session
 import db
 from db import User
-import time
 from Group import Group
+from google.oauth2.credentials import Credentials
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import requests
+import enc
+from google.auth.transport import requests as rq
+from google.oauth2 import service_account
 app = flask.Flask(__name__)
-
+SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+with open('keys/clientid.txt', 'rb') as p:
+        c = p.read()
+CLIENT_ID = enc.decrypt(c)
+with open('keys/s.txt', 'rb') as p:
+	s = p.read()
+SECR= enc.decrypt(s)
+client_secrets_file=os.path.join(pathlib.Path(__file__).parent,"client_secret.json")
 session= {
 "start": False,
 "user": ""
 }
-
-
 @app.route("/")
 def index():
     return flask.render_template("index.html")
 
+@app.route("/google-login")
+def google_login():
+    return redirect(f"https://accounts.google.com/o/oauth2/v2/auth?"
+                    f"response_type=code&client_id={CLIENT_ID}&"
+                    f"redirect_uri={url_for('google_callback', _external=True)}&"
+                    f"scope=openid%20email%20profile")
+
+@app.route("/callback")
+def google_callback():
+    code = request.args.get("code")
+    token_url = "https://oauth2.googleapis.com/token"
+    session["start"]= True
+
+    data = {
+        "code": code,
+        "client_id": CLIENT_ID,
+        "client_secret": SECR,
+        "redirect_uri": url_for('google_callback', _external=True),
+        "grant_type": "authorization_code"
+    }
+    r = requests.post(token_url, data=data)
+    try:
+        token = r.json()["id_token"]
+        claims = id_token.verify_oauth2_token(
+            token,
+            rq.Request(),
+            CLIENT_ID
+        )
+        session["email"] = claims["email"]
+    
+        return flask.redirect('/home')
+    except KeyError:
+        return redirect(url_for("/home"))
 @app.route('/signUp')
 def signUp():
     return flask.render_template("signUp.html")
