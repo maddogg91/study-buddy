@@ -175,7 +175,7 @@ body{
 
 
 
-      .container{
+     .container{
         width: 100%;
         min-height: 100vh;
         height: auto;
@@ -192,7 +192,7 @@ body{
        
   }
 
-  .samlist{
+  .form{
     width: 90%;
     height: auto;
     min-height: 90vh;

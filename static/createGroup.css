@@ -166,6 +166,7 @@ ul.thatlist li{
   float: right;
 }
 
+
 .container{
   width: 50%;
   min-height: 50vh;
@@ -210,4 +211,5 @@ ul.thatlist li{
   border: 1px solid #DAB49D;
   border-radius: 50%;
 }
+
 

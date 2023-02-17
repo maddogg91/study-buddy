@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="/static/home.css">
 
-<link rel="stylesheet" href="/static/search.css">
+<link rel="stylesheet" href="/static/serch.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -23,22 +23,20 @@
     </div>
 
 
-    
-
- 
+  
 
     <!--<h1>home</h1> -->
    <h2> Welcome {{user}} </h2>
    
 <center>
     <div class="container">
-      <center><ul class="samlist"> 
+      <center><ul class="sam"> 
         
       <center>
       </br>
       
         <li> <a href ="/signUp" class=btn> Go to signup</a></li>
-        <li> <a href ="login" class=btn> Go to login</a></li>
+        <li> <a href ="/login" class=btn> Go to login</a></li>
         <li> <a href ="/currentConvo" class=btn> Go to currentConvo</a></li>
        <li> <a href ="/settings" class=btn> Go to settings</a></li>
         <li> <a href ="/createGroup" class=btn> Go to createGroup</a></li>
@@ -48,45 +46,7 @@
 
     </center>
 
-    
-
-       <!-- 
-
-
-        <ul>
-        <li><a href="/home"><i class="fa fa-home"></a></i></li>
-        <li><a href="#"><i class="fa fa-save"></i></a></li>
-        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
-		<form id= "search" action="/search1" method="GET">
-		<li><a  id="f"
-		  style="background-color#cac7ff" aria-hidden= "true" class="fa fa-search"></a></li>
-		
-		<li>
-		<div class= "tooltip">
-		<span class="tooltiptext"> 
-			For users 'user : [username]'
-			For groups 'group: [groupname]'
-			Groups by description 'gdesc : [keywords]'
-		</span>
-		
-		<input placeholder= "search anything" style= "background-color: #5E3023;
-		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
-		type="search1" id="form1" class="form-control" name= "query"/>
-		
-		</div>
-		</li>
-       
-		</form>
-		</ul>
-		<script>
-		document.getElementById("f").onclick = function() {
-		document.getElementById("search").submit();
-		}
-	</script>
-    </div>  
-
-
+  
 
 </body>
 </html>
-
