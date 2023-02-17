@@ -33,9 +33,11 @@
         </ul>
         </div>
         <div class="panel"></div>
-        <form name="createGroup_form"method = "POST", action="/createGroup">
+        <form name="createGroup_form" method = "POST" action="/createGroup" enctype = "multipart/form-data">
           <label for="name" required></label>
-          <input type="text" class="groupName" placeholder="name" name="groupName"required>
+
+          <input type="text" name= "groupName" class="groupName" placeholder="name" required>
+
           <p class ="text-danger help-block"></p>
           
           <label for="description" required></label>
@@ -43,8 +45,7 @@
         
           <label for="photo" required></label>
           <input type="file" accept="image/png, image/jpeg" name="groupPhoto" class="photoAdder" required>
-          
-        
+      
           <input type="submit" style= "background: transparent; border: none;" value="Create new group chat" class="saveButton">
         </form>
         <div class="bottompanel">

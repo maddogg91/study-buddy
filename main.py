@@ -5,26 +5,36 @@ from flask import Flask, redirect, request, url_for, session
 import db
 from db import User
 from Group import Group
+from werkzeug.utils import secure_filename
 from google.oauth2.credentials import Credentials
 from google.oauth2 import id_token
-from google.auth.transport import requests
 import requests
 import enc
 from google.auth.transport import requests as rq
 from google.oauth2 import service_account
+
 app = flask.Flask(__name__)
+
 SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+app.config['UPLOAD_FOLDER']= basedir+ "/uploads"
+app.config['MAX_CONTENT_PATH']= 150000
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+
 with open('keys/clientid.txt', 'rb') as p:
         c = p.read()
 CLIENT_ID = enc.decrypt(c)
+
 with open('keys/s.txt', 'rb') as p:
 	s = p.read()
+    
 SECR= enc.decrypt(s)
+
 client_secrets_file=os.path.join(pathlib.Path(__file__).parent,"client_secret.json")
+
 session= {
 "start": False,
 "user": ""
@@ -165,9 +175,15 @@ def currentConvo():
 @app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
     if flask.request.method == "POST":
-        db.createChat(flask.request.form)
+
+        photo= flask.request.files['groupPhoto']
+        upload(photo)
+        db.createChat(flask.request, photo)
         return flask.redirect('/existingGroups')
     return flask.render_template("createGroup.html")
+    
+def upload(file):
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
 @app.route('/existingGroups')
 def currentGroups():

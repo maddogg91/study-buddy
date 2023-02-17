@@ -1,4 +1,3 @@
-
 import os
 import pymongo
 import enc
@@ -7,6 +6,7 @@ import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
 from Group import Group
+import datetime
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
@@ -19,7 +19,10 @@ db = connectDB()
 
 def login(user, passw):
     collection= db["users"]
-    query = { "username" : user }
+    if "@" not in user: 
+        query = { "username" : user }
+    else:
+        query = { "email" : user }
     try:
         loginInfo = collection.find_one(query)
         pbkdf2_sha256.verify(passw, loginInfo["password"])
@@ -73,15 +76,16 @@ def searchUsers(keyword, criteria):
          print("Error with users search")
          return "No results found..."
 
-def createChat(data):
+def createChat(data, file):
     groupDB = db["groupchat"]
     newChat= {
+
         "users": "admin",
-        "name": data.get("groupName"),
-        "description": data.get("groupDescription"),
-        "photo": data.get("groupPhoto"),
-        "messages": None,
-        "timestamp": None
+        "name": data.form.get("groupName"),
+        "description": data.form.get("groupDescription"),
+        "photo": file.filename,
+        "createTimestamp": datetime.datetime.now(),
+        "messages": ""
     }
     return groupDB.insert_one(newChat)
 
