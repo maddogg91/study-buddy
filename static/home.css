@@ -1,0 +1,252 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppons', sans-serif;
+}
+
+
+/* Create Study Group */
+
+body{
+    position: relative;
+    width: 1440px;
+    height: 973px;
+    
+    background: #DAB49D;
+    }
+    
+    /* C08552 */
+    .panel{
+    box-sizing: border-box;
+    
+    position: absolute;
+    width: 737px;
+    height: 759px;
+    left: 283px;
+    top: 208px;
+    background: #C08552;
+    mix-blend-mode: normal;
+    border: 3px solid #000000;
+    }
+    
+    .bottompanel{
+    box-sizing: border-box;
+    
+    position: absolute;
+    width: 735px;
+    height: 223px;
+    left: 285px;
+    top: 750px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    letter-spacing: -0.03em;
+    text-align: center;   
+    color: #DAB49D;
+    background: #5E3023;
+    border: 1px solid #000000;
+    }
+    
+    .groupName{
+    box-sizing: border-box;
+        
+    background: #895737;
+    border: 2px solid #DAB49D;
+    position: absolute;
+    width: 650px;
+    height: 74px;
+    left: 332px;
+    top: 551px;
+        
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    letter-spacing: -0.03em;
+    text-align: center;   
+    color: #DAB49D;      
+    }
+    
+    .description{
+    box-sizing: border-box;
+    
+    
+    background: #895737;
+    border: 2px solid #DAB49D; 
+    position: absolute;
+    width: 650px;
+    height: 68px;
+    left: 332px;
+    top: 648px;
+        
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 39px;
+    letter-spacing: -0.03em;
+    text-align: center;
+    color: #DAB49D;
+      
+    }
+    
+
+/*nav bar*/
+.navbar {
+    width: 100%;
+    background-color: #895737;
+    overflow: hidden;
+    }
+      
+    .navbar a {
+    float: right;
+    width: 20%;
+    text-align: center;
+    padding: 20 px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;
+    position: center;
+    }
+    
+    .navbar a:hover {
+    background-color: #5E3023;
+    position: center;
+    }
+    .addGrouppic{
+        position: absolute;
+        width: 156.21px;
+        height: 151.08px;
+        left: 578.64px;
+        top: 303.76px;
+        text-align: center;
+        font-size:150px;
+        color: bisque;
+      }
+      
+      .bottompanel .search-container {
+        float: right;
+      }
+      
+      .bottompanel input[type=text] {
+        padding: 6px;
+        margin-top: 8px;
+        font-size: 17px;
+        border: none;
+      }
+      
+      .bottompanel .search-container button {
+        float: right;
+        padding: 6px 10px;
+        margin-top: 8px;
+        margin-right: 16px;
+        background: #ddd;
+        font-size: 17px;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .bottompanel .search-container button:hover {
+        background: #ccc;
+      }
+      
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      li{
+        float: right;
+      }
+      
+      li a{
+        display: block;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      
+
+
+
+      .container{
+        width: 100%;
+        min-height: 100vh;
+        height: auto;
+        padding: 5%;
+        background-color: white;
+        background-position: center;
+        background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        padding: 5px;
+        
+       
+  }
+
+  .samlist{
+    width: 90%;
+    height: auto;
+    min-height: 90vh;
+    padding: 4%;
+    background-color: #DAB49D;
+  
+    background-position: center;
+    background-size:cover;
+    display:flex;
+    border-style: double;
+    
+
+    }
+
+
+  .btn{
+    width: 200px;
+    height: 100px;
+    
+    border: none;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    font-size: 25px;
+    border-radius: 300px;
+    cursor: pointer;
+    border: 20;
+    
+  
+  
+  
+  background: #C08552;
+
+  }
+  .btn:focus{
+    outline: none;
+  }
+  h2{
+    width: 150px;
+    height: 50px;
+    
+    border: none;
+    margin-bottom: 40px;
+    margin-left: 40px;
+    font-size: 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    border: 10;
+    background-color: white;
+
+
+  }
+  .btn:hover {
+    background-color: white;
+  }
+
+
+  

@@ -1,4 +1,3 @@
-
 import os
 import pymongo
 import enc
@@ -16,7 +15,7 @@ def connectDB():
     db = client["studybuddy"]
     return db
 
-db= connectDB()
+db = connectDB()
 
 def login(user, passw):
     collection= db["users"]
@@ -80,7 +79,8 @@ def searchUsers(keyword, criteria):
 def createChat(data, file):
     groupDB = db["groupchat"]
     newChat= {
-        "users": ["admin","moderator","user"],
+
+        "users": "admin",
         "name": data.form.get("groupName"),
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
