@@ -1,7 +1,7 @@
 import os
 import pathlib
 import flask
-from flask import Flask, redirect, request, url_for, session
+from flask import Flask, session, render_template, request, redirect, url_for
 import db
 from db import User
 from Group import Group
@@ -39,10 +39,11 @@ session= {
 "start": False,
 "user": ""
 }
+
 @app.route("/")
 def index():
-    return flask.render_template("index.html")
-
+  return render_template("index.html")
+  
 @app.route("/google-login")
 def google_login():
     return redirect(f"https://accounts.google.com/o/oauth2/v2/auth?"
@@ -72,64 +73,62 @@ def google_callback():
             CLIENT_ID
         )
         session["email"] = claims["email"]
-    
+       
         return flask.redirect('/home')
+     
     except KeyError:
         return redirect(url_for("/home"))
+
+
+
 @app.route('/signUp')
 def signUp():
-    return flask.render_template("signUp.html")
+  return render_template("signUp.html")
 
 
-@app.route('/signUp',methods=['POST'])
+@app.route('/signUp', methods=['POST'])
 def trysignUp():
-   signup= User().signUp()
-   if(signup == True):
-    session["start"]= True
-    return flask.render_template("home.html")
-   else:
-    return flask.render_template("signUp.html", alarm= "1")   
+  signup = User().signUp()
+  if (signup == True):
+    session["user"] = signup
+    return render_template("home.html")
+  else:
+    return render_template("signUp.html", alarm="1") 
 
 @app.route('/login')
 def login():
-    if(session["start"]== True):
-        return flask.redirect('/home')
-    return flask.render_template("login.html")
+  if not session.get("user"):
+    return render_template("login.html")
+  return redirect('/home')
 
 @app.route('/login', methods=["POST"])
 def trylogin():
-    if(session["start"]== True):
-        return flask.redirect('/home')
-
-    data= flask.request.form
-    user= data.get("user")
-    password= data.get("password")
-    login= db.login(user, password)
-    if (login!= False):
-        session["start"]= True
-        #adds user login information to session object
-        session["user"]= login
-        return flask.redirect('/home')
-    else:
-        #Alarm set to 1 triggers alert on front end.
-        return flask.render_template("login.html", alarm= "1")
+  data = request.form
+  user = data.get("user")
+  password = data.get("password")
+  login = db.login(user, password)
+  if (login != False):
+    session['user'] = login
+    return redirect('/home')
+  else:
+    return render_template("login.html", alarm="1")
     
-   
 @app.route('/home')
 def home():
-    if(session["start"]== True):
-        #sends user information to home.html
-        return flask.render_template("home.html", user= session["user"]["username"])
-    else:
-        return flask.redirect('/')
+  if not session.get("user") and not session.get("email"):
+    return redirect('/')
+  if session.get("user"):
+    return render_template("home.html", user=session.get("user").get("username"))
+  if session.get("email"):
+    return render_template("home.html", user= session.get("email"))
 
 @app.route('/search')
 def search():
-        return flask.render_template("search.html")
+        return render_template("search.html")
     
 @app.route('/search1', methods=["GET"])
 def searchDB():
-    query= flask.request.args.get('query')
+    query= request.args.get('query')
     query= query.split(": ")
     if(len(query) < 2):
         results = db.existingChats(query[0], "name")
@@ -148,39 +147,39 @@ def searchDB():
             results= db.existingChats(keyword, "description")
         #search DB by user messages coming soon    
     if results != "No results found...":
-        return flask.render_template("results.html", len= len(results),
+        return render_template("results.html", len= len(results),
         results= results)
     else: 
-        return flask.render_template("results.html", len = 0, results= results)
+        return render_template("results.html", len = 0, results= results)
     
 
 @app.route('/settings')
 def setting():
-    return flask.render_template("settings.html")
+    return render_template("settings.html")
     
 @app.route('/quiz')
 def quiz():
-    return flask.render_template("quiz.html")
+    return render_template("quiz.html")
     
 @app.route('/savequiz', methods= ["POST"])
 def savequiz():
-    data= flask.request.form
+    data= request.form
     db.savequiz(data, 123)
-    return flask.render_template("quiz.html")
+    return render_template("quiz.html")
 
 @app.route('/currentConvo')
 def currentConvo():
-    return flask.render_template("currentConvo.html")
+    return render_template("currentConvo.html")
 
 @app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
-    if flask.request.method == "POST":
+    if request.method == "POST":
 
-        photo= flask.request.files['groupPhoto']
+        photo= request.files['groupPhoto']
         upload(photo)
-        db.createChat(flask.request, photo)
-        return flask.redirect('/existingGroups')
-    return flask.render_template("createGroup.html")
+        db.createChat(request, photo)
+        return redirect('/existingGroups')
+    return render_template("createGroup.html")
     
 def upload(file):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
@@ -189,7 +188,7 @@ def upload(file):
 def currentGroups():
     chats= []
     groupchats= db.existingChats("", "")
-    return flask.render_template("existingGroups.html", len= len(groupchats),results= groupchats)
+    return render_template("existingGroups.html", len= len(groupchats),results= groupchats)
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
