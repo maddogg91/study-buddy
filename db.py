@@ -50,6 +50,13 @@ class User:
         if db.users.insert_one(user):
             return True
 
+def googleSignup(email):
+    if db.googleUsers.find_one({"email": email}):
+        return False
+    query= {"_id": uuid.uuid4().hex ,"email" : email}
+    if db.googleUsers.insert_one(query):
+        return True
+    
 def search(keyword, criteria, collection):
     #selects col or collection based off collection var
     col= db[collection]
