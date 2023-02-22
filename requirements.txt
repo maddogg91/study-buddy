@@ -4,3 +4,5 @@ jsonify
 uuid
 passlib
 flask
+google.auth.transport
+db
