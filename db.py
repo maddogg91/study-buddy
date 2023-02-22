@@ -58,7 +58,8 @@ def googleSignup(email):
         return google
     else:
         query= {"_id": uuid.uuid4().hex ,"email" : email}
-        google= db.googleUsers.insert_one(query)
+        db.googleUsers.insert_one(query)
+        google= db.googleUsers.find_one({"email": email})
         return google
     
 def search(keyword, criteria, collection):
