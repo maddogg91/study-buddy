@@ -73,7 +73,8 @@ def google_callback():
             CLIENT_ID
         )
         session["email"] = claims["email"]
-       
+        session["user"] = db.googleSignup(session.get("email"))
+        print(session.get("user"))
         return flask.redirect('/home')
      
     except KeyError:
@@ -117,10 +118,10 @@ def trylogin():
 def home():
   if not session.get("user") and not session.get("email"):
     return redirect('/')
-  if session.get("user"):
+  if session.get("user").get("username"):
     return render_template("home.html", user=session.get("user").get("username"))
-  if session.get("email"):
-    return render_template("home.html", user= session.get("email"))
+  if session.get("user").get("email"):
+    return render_template("home.html", user= session.get("user").get("email"))
 
 @app.route('/search')
 def search():
@@ -184,8 +185,17 @@ def createGroup():
 def upload(file):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
+# #To avoid confusion
+# @app.route('/existingGroups/V2')
+# def userChats():
+   
+    # userchats= db.userChats(session.get("user").get("id"))
+
+    # return render_template("existingGroups.html", len= len(userchats),results= userchats)
+
 @app.route('/existingGroups')
 def currentGroups():
+    
     chats= []
     groupchats= db.existingChats("", "")
     return render_template("existingGroups.html", len= len(groupchats),results= groupchats)
@@ -193,3 +203,7 @@ def currentGroups():
 #debug to find bugs
 if __name__=='__main__':
     app.run(use_reloader= True, debug= True)
+    
+    
+    
+ 
