@@ -7,6 +7,8 @@ from passlib.hash import pbkdf2_sha256
 from flask import request
 from Group import Group
 import datetime
+from bson.objectid import ObjectId
+import json
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
@@ -51,11 +53,13 @@ class User:
             return True
 
 def googleSignup(email):
-    if db.googleUsers.find_one({"email": email}):
-        return False
-    query= {"_id": uuid.uuid4().hex ,"email" : email}
-    if db.googleUsers.insert_one(query):
-        return True
+    google= db.googleUsers.find_one({"email": email})
+    if google is not None:
+        return google
+    else:
+        query= {"_id": uuid.uuid4().hex ,"email" : email}
+        google= db.googleUsers.insert_one(query)
+        return google
     
 def search(keyword, criteria, collection):
     #selects col or collection based off collection var
@@ -124,4 +128,47 @@ def savequiz(data, user):
     else:
         db.profile.insert({"userId": user, "quizAnswers": answers})
         return answers
-      
+        
+        
+def loadGroupMessages(groupId):
+    message = { "sender" : "", "timestamp" : "", "message" : ""}
+    messages= []
+    results= []
+    try:
+        _id= ObjectId(groupId)
+        query= {"_id" : _id }
+        group= db.groupchat.find_one(query)
+        groupMessages= group['messages'][0]
+        for m in groupMessages:
+            results.append(db.messages.find_one(ObjectId(m)))
+            print(m)
+            
+        for result in results:
+            sender= db.users.find_one(result["sender"])
+            if sender is not None:
+                message["sender"] = sender["username"]
+            else:
+                sender= db.googleUsers.find_one(result["sender"])
+                message["sender"] = sender["email"]
+            message["timestamp"]= result["createTimestamp"]
+            message["message"] = result["message"]
+            print(message)
+            messages.append(message)
+        return messages
+   
+    except Exception as e:
+        print(e)
+        print("No messages found")
+    
+def userChats(username):
+    returnedGroups= []
+    userchats= db.groupchat.find({"users.id": username})
+    for result in userchats:
+        group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+            result["photo"], result["messages"])
+        returnedGroups.append(json.dumps(group.__dict__))
+    print(returnedGroups)
+    return returnedGroups
+         
+    
+
