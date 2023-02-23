@@ -20,7 +20,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-app.config['UPLOAD_FOLDER']= basedir+ "/uploads"
+app.config['UPLOAD_FOLDER']= basedir+ "static/uploads"
 app.config['MAX_CONTENT_PATH']= 150000
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
 
