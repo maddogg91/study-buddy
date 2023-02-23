@@ -9,6 +9,7 @@ from Group import Group
 import datetime
 from bson.objectid import ObjectId
 import json
+import base64
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
