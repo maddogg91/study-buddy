@@ -9,6 +9,7 @@ from Group import Group
 import datetime
 from bson.objectid import ObjectId
 import json
+from groupmsg import groupmsg
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
@@ -132,29 +133,34 @@ def savequiz(data, user):
         
         
 def loadGroupMessages(groupId):
-    message = { "sender" : "", "timestamp" : "", "message" : ""}
     messages= []
     results= []
     try:
         _id= ObjectId(groupId)
         query= {"_id" : _id }
+        #Searches group chat db for groupchat with specified id.
         group= db.groupchat.find_one(query)
+        #Grabs messages Array 
         groupMessages= group['messages'][0]
+        #For each message in messages, create results list
         for m in groupMessages:
             results.append(db.messages.find_one(ObjectId(m)))
-            print(m)
             
+        #Each result create group message object which includes groupid, sender, timestamp, and message
         for result in results:
+           
+            timestamp= result["createTimestamp"]
+            msg = result["message"]
             sender= db.users.find_one(result["sender"])
             if sender is not None:
-                message["sender"] = sender["username"]
+                fromsender = sender["username"]
             else:
                 sender= db.googleUsers.find_one(result["sender"])
-                message["sender"] = sender["email"]
-            message["timestamp"]= result["createTimestamp"]
-            message["message"] = result["message"]
-            print(message)
-            messages.append(message)
+                fromsender = sender["email"]
+            
+            gm= groupmsg(groupId, sender, timestamp, msg)
+            messages.append(json.loads(json.dumps(gm.__dict__)))
+            
         return messages
    
     except Exception as e:
@@ -167,9 +173,8 @@ def userChats(username):
     for result in userchats:
         group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-        returnedGroups.append(json.dumps(group.__dict__))
-    print(returnedGroups)
+        returnedGroups.append(json.loads(json.dumps(group.__dict__)))
+   
     return returnedGroups
-         
-    
 
+         

@@ -2,11 +2,16 @@
 <html>
 <head>
 <title>Login</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
 <link rel="stylesheet" href="/static/groupchats.css"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
 </head>
 <body>
+ 
   <div class="navbar">
   <a href="/home"><i class="fa fa-home"></a></i></a></li>
   <a href="#"><i class="fa fa-save"></i></a></li></li>
@@ -19,49 +24,28 @@
     <div class="col-lg-12">
         <div class="card chat-app">
             <div id="plist" class="people-list">
-                <ul class="list-unstyled chat-list mt-2 mb-0">
-                  {%for i in range(0, len)%}
-
-                    <li class="clearfix">
-                        <img src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png">
-                        <div class="about">
-                            <div class="name">{{results[i].name}}</div>
-                            <div class="status">  {{results[i].description}}</div>                                            
-                        </div>
-                    </li>
-                    {%endfor%}
-
+                <ul id="card" class="list-unstyled chat-list mt-2 mb-0">
+                 
                 </ul>
+				
             </div>
-            <div class="chat">
+			<div class="chat" id= "chat" value= 0 style= "visibility: hidden">
                 <div class="chat-header clearfix">
                     <div class="row">
                         <div class="col-lg-6">
                             <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                <img src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png" alt="avatar">
+                                <img id="gp" src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png" alt="avatar">
                             </a>
                             <div class="chat-about">
-                                <h6 class="m-b-0">Best Group</h6>
-                                <small>First Test Groupchat</small>
+                                <h6 id="gc" class="m-b-0">Best Group</h6>
+                                <small id= "desc">First Test Groupchat</small>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="chat-history">
-                    <ul class="m-b-0">
-                        <li class="clearfix">
-
-                            <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
-                        </li>
-                        <li class="clearfix">
-                            <div class="message my-message">Are we meeting today?</div>                                    
-                        </li>                               
-                        <li class="clearfix">
-                            <div class="message-data">
-                                <span class="message-data-time">10:15 AM, Today</span>
-                            </div>
-                            <div class="message my-message">Project has been already finished and I have results to show you.</div>
-                        </li>
+                    <ul id= "history" class="m-b-0">
+                      
                     </ul>
                 </div>
                 <div class="chat-message clearfix">
@@ -73,9 +57,159 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
 </div>
+<template id="template">
+ 
+					
+</template>
+ <script>
+	//Loads userchats and user 
+	const res = JSON.parse('{{results | tojson}}');
+	const user= JSON.parse('{{user | tojson}}');
+	
+	//Gets event target and returns
+	function getEventTarget(e) {
+		e = e || window.event;
+		return e.target || e.srcElement; 
+	}
+ 
+	//Creates index for user chats
+	var selected= 0;
+	
+	//Creates variable for chatbox list
+	let chatbox= document.getElementById('card')
+	
+	//Returns current chat id
+	function getIndexOfChat() {
+	let target = getEventTarget(event);
+	let li = target.closest('li'); // get reference by using closest
+	let nodes = Array.from( li.closest('ul').children ); // get array
+	let index = nodes.indexOf( li ); 
+	selected= index;
+	console.log(selected);
+	return selected;
+	};
+	
+	//When page loads below function creates chats for users and updates messages should their be 
+	//newer messages.
+  $(window).ready(function() {
+     
+	  
+	  const ul = document.querySelector("#card");
+	  for(let i=0; i < res.length; i++){
+	  
+	  const item = createItemTemplate(res[i]);
+	  ul.appendChild(item);
+	  }
+	
+	  var socket= io.connect();
+	  socket.on("updateMessages", function(msg){
+		const updatedmsg = JSON.parse(msg);
+		const idx= getIndexOfChat;
+		if(idx == null){
+			idx= 0;
+		}
+		const selectedupdatedmsg= updatedmsg[0];
+		
+		for(let i= 0; i < selectedupdatedmsg.length; i++){
+			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(m[m.length-1].timestamp)){
+				const new_chat= createMessages(user, updatedmsg[i])
+				history.appendChild(new_chat);
+			}
+		}
+		
+		
+
+	  });
+	
+   });
+	//This function creates messages by the format for each chat separately when called.
+   function createMessages(user, item){
+    const date= document.createElement("div");
+	date.classList.add("message-data");
+	const span= document.createElement("span");
+	span.classList.add("message-data-time");
+	
+	const li= document.createElement("li");
+	li.classList.add('clearfix');
+	const div = document.createElement("div");
+	if (user._id === item.sender._id){
+		div.classList.add("message", "my-message");
+	}
+	else{
+		div.classList.add("message", "other-message", "float-right");
+		span.classList.add("float-right");
+	}
+	const node= document.createTextNode(item.timestamp);
+	span.appendChild(node);
+	date.appendChild(span);
+	const text= document.createTextNode(item.message);
+	div.appendChild(text);
+	li.appendChild(date);
+	li.appendChild(div);
+	return li;
+   }
+   //This creates the chat templates
+  function createItemTemplate(item) {
+  
+  const li= document.createElement("li");
+  li.classList.add('clearfix');
+  const img= document.createElement("img");
+  img.style= "width:50px";
+  img.src= "/static/uploads/" + item.photo;
+  const div = document.createElement("div");
+  div.classList.add('about');
+  const name= document.createElement("p");
+  const node= document.createTextNode(item.name);
+  name.appendChild(node);
+  li.appendChild(img);
+  div.appendChild(name);
+  desc= document.createElement("p");
+  const n= document.createTextNode(item.description);
+  desc.appendChild(n);
+  div.appendChild(desc);
+  li.appendChild(div);	
+  li.addEventListener('click', (event) => {
+		
+		if(document.getElementById("chat").style.value == 0){
+			document.getElementById("chat").style.value = 1;
+			document.getElementById("chat").style.visibility = "visible";
+			}
+		else{
+			const history= document.querySelector("#history");
+			while (history.firstChild){
+				history.removeChild(history.firstChild);
+				
+			}
+			const loadmess= JSON.parse('{{messages | tojson}}');
+			const m= loadmess[getIndexOfChat()];
+			
+			console.log(m);
+			for(let i=0; i < m.length; i++){
+			const chat_history= createMessages(user, m[i]);
+			history.appendChild(chat_history);
+			}
+			document.getElementById("chat").style.visibility = "hidden";
+			document.getElementById("gc").innerHTML= item.name;
+			document.getElementById("desc").innerHTML= item.description;
+			document.getElementById("gp").src= "/static/uploads/"+item.photo;
+			document.getElementById("gp").style= "width: 100px";
+			document.getElementById("chat").style.visibility = "visible";
+			
+		
+			}
+  
+  });
+  return li;
+}
+
+
+
+  </script>
+
 </body>
 </html>
