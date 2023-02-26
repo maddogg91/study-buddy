@@ -12,6 +12,13 @@ import requests
 import enc
 from google.auth.transport import requests as rq
 from google.oauth2 import service_account
+from flask_socketio import SocketIO
+from threading import Lock
+import json
+
+
+thread= None
+thread_lock= Lock()
 
 app = flask.Flask(__name__)
 
@@ -19,10 +26,33 @@ SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
-app.config['UPLOAD_FOLDER']= basedir+ "/uploads"
+#App configuration
+app.config['UPLOAD_FOLDER']= basedir+ "static/uploads"
 app.config['MAX_CONTENT_PATH']= 150000
+app.config['SERVER_NAME'] = "127.0.0.1:5000"
+app.config['DEBUG']= True
+app.config['TEMPLATES_AUTO_RELOAD']= True
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+socketio= SocketIO(app, cors_allowed_origins='*')
+
+"""
+Stream messages as they come in 
+"""
+def get_user_messages():
+    messages= []
+    print("im here")
+    groups= session.get("groups")
+    for i in groups:
+        messages.append(db.loadGroupMessages(i))
+    print(messages)
+    return messages
+
+#Calls in the background updateMessages every minute.
+def background_thread():
+        while True:
+            socketio.emit('updateMessages', json.dumps(get_user_messages(), separators=(',', ':')))
+            
+            socketio.sleep(60)
 
 with open('keys/clientid.txt', 'rb') as p:
         c = p.read()
@@ -43,6 +73,20 @@ session= {
 @app.route("/")
 def index():
   return render_template("index.html")
+
+@socketio.on('connect')
+def connect():
+    global thread
+    print('Client connected')
+    
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(background_thread)
+
+@socketio.on('disconnect')
+def disconnect():
+    print("disconnected")
   
 @app.route("/google-login")
 def google_login():
@@ -74,7 +118,6 @@ def google_callback():
         )
         session["email"] = claims["email"]
         session["user"] = db.googleSignup(session.get("email"))
-        print(session.get("user"))
         return flask.redirect('/home')
      
     except KeyError:
@@ -185,24 +228,30 @@ def createGroup():
 def upload(file):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
-# #To avoid confusion
-# @app.route('/existingGroups/V2')
-# def userChats():
-   
-    # userchats= db.userChats(session.get("user").get("id"))
-
-    # return render_template("existingGroups.html", len= len(userchats),results= userchats)
 
 @app.route('/existingGroups')
 def currentGroups():
-    
-    chats= []
-    groupchats= db.existingChats("", "")
-    return render_template("existingGroups.html", len= len(groupchats),results= groupchats)
+    if not session.get("user"):
+        return redirect('/')
+    messages= []
+    groups= []
+    #Searches db for groups by user id 
+    userchats= db.userChats(session.get("user").get("_id"))
+    #Need a route to send to a page without userchats for chats under 1
+    if len(userchats) > 0:
+        for userchat in userchats:
+            groups.append(userchat["_id"])
+            messages.append(db.loadGroupMessages(userchat["_id"]))
+        session["groups"]= groups
+        return render_template("existingGroups.html", user= session.get("user"), len= len(userchats),results= userchats, messages= messages)
+    else:
+        #Temporary, sending to create group or would it be better to send to search page???
+        return redirect("/createGroup")
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
-    app.run(use_reloader= True, debug= True)
+    #Added websocket functionality to stream data while running.
+    socketio.run(app)
     
     
     
