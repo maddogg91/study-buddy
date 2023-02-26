@@ -115,10 +115,15 @@ def changeInfo():
         return 'Incorrect password cannot update password unless you enter in your old password'
     else:
     # update the user's information in the database
-        db.users.update_one({'_id': user_id}, {'$set': {'password': new_password}})
-        db.users.update_one({'_id': user_id}, {'$set': {'email': new_email}})
-        db.users.update_one({'_id': user_id}, {'$set': {'username': new_username}})
-        db.users.update_one({'_id': user_id}, {'$set': {'birthday': new_bday}})
+        db.users.replace_one(
+            {'_id': user_id},
+            {
+                'username':new_username,
+                'password':new_password,
+                'email':new_email,
+                'birthday':new_bday
+            }                            
+)
         return 'Profile updated successfully!'
 @app.route('/login')
 def login():
