@@ -4,7 +4,7 @@ import flask
 from flask import Flask, session, render_template, request, redirect, url_for
 import pymongo
 import db
-from db import User, connectDB
+from db import Change, User, connectDB
 from Group import Group
 from werkzeug.utils import secure_filename
 from google.oauth2.credentials import Credentials
@@ -142,35 +142,13 @@ def trysignUp():
     return render_template("signUp.html", alarm="1") 
 @app.route('/changeInfo', methods=['POST'])
 def changeInfo():
-
-    db = connectDB()
-    collection=db['users']
-    # get the user's current password and new password from the form data
-    current_password = request.form['current_password']
-    new_password = request.form['new_password']
-    new_email=request.form['new_email']
-    new_username=request.form['new_username']
-    new_bday=request.form['new_bday']
-    # get the user's ID from the session
-    user_id = session['user']
-
-    # check if the current password is correct
-    try:
-        user = collection.find_one({'_id': user_id})
-        pbkdf2_sha256.verify(current_password, user["password"])
-            # update the user's information in the database
-        collection.replace_one(
-                    {'_id': user_id},
-                    {
-                        'username':new_username,
-                        'password':new_password,
-                        'email':new_email,
-                        'birthday':new_bday
-                    }                            
-        )
-        return 'Profile updated successfully!'
-    except:
-        return("Password Wrong, Please enter correct password to update information")
+    changeInfo=Change().changeInfo(session.get("user").get('id'))
+    if (changeInfo == True):
+        session["user"] = changeInfo
+        return "info updated"
+    else:
+        return render_template("settings.html", alarm="1") 
+   
 @app.route('/login')
 def login():
   if not session.get("user"):

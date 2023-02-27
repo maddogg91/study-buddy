@@ -34,6 +34,36 @@ def login(user, passw):
     except:
         print("No user found, please try again.")
         return False
+class Change:
+    def changeInfo(self,id):
+        
+        collection=db['users']
+        # get the user's current password and new password from the form data
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        new_email=request.form['new_email']
+        new_username=request.form['new_username']
+        new_bday=request.form['new_bday']
+        # get the user's ID from the session
+
+        # check if the current password is correct
+        try:
+            user = collection.find_one({'_id': id})
+            print(user)
+            pbkdf2_sha256.verify(current_password, user["password"])
+                # update the user's information in the database
+            collection.replace_one(
+                        {'_id': id},
+                        {
+                            'username':new_username,
+                            'password':new_password,
+                            'email':new_email,
+                            'birthday':new_bday
+                        }                            
+            )
+            return True
+        except:
+            return("Password Wrong, Please enter correct password to update information")
 
 class User:   
     def signUp(self):
