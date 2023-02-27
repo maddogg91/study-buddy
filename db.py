@@ -49,14 +49,13 @@ class Change:
         # check if the current password is correct
         try:
             user = collection.find_one({'_id': id})
-            print(user)
             pbkdf2_sha256.verify(current_password, user["password"])
                 # update the user's information in the database
             collection.replace_one(
                         {'_id': id},
                         {
                             'username':new_username,
-                            'password':new_password,
+                            'password':pbkdf2_sha256.encrypt(new_password),
                             'email':new_email,
                             'birthday':new_bday
                         }                            

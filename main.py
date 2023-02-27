@@ -142,7 +142,7 @@ def trysignUp():
     return render_template("signUp.html", alarm="1") 
 @app.route('/changeInfo', methods=['POST'])
 def changeInfo():
-    changeInfo=Change().changeInfo(session.get("user").get('id'))
+    changeInfo=Change().changeInfo(session.get("user").get("_id"))
     if (changeInfo == True):
         session["user"] = changeInfo
         return "info updated"
