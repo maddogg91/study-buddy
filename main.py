@@ -15,6 +15,7 @@ from google.auth.transport import requests as rq
 from google.oauth2 import service_account
 from flask_socketio import SocketIO
 from threading import Lock
+from passlib.hash import pbkdf2_sha256
 import json
 
 
@@ -143,6 +144,7 @@ def trysignUp():
 def changeInfo():
 
     db = connectDB()
+    collection=db['users']
     # get the user's current password and new password from the form data
     current_password = request.form['current_password']
     new_password = request.form['new_password']
@@ -153,21 +155,22 @@ def changeInfo():
     user_id = session['user']
 
     # check if the current password is correct
-    user = db.users.find_one({'_id': user_id})
-    if not user or user['password'] != current_password:
-        return 'Incorrect password cannot update password unless you enter in your old password'
-    else:
-    # update the user's information in the database
-        db.users.replace_one(
-            {'_id': user_id},
-            {
-                'username':new_username,
-                'password':new_password,
-                'email':new_email,
-                'birthday':new_bday
-            }                            
-)
+    try:
+        user = collection.find_one({'_id': user_id})
+        pbkdf2_sha256.verify(current_password, user["password"])
+            # update the user's information in the database
+        collection.replace_one(
+                    {'_id': user_id},
+                    {
+                        'username':new_username,
+                        'password':new_password,
+                        'email':new_email,
+                        'birthday':new_bday
+                    }                            
+        )
         return 'Profile updated successfully!'
+    except:
+        return("Password Wrong, Please enter correct password to update information")
 @app.route('/login')
 def login():
   if not session.get("user"):
