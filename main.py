@@ -2,8 +2,9 @@ import os
 import pathlib
 import flask
 from flask import Flask, session, render_template, request, redirect, url_for
+import pymongo
 import db
-from db import User
+from db import Change, User, connectDB
 from Group import Group
 from werkzeug.utils import secure_filename
 from google.oauth2.credentials import Credentials
@@ -14,6 +15,7 @@ from google.auth.transport import requests as rq
 from google.oauth2 import service_account
 from flask_socketio import SocketIO
 from threading import Lock
+from passlib.hash import pbkdf2_sha256
 import json
 
 
@@ -138,7 +140,15 @@ def trysignUp():
     return render_template("home.html")
   else:
     return render_template("signUp.html", alarm="1") 
-
+@app.route('/changeInfo', methods=['POST'])
+def changeInfo():
+    changeInfo=Change().changeInfo(session.get("user").get("_id"))
+    if (changeInfo == True):
+        session["user"] = changeInfo
+        return "info updated"
+    else:
+        return render_template("settings.html", alarm="1") 
+   
 @app.route('/login')
 def login():
   if not session.get("user"):
