@@ -120,9 +120,12 @@ def searchUsers(keyword, criteria):
 
 def createChat(data, file, _id):
     groupDB = db["groupchat"]
+    newUser = []
+    user= {"id": _id, "permissionType": "admin"}
+    newUser.append(user)
     newChat= {
-        
-        "users": {"id": _id, "permissionType": "admin"},
+
+        "users": newUser,
         "name": data.form.get("groupName"),
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
