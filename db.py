@@ -37,8 +37,6 @@ def login(user, passw):
 class Change:
     def changeInfo(self,id):
         collection=db['users']
-        googleCollection=db['googleUsers']
-        
         # get the user's current password and new password from the form data
         current_password = request.form['current_password']
         new_password = request.form['new_password']
@@ -46,39 +44,25 @@ class Change:
         new_username=request.form['new_username']
         new_bday=request.form['new_bday']
         # get the user's ID from the session
-        if googleCollection.find_one(user) is not None:
-            try:
-                user = collection.find_one({'_id': id})
-                pbkdf2_sha256.verify(current_password, user["password"])
-                    # update the user's information in the database
-                collection.insert(
-                            {'_id': id},
-                            {
-                                'username':new_username,
-                                'birthday':new_bday,
-                            }
-                            )
-                return True
-            except:
-                return("Password Wrong, Please enter correct password to update information")
-        else:
-            try:
-                    
-                        user = collection.find_one({'_id': id})
-                        pbkdf2_sha256.verify(current_password, user["password"])
-                            # update the user's information in the database
-                        collection.replace_one(
-                                    {'_id': id},
-                                    {
-                                        'username':new_username,
-                                        'password':pbkdf2_sha256.encrypt(new_password),
-                                        'email':new_email,
-                                        'birthday':new_bday
-                                    }                            
-                        )
-                        return True
-            except:
-                        return("Password Wrong, Please enter correct password to update information")
+
+        # check if the current password is correct
+        try:
+            user = collection.find_one({'_id': id})
+            pbkdf2_sha256.verify(current_password, user["password"])
+                # update the user's information in the database
+            collection.replace_one(
+                        {'_id': id},
+                        {
+                            'username':new_username,
+                            'password':pbkdf2_sha256.encrypt(new_password),
+                            'email':new_email,
+                            'birthday':new_bday
+                        }                            
+            )
+            return True
+        except:
+            return("Password Wrong, Please enter correct password to update information")
+    
 class User:   
     def signUp(self):
             #Create user obj for submitted fields
