@@ -265,4 +265,9 @@ def currentGroups():
 if __name__=='__main__':
     #Added websocket functionality to stream data while running.
     socketio.run(app)
+<<<<<<< HEAD
     
+=======
+    
+ 
+>>>>>>> e2cb910bdd8bc4b2a48d622382dc53b25a6f48dd
