@@ -29,7 +29,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 #App configuration
-app.config['UPLOAD_FOLDER']= basedir+ "static/uploads"
+app.config['UPLOAD_FOLDER']= basedir+ "/static/uploads"
 app.config['MAX_CONTENT_PATH']= 150000
 app.config['SERVER_NAME'] = "127.0.0.1:5000"
 app.config['DEBUG']= True
@@ -262,7 +262,5 @@ def currentGroups():
 if __name__=='__main__':
     #Added websocket functionality to stream data while running.
     socketio.run(app)
-    
-    
     
  

@@ -51,16 +51,13 @@
 	  {%for i in range(0, len)%}
 	  
 		<div class="card" style="width: 18rem;">
-		<img class="card-img-top" src="/uploads/"+"{{results[i].photo}}">
+		<img class="card-img-top" src="/static/uploads/+{{results[i].photo}}">
 			<div class="card-body">
 			<h5 class="card-title">{{results[i].name}}</h5>
 			<p class="card-text">{{results[i].description}}</p>
-			
 			<div class="card-body">
 				<a href="#" class="card-link">Join Group</a>
 				<a href="#" class="card-link">Exit</a>
-			
-			
 		</div></div>
 	  </div>
 	  <br>
