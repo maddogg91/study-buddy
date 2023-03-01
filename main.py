@@ -140,6 +140,7 @@ def trysignUp():
     return render_template("home.html")
   else:
     return render_template("signUp.html", alarm="1") 
+    
 @app.route('/changeInfo', methods=['POST'])
 def changeInfo():
     changeInfo=Change().changeInfo(session.get("user").get("_id"))
@@ -227,11 +228,13 @@ def currentConvo():
 
 @app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
+    if not session.get("user"):
+        return redirect('/')
     if request.method == "POST":
-
+        userid= session.get("user").get("_id")
         photo= request.files['groupPhoto']
         upload(photo)
-        db.createChat(request, photo)
+        db.createChat(request, photo, userid)
         return redirect('/existingGroups')
     return render_template("createGroup.html")
     
