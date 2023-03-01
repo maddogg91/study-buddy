@@ -36,6 +36,7 @@ def login(user, passw):
         return False
 class Change:
     def changeInfo(self,id):
+        
         collection=db['users']
         # get the user's current password and new password from the form data
         current_password = request.form['current_password']
@@ -62,7 +63,7 @@ class Change:
             return True
         except:
             return("Password Wrong, Please enter correct password to update information")
-    
+
 class User:   
     def signUp(self):
             #Create user obj for submitted fields
@@ -117,11 +118,11 @@ def searchUsers(keyword, criteria):
          print("Error with users search")
          return "No results found..."
 
-def createChat(data, file):
+def createChat(data, file, _id):
     groupDB = db["groupchat"]
     newChat= {
-
-        "users": "admin",
+        
+        "users": {"id": _id, "permissionType": "admin"},
         "name": data.form.get("groupName"),
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
@@ -204,5 +205,3 @@ def userChats(username):
         returnedGroups.append(json.loads(json.dumps(group.__dict__)))
    
     return returnedGroups
-
-         

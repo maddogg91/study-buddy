@@ -29,7 +29,7 @@ SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 #App configuration
-app.config['UPLOAD_FOLDER']= basedir+ "static/uploads"
+app.config['UPLOAD_FOLDER']= basedir+ "/static/uploads"
 app.config['MAX_CONTENT_PATH']= 150000
 app.config['SERVER_NAME'] = "127.0.0.1:5000"
 app.config['DEBUG']= True
@@ -140,6 +140,7 @@ def trysignUp():
     return render_template("home.html")
   else:
     return render_template("signUp.html", alarm="1") 
+    
 @app.route('/changeInfo', methods=['POST'])
 def changeInfo():
     changeInfo=Change().changeInfo(session.get("user").get("_id"))
@@ -227,11 +228,13 @@ def currentConvo():
 
 @app.route('/createGroup', methods = ["GET", "POST"])
 def createGroup():
+    if not session.get("user"):
+        return redirect('/')
     if request.method == "POST":
-
+        userid= session.get("user").get("_id")
         photo= request.files['groupPhoto']
         upload(photo)
-        db.createChat(request, photo)
+        db.createChat(request, photo, userid)
         return redirect('/existingGroups')
     return render_template("createGroup.html")
     
@@ -263,6 +266,3 @@ if __name__=='__main__':
     #Added websocket functionality to stream data while running.
     socketio.run(app)
     
-    
-    
- 
