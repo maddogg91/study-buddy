@@ -3,7 +3,7 @@ class Group:
         self._id= str(_id)
         self.name= name
         self.users= users
-        self.createdTimestamp= createdTimestamp
+        self.createdTimestamp= str(createdTimestamp)
         self.description = desc
         self.photo= photo
         self.messages= messages

@@ -9,7 +9,7 @@ from Group import Group
 import datetime
 from bson.objectid import ObjectId
 import json
-import base64
+from groupmsg import groupmsg
 
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
@@ -34,6 +34,35 @@ def login(user, passw):
     except:
         print("No user found, please try again.")
         return False
+class Change:
+    def changeInfo(self,id):
+        
+        collection=db['users']
+        # get the user's current password and new password from the form data
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+        new_email=request.form['new_email']
+        new_username=request.form['new_username']
+        new_bday=request.form['new_bday']
+        # get the user's ID from the session
+
+        # check if the current password is correct
+        try:
+            user = collection.find_one({'_id': id})
+            pbkdf2_sha256.verify(current_password, user["password"])
+                # update the user's information in the database
+            collection.replace_one(
+                        {'_id': id},
+                        {
+                            'username':new_username,
+                            'password':pbkdf2_sha256.encrypt(new_password),
+                            'email':new_email,
+                            'birthday':new_bday
+                        }                            
+            )
+            return True
+        except:
+            return("Password Wrong, Please enter correct password to update information")
 
 class User:   
     def signUp(self):
@@ -59,7 +88,8 @@ def googleSignup(email):
         return google
     else:
         query= {"_id": uuid.uuid4().hex ,"email" : email}
-        google= db.googleUsers.insert_one(query)
+        db.googleUsers.insert_one(query)
+        google= db.googleUsers.find_one({"email": email})
         return google
     
 def search(keyword, criteria, collection):
@@ -132,29 +162,34 @@ def savequiz(data, user):
         
         
 def loadGroupMessages(groupId):
-    message = { "sender" : "", "timestamp" : "", "message" : ""}
     messages= []
     results= []
     try:
         _id= ObjectId(groupId)
         query= {"_id" : _id }
+        #Searches group chat db for groupchat with specified id.
         group= db.groupchat.find_one(query)
+        #Grabs messages Array 
         groupMessages= group['messages'][0]
+        #For each message in messages, create results list
         for m in groupMessages:
             results.append(db.messages.find_one(ObjectId(m)))
-            print(m)
             
+        #Each result create group message object which includes groupid, sender, timestamp, and message
         for result in results:
+           
+            timestamp= result["createTimestamp"]
+            msg = result["message"]
             sender= db.users.find_one(result["sender"])
             if sender is not None:
-                message["sender"] = sender["username"]
+                fromsender = sender["username"]
             else:
                 sender= db.googleUsers.find_one(result["sender"])
-                message["sender"] = sender["email"]
-            message["timestamp"]= result["createTimestamp"]
-            message["message"] = result["message"]
-            print(message)
-            messages.append(message)
+                fromsender = sender["email"]
+            
+            gm= groupmsg(groupId, sender, timestamp, msg)
+            messages.append(json.loads(json.dumps(gm.__dict__)))
+            
         return messages
    
     except Exception as e:
@@ -167,9 +202,8 @@ def userChats(username):
     for result in userchats:
         group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-        returnedGroups.append(json.dumps(group.__dict__))
-    print(returnedGroups)
+        returnedGroups.append(json.loads(json.dumps(group.__dict__)))
+   
     return returnedGroups
-         
-    
 
+         
