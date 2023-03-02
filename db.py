@@ -63,7 +63,26 @@ class Change:
             return True
         except:
             return("Password Wrong, Please enter correct password to update information")
+    def googlesettingsInfo(self,id):
+        
+        collection=db['googleUsers']
+        # get the user's current password and new password from the form data
+        new_username=request.form['new_username']
+        new_bday=request.form['new_bday']
+        # get the user's ID from the session
 
+        # check if the current password is correct
+        user = collection.find_one({'_id': id})
+                # update the user's information in the database
+        collection.update_one(
+                        {'_id': id},
+                        {"$set":{
+                            'username':new_username,
+                            'birthday':new_bday
+                        }
+                        }                            
+            )
+        return True
 class User:   
     def signUp(self):
             #Create user obj for submitted fields
