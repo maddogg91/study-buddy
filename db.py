@@ -130,7 +130,7 @@ def createChat(data, file, _id):
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
         "createTimestamp": datetime.datetime.now(),
-        "messages": ""
+        "messages": []
     }
     return groupDB.insert_one(newChat)
 

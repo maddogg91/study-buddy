@@ -187,11 +187,16 @@
 			}
 			const loadmess= JSON.parse('{{messages | tojson}}');
 			const m= loadmess[getIndexOfChat()];
-			
+			if(m == null){
+				
+			}
+			else{
 			console.log(m);
+			
 			for(let i=0; i < m.length; i++){
 			const chat_history= createMessages(user, m[i]);
 			history.appendChild(chat_history);
+				}
 			}
 			document.getElementById("chat").style.visibility = "hidden";
 			document.getElementById("gc").innerHTML= item.name;
