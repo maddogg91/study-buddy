@@ -50,7 +50,7 @@ class Change:
         try:
             user = collection.find_one({'_id': id})
             pbkdf2_sha256.verify(current_password, user["password"])
-                # update the user's information in the database
+                # replace the user's information in the database
             collection.replace_one(
                         {'_id': id},
                         {
@@ -63,7 +63,24 @@ class Change:
             return True
         except:
             return("Password Wrong, Please enter correct password to update information")
+    def googlesettingsInfo(self,id):
+        
+        collection=db['googleUsers']
+        new_username=request.form['new_username']
+        new_bday=request.form['new_bday']
+        # get the user's ID from the google users session
 
+        user = collection.find_one({'_id': id})
+                # update the user's information in the database
+        collection.update_one(
+                        {'_id': id},
+                        {"$set":{
+                            'username':new_username,
+                            'birthday':new_bday
+                        }
+                        }                            
+            )
+        return True
 class User:   
     def signUp(self):
             #Create user obj for submitted fields
@@ -208,5 +225,3 @@ def userChats(username):
         returnedGroups.append(json.loads(json.dumps(group.__dict__)))
    
     return returnedGroups
-
-         
