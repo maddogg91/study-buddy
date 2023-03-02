@@ -132,7 +132,8 @@ def signUp():
   return render_template("signUp.html")
 
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp',methods=['POST'])
+
 def trysignUp():
   signup = User().signUp()
   if (signup == True):
@@ -182,6 +183,7 @@ def search():
         return render_template("search.html")
     
 @app.route('/search1', methods=["GET"])
+
 def searchDB():
     query= request.args.get('query')
     query= query.split(": ")
@@ -206,6 +208,7 @@ def searchDB():
         results= results)
     else: 
         return render_template("results.html", len = 0, results= results)
+
     
 
 @app.route('/settings')
@@ -222,12 +225,20 @@ def savequiz():
     db.savequiz(data, 123)
     return render_template("quiz.html")
 
+
+
+@app.route('/profile')
+def profile():
+    return flask.render_template("profile.html")
+
+
 @app.route('/currentConvo')
 def currentConvo():
     return render_template("currentConvo.html")
 
-@app.route('/createGroup', methods = ["GET", "POST"])
+@app.route('/createGroup')
 def createGroup():
+
     if not session.get("user"):
         return redirect('/')
     if request.method == "POST":
@@ -260,6 +271,15 @@ def currentGroups():
     else:
         #Temporary, sending to create group or would it be better to send to search page???
         return redirect("/createGroup")
+
+ 
+
+@app.route('/existingGroups')
+def currentGroups():
+    chats= []
+    groupchats= db.existingChats()
+    return flask.render_template("existingGroups.html", len= len(groupchats),results= groupchats)
+
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':

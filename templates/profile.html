@@ -1,17 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title> User Settings Page</title>
-        <link rel="stylesheet" href="setting.css">
+        <link rel="stylesheet" href="static/profile.css">
         <link rel="stylesheet"
-    href="fontawesome/css/all.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 
 
     </head>
     <body>
 
-        <div class="containers">
+        <div class="container">
             <div class="leftbox">
                 <nav>
                     <a onclick="tabs(0)"
@@ -44,120 +45,48 @@
             </nav>
         </div>
         <div class="rightbox">
-           <div class="profile.tabShow">
+           <div class="profile">
             <h1>Personal Info</h1>
             <h2> Full Name</h2>
-            <input type="text"
-            class"input" value="Siaw Sam">
+            <p><input type="text"class"input" value=""><buttom class="btn">update</button>
+            <h2>Birthday</h2>
+            <p><input type="text"class"input" value"Sep 11 1999"></p>
+            <h2>Gender<h/>
+            <p><input type="text"class"input" value"Male"></p>
+            <h2>Email</h2>
+            <p><input type="text"class"input"value="Siawsam@gmail.com"><button class="btn">update</button></p>
+            <h2>Password</h2>
+            <p><input type="password" class"input" value="ssss" id="myInput"><button class="btn">Change</button></p>
+            <p><input type="checkbox" onclick="myFunction()">>Show Password </p>
 
-            <h2>birthday</h2>
-            <input type="text"
-            class"input" value"April 11 1999">
+            <script>
+                function myFunction(){
+                    var x = document.getElementById("myInput");
+                    if (x.type === "password") {
+                        x.type = "text";
+                    
+                    }
+                    else{
+                        x.type = "password"
+        
+                    }
+                }
+            </script>
 
-            <h2> Gender</h2>
-            <input type="text"
-            class"input" value"Male">
-
-            <h2> Email/h2>
-            <input type="text"
-            class="input"
-            value="Siawsam@gmail.com">
-
-            <h2> Password</h2>
-            <input type="password"
-            class="input"
-            value="Siawam">
-
-            <button
-            class="btn> Update</button>
-        </div> 
-        <div class="payment tabShow">
-             <h1>payment Info</h1>
-             <h2> payment method</h2>
-             <input type="text"
-             class"input" 
-             value="MasterCard - 0303 *** ** 4345">
- 
-             <h2>Billing Address</h2>
-             <input type="text"
-             class"input" value"1234 some town">
- 
-             <h2> Zipcode</h2>
-             <input type="text"
-             class"input" value"12334">
- 
-             <h2> Billing Date/h2>
-             <input type="text"
-             class="input"
-             value="Jan 12, 2027">
- 
-             <h2> Redeem card</h2>
-             <input type="password"
-             class="input"
-             value="Enter Gift card">
- 
-             <button
-             class="btn> Update</button>
-         </div> 
-         <div class="subscription tabShow">
+          
+            </div>
             
-             <h1>Personal Info</h1>
-             <h2> Full Name</h2>
-             <input type="text"
-             class"input" value="Siaw Sam">
- 
-             <h2>birthday</h2>
-             <input type="text"
-             class"input" value"April 11 1999">
- 
-             <h2> Gender</h2>
-             <input type="text"
-             class"input" value"Male">
- 
-             <h2> Email/h2>
-             <input type="text"
-             class="input"
-             value="Siawsam@gmail.com">
- 
-             <h2> Password</h2>
-             <input type="password"
-             class="input"
-             value="Siawam">
- 
-             <button
-             class="btn> Update</button>
-         </div> 
-
-
-
+        </div>
+        
     </div>
-</div>
 
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script>
-
-        </script>
-        <script>
-
-        </script>
-
+           
     </body>
     </html>
+
+
+
+
 
 
 
