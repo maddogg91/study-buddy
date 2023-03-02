@@ -50,7 +50,7 @@ class Change:
         try:
             user = collection.find_one({'_id': id})
             pbkdf2_sha256.verify(current_password, user["password"])
-                # update the user's information in the database
+                # replace the user's information in the database
             collection.replace_one(
                         {'_id': id},
                         {
@@ -66,12 +66,10 @@ class Change:
     def googlesettingsInfo(self,id):
         
         collection=db['googleUsers']
-        # get the user's current password and new password from the form data
         new_username=request.form['new_username']
         new_bday=request.form['new_bday']
-        # get the user's ID from the session
+        # get the user's ID from the google users session
 
-        # check if the current password is correct
         user = collection.find_one({'_id': id})
                 # update the user's information in the database
         collection.update_one(

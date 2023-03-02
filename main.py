@@ -152,12 +152,12 @@ def changeInfo():
         return render_template("settings.html", alarm="1") 
 @app.route('/changegoogleInfo', methods=['POST'])
 def changegoogleInfo():
-    googleAdd=Change().googlesettingsInfo(session.get("user").get("_id"))
-    if (googleAdd == True):
-        session["user"] = googleAdd
-        return "info added"
-    else:
-        return render_template("settings.html", alarm="1")   
+        googleAdd=Change().googlesettingsInfo(session.get("user").get("_id"))
+        if (googleAdd == True):
+            session["user"] = googleAdd
+            return "info added"
+        else:
+            return render_template("settings.html", alarm="1")   
 @app.route('/login')
 def login():
   if not session.get("user"):
