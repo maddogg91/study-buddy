@@ -120,6 +120,7 @@ def google_callback():
         )
         session["email"] = claims["email"]
         session["user"] = db.googleSignup(session.get("email"))
+        session["type"] = 'google'
         return flask.redirect('/home')
      
     except KeyError:
@@ -150,7 +151,14 @@ def changeInfo():
         return "info updated"
     else:
         return render_template("settings.html", alarm="1") 
-   
+@app.route('/changegoogleInfo', methods=['POST'])
+def changegoogleInfo():
+        googleAdd=Change().googlesettingsInfo(session.get("user").get("_id"))
+        if (googleAdd == True):
+            session["user"] = googleAdd
+            return "info added"
+        else:
+            return render_template("settings.html", alarm="1")   
 @app.route('/login')
 def login():
   if not session.get("user"):
@@ -213,7 +221,11 @@ def searchDB():
 
 @app.route('/settings')
 def setting():
-    return render_template("settings.html")
+    if not session.get("type"):
+     #To regular settings
+        return render_template('settings.html')
+    else:
+      return render_template('googleSettings.html')
     
 @app.route('/quiz')
 def quiz():
@@ -280,5 +292,3 @@ def currentGroups():
 if __name__=='__main__':
     #Added websocket functionality to stream data while running.
     socketio.run(app)
-    
- 
