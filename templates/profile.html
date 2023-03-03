@@ -47,7 +47,9 @@
         <div class="rightbox">
            <div class="profile">
             <h1>Personal Info</h1>
-            <h2> Full Name</h2>
+            <h2> First Name</h2>
+            <p><input type="text"class"input" value=""><buttom class="btn">update</button>
+                <h2> Last Name</h2>
             <p><input type="text"class"input" value=""><buttom class="btn">update</button>
             <h2>Birthday</h2>
             <p><input type="text"class"input" value"Sep 11 1999"></p>
@@ -79,8 +81,13 @@
         </div>
         
     </div>
+    <script>
+        $(",tab").click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
 
-           
+        })
+
+    </script>
     </body>
     </html>
 

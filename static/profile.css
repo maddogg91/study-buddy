@@ -12,17 +12,17 @@ body{
     
     .container{
         background: #fff;
-        width: 540px;
-        height: 420px;
+        width: 740px;
+        height: 620px;
         margin: 0 auto;
         position: relative;
         margin-top: 10%;
         box-shadow: 2px 5px 20px rgba(119,119,.5);
     }
     .leftbox{
-        float: left;
+        float: right;
         top: -5%;
-        left: 5%;
+        right: -20%;
         position: absolute;
         width: 15%;
         height: 110%;
@@ -64,6 +64,7 @@ body{
             width: 60%;
           
             height: 100%;
+            padding-top: -50%;
 
 
         }

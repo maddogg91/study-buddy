@@ -14,7 +14,7 @@ from groupmsg import groupmsg
 def connectDB():
     with open('keys/db.txt', 'rb') as p:
         conn = p.read()
-    client = pymongo.MongoClient(enc.decrypt(conn))
+    client = pymongo.MongoClient("mongodb+srv://studybuddy:OctG2CDRxy05yzOf@cluster0.4grai.mongodb.net/?retryWrites=true&w=majority")
     db = client["studybuddy"]
     return db
 
