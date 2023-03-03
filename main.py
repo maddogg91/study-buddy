@@ -226,13 +226,17 @@ def setting():
     
 @app.route('/quiz')
 def quiz():
-    return render_template("quiz.html")
+    if not session.get("user"):
+        return redirect('/')
+    mm= db.loadQuizAnswers(session.get("user").get("_id"))
+    print(mm)
+    return render_template("quiz.html", mm= mm)
     
 @app.route('/savequiz', methods= ["POST"])
 def savequiz():
     data= request.form
-    db.savequiz(data, 123)
-    return render_template("quiz.html")
+    db.savequiz(data, session.get("user").get("_id"))
+    return redirect('quiz')
 
 @app.route('/currentConvo')
 def currentConvo():
@@ -272,6 +276,23 @@ def currentGroups():
     else:
         #Temporary, sending to create group or would it be better to send to search page???
         return redirect("/createGroup")
+        
+@app.route('/profile', methods = ["GET", "POST"])
+def userProfile():
+    if not session.get("user"):
+        return redirect('/')
+    if request.method == "POST":
+        photo= request.files['profilepic']
+        print(photo.filename)
+        if photo.filename == "" or None:
+            print("No photo added")
+        else:
+            #uploads a photo if given
+            upload(photo)
+        db.saveUserProfile(session.get("user").get("_id"), request)
+    profile= db.userProfile(session.get("user").get("_id"))
+    return render_template("profile.html", profile= profile)
+     
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
