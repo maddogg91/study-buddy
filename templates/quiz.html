@@ -1,6 +1,8 @@
 <html>
 <head>
     <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+	  <title> Matchmaking Quiz</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 	<link rel="stylesheet" href="./static/search.css">
 	<link rel="stylesheet" href="./static/quiz.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -36,6 +38,15 @@
 		document.getElementById("f").onclick = function() {
 		document.getElementById("search").submit();
 		}
+		 $(window).ready(function() {
+			const mm = JSON.parse('{{mm | tojson}}');
+			for(let i= 0; i < mm.length; i++){
+				var ind=i+1;
+			 document.getElementById("q" + ind.toString()).value= mm[i];
+			}
+			
+			
+		 });
 	</script>
     </div>
 <div class= "maincontainer">	

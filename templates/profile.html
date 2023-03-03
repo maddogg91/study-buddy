@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -97,4 +98,107 @@
 
 
 
+
+=======
+<html>
+<head>
+  <meta charset="UTF-8">
+    <title> User Profile Page</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+</head>
+<body>
+      <div class="navbar">
+        <ul>
+        <li><a href="/home"><i class="fa fa-home"></a></i></li>
+        <li><a href="#"><i class="fa fa-save"></i></a></li>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
+		<form id= "search" action="/search1" method="GET">
+		<li><a  id="f"
+		  style="background-color#cac7ff" aria-hidden= "true" class="fa fa-search"></a></li>
+		
+		<li>
+		<div class= "tooltip">
+		<span class="tooltiptext"> 
+			For users 'user : [username]'
+			For groups 'group: [groupname]'
+			Groups by description 'gdesc : [keywords]'
+		</span>
+		
+		<input placeholder= "search anything" style= "background-color: #5E3023;
+		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
+		type="search1" id="form1" class="form-control" name= "query"/>
+		
+		</div>
+		</li>
+       
+		</form>
+		</ul>
+		<script>
+		 $(window).ready(function() {
+			const profile = JSON.parse('{{profile | tojson}}');
+			
+			if(profile.profilepic == null || profile.profilepic==""){
+				profile.profilepic= "/static/uploads/defG.png";
+				document.getElementById("pp").src= profile.profilepic;
+			}
+		 });
+		document.getElementById("f").onclick = function() {
+		document.getElementById("search").submit();
+		}
+	</script>
+	
+    </div>
+	<h1 style="text-align: center">Edit User Profile</h1>
+	<button id= "edit" style="position: absolute; right: 10%;">EDIT</button>
+	<br>
+	<br>
+	<br>
+	<span>
+	<label>Profile Picture</label>
+	<br>
+	<img id= "pp" style= "width: 25%" src= "/static/uploads/{{profile.profilepic}}"></img>
+	</span>
+	<form id= "updates" action="/profile" method="POST" enctype = "multipart/form-data">
+	<label for="photo"></label>
+    <input type="file" accept="image/png, image/jpeg" name="profilepic" class="photoAdder">
+	<br>
+	<br>	
+	<br>
+	<label>First Name</label>
+	<input id="update value" type="text" class="form-control form-control-md" name="fname" aria-describedby="user" placeholder= '{{profile.fname}}' readonly>
+	<label>Last Name</label>
+	<input id="update value2" type="text" class="form-control form-control-md" name="lname" aria-describedby="user" placeholder= '{{profile.lname}}' readonly>
+	<label>Major</label>
+	<input id="update value3" type="text" class="form-control form-control-md" name="major" aria-describedby="user" placeholder= '{{profile.major}}' readonly>
+	<label>Minor</label>
+	<input id="update value4" type="text" class="form-control form-control-md" name="minor" aria-describedby="user" placeholder= '{{profile.minor}}' readonly>
+	<label>Gender</label>
+	<input id="update value5"ntype="text" class="form-control form-control-md" name="gender" aria-describedby="user" placeholder= '{{profile.gender}}' readonly>
+	<label>Bio</label>
+	<input id="update value6" type="text" class="form-control form-control-md" name="bio" aria-describedby="user" placeholder= '{{profile.bio}}' readonly>
+	<label>Status</label>
+	<input id="update value7" type="text" class="form-control form-control-md" name="status" aria-describedby="user" placeholder= '{{profile.status}}' readonly>
+	<br><br><br>
+	<button style="position: absolute; right: 50%;" type= "submit">SAVE</button>
+	</form>
+	<a href="/quiz">Want to take the Study Buddy Match Making Quiz? Click Here</a>
+	<script>
+		document.getElementById("edit").onclick = function() {
+		document.getElementById("update value").readOnly= false;
+		document.getElementById("update value2").readOnly= false;
+		document.getElementById("update value3").readOnly= false;
+		document.getElementById("update value4").readOnly= false;
+		document.getElementById("update value5").readOnly= false;
+		document.getElementById("update value6").readOnly= false;
+		document.getElementById("update value7").readOnly= false;
+		}
+	</script>
+	
+</body>
+</html>
 
