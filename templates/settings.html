@@ -39,7 +39,7 @@
     <div class="container">
       <div class="leftbox">
 <h1>Setting</h1>
-<p>This is a paragraph.</p>
+<p></p>
 <p><a href="/signUp">Go to signup</a></p>
 <p><a href="/login">Go to login</a></p>
 <p><a href="/currentConvo">Convo</a></p>
@@ -55,23 +55,25 @@
 
 <form method="POST" action="/changeInfo">
   <h2> Current Password:</h2>
- <p> <input type="password" id="current_password" name="current_password"><p>
+ <p> <input type="password" id="current_password" name="current_password"required><p>
 
   <h2>New Password:</h2>
-  <p><input type="password" id="new_password" name="new_password"><p>
+  <p><input type="password" id="new_password" name="new_password"required><p>
 
   <h2>New Email:</h2>
-  <p><input type="email" id="new_email" name="new_email"><p>
+  <p><input type="email" id="new_email" name="new_email"required><p>
 
   <h2>New Username:</h2>
-  <p><input type="name" id="new_username" name="new_username"><p>
+  <p><input type="name" id="new_username" name="new_username"required><p>
 
   <h2>New Birthday:</h2>
-  <p><input type="date" id="new_bday" name="new_bday"></p>
+  <p><input type="date" id="new_bday" name="new_bday"required></p>
   
   
   
- <p> <input type="submit" value="Change Password"></p>
+ <p> <input type="submit" value="Change Password"required></p>
+ 
+
 
   </div>
 </div>
