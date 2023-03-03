@@ -102,7 +102,6 @@ def search(keyword, criteria, collection):
     else:
         #return specified results
         query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
-        #print(query)
         return col.find(query)
     
 def searchUsers(keyword, criteria):
@@ -209,4 +208,69 @@ def userChats(username):
    
     return returnedGroups
 
-         
+def userProfile(id):
+    profile= search(id, "userId", "profile")
+    count= list(profile)
+    user=""
+    try:
+        if len(count) > 0:
+            for i in count:
+               user= {
+                    "_id": str(i["_id"]),
+                     "fname": i["fname"],
+                     "lname": i["lname"],
+                     "major": i["major"],
+                     "minor": i["minor"],
+                     "status": i["status"],
+                     "gender": i["gender"],
+                     "profilepic": i["profilepic"],
+                     "bio": i["bio"],
+                     "quizAnswers": i["quizAnswers"]
+                }
+            return user
+        else:
+            user= {
+                    "_id": uuid.uuid4().hex,
+                     "userId": str(id),    
+                     "fname": "",
+                     "lname": "",
+                     "major": "",
+                     "minor": "",
+                     "status": "",
+                     "gender": "",
+                     "profilepic": "",
+                     "bio": "",
+                     "quizAnswers": ""
+            }
+            db.profile.insert_one(user)
+            user._id = str(user._id)
+            return user
+    except Exception as e:
+        print(e)
+        return user
+   
+def saveUserProfile(_id, req):
+        print(_id)
+        data= search(_id, "userId", "profile")
+        profile= list(data)
+        profile= profile[0]
+        for i in req.form:
+            if(req.form[i]== ""):
+                print("No change for " + i)
+            else:
+                profile[i]= req.form[i]
+        try:
+            if(req.files["profilepic"].filename== ""):
+                print("No change for Profile Pic")
+                
+            else:
+                profile["profilepic"]= req.files["profilepic"].filename
+        except:
+            print("No update needed for profile photo")
+        db.profile.replace_one({"userId": _id}, profile)
+
+def loadQuizAnswers(_id):
+    data= search(_id, "userId", "profile")
+    profile= list(data)
+    profile= profile[0]
+    return profile["quizAnswers"]
