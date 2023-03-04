@@ -241,11 +241,7 @@ def savequiz():
     db.savequiz(data, session.get("user").get("_id"))
     return redirect('quiz')
 
-@app.route('/currentConvo')
-def currentConvo():
-    return render_template("currentConvo.html")
-
-@app.route('/createGroup')
+@app.route('/createGroup', methods= ["GET", "POST"])
 def createGroup():
 
     if not session.get("user"):
@@ -262,7 +258,7 @@ def upload(file):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
 
-@app.route('/existingGroups')
+@app.route('/existingGroups', methods= ["GET", "POST"])
 def currentGroups():
     if not session.get("user"):
         return redirect('/')
