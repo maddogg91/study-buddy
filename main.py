@@ -276,6 +276,12 @@ def currentGroups():
     else:
         #Temporary, sending to create group or would it be better to send to search page???
         return redirect("/createGroup")
+
+@socketio.on('savemessage')
+def saveUserMessage(json):
+    print('received message: ' + str(json))
+    db.saveMessage(json, session.get("user").get("_id"))
+    
         
 @app.route('/profile', methods = ["GET", "POST"])
 def userProfile():
