@@ -49,11 +49,8 @@
                     </ul>
                 </div>
                 <div class="chat-message clearfix">
-                    <div class="input-group mb-0">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-send"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Enter text here...">                                    
+                    <div id="m-box" class="input-group mb-0">
+                                              
                     </div>
                 </div>
             </div>
@@ -94,6 +91,8 @@
 	return selected;
 	};
 	
+	
+	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
   $(window).ready(function() {
@@ -116,7 +115,7 @@
 		const selectedupdatedmsg= updatedmsg[0];
 		
 		for(let i= 0; i < selectedupdatedmsg.length; i++){
-			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(m[m.length-1].timestamp)){
+			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(selectedupdatedmsg[selectedupdatedmsg.length-1].timestamp)){
 				const new_chat= createMessages(user, updatedmsg[i])
 				history.appendChild(new_chat);
 			}
@@ -139,11 +138,31 @@
 	const div = document.createElement("div");
 	if (user._id === item.sender._id){
 		div.classList.add("message", "my-message");
+		
 	}
 	else{
 		div.classList.add("message", "other-message", "float-right");
 		span.classList.add("float-right");
 	}
+	const img= document.createElement("img");
+	if(item.profilepic== ""){
+		item.profilepic= "defG.png";
+	}	
+	img.src= "/static/uploads/" + item.profilepic;
+	img.style= "width: 10%";
+	div.appendChild(img);
+	const usernode= document.createTextNode(item.firstname + " " + item.lastname);
+	usernode.style= "font-weight: bolder";
+   
+	div.appendChild(usernode);
+	const br= document.createElement("br");
+	div.appendChild(br);
+	div.appendChild(br);
+	div.appendChild(br);
+	
+	
+	div.appendChild(br);
+	
 	const node= document.createTextNode(item.timestamp);
 	span.appendChild(node);
 	date.appendChild(span);
@@ -174,7 +193,7 @@
   div.appendChild(desc);
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
-		
+		selected= getIndexOfChat();
 		if(document.getElementById("chat").style.value == 0){
 			document.getElementById("chat").style.value = 1;
 			document.getElementById("chat").style.visibility = "visible";
@@ -198,6 +217,42 @@
 			history.appendChild(chat_history);
 				}
 			}
+			const box = document.querySelector("#m-box");
+			while (box.firstChild){
+				box.removeChild(box.firstChild);
+				
+			}
+			const latest= m[m.length-1].timestamp;
+			
+			const send= document.createElement("div");
+			send.classList.add('input-group-prepend');
+			const sendbutton= document.createElement("span");
+			const fafa= document.createElement("i");
+			sendbutton.classList.add('input-group-text');
+			var socket= io.connect();
+			sendbutton.addEventListener('click', (event)=>{
+				//Creates message event handler
+				var usermessage= document.getElementById('sendmessage').value;
+				var groupchat= res[selected]._id;
+				
+				socket.emit('savemessage', {
+						group : groupchat,
+						message : usermessage
+					});
+				document.getElementById('sendmessage').value= "";
+				//TODO: Add call for appending group messages
+			});
+		
+			fafa.classList.add('fa', 'fa-send');
+			const input= document.createElement("input");
+			input.id= "sendmessage";
+			input.type= "text";
+			input.classList.add('form-control');
+			input.placeholder= "Enter text here...";
+			sendbutton.appendChild(fafa);
+			send.appendChild(sendbutton);
+			box.appendChild(send);
+			box.appendChild(input);
 			document.getElementById("chat").style.visibility = "hidden";
 			document.getElementById("gc").innerHTML= item.name;
 			document.getElementById("desc").innerHTML= item.description;

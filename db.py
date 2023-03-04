@@ -205,10 +205,14 @@ def loadGroupMessages(groupId):
             else:
                 sender= db.googleUsers.find_one(result["sender"])
                 fromsender = sender["email"]
-            
-            gm= groupmsg(groupId, sender, timestamp, msg)
+            profile= db.profile.find_one({"userId":sender["_id"]})
+            if profile is None:
+                userProfile(sender["_id"])
+                profile= db.profile.find_one({"userId":sender["_id"]})
+                
+            gm= groupmsg(groupId, sender, profile["fname"], profile["lname"], timestamp, msg, profile["profilepic"])
             messages.append(json.loads(json.dumps(gm.__dict__)))
-            
+        
         return messages
    
     except Exception as e:
@@ -256,7 +260,7 @@ def userProfile(id):
                      "minor": "",
                      "status": "",
                      "gender": "",
-                     "profilepic": "",
+                     "profilepic": "defG.png",
                      "bio": "",
                      "quizAnswers": ""
             }
@@ -292,4 +296,21 @@ def loadQuizAnswers(_id):
     profile= list(data)
     profile= profile[0]
     return profile["quizAnswers"]
+    
+def saveMessage(data, _id):
+   
+    messageId= str(uuid.uuid4().hex)
+    
+    message= {
+                "_id": ObjectId(messageId[:24]),
+                "sender": _id,
+                "createTimestamp": datetime.datetime.now(),
+                "message": data["message"]
+    }
+    db.messages.insert_one(message)
+    groupchat= db.groupchat.find_one({"_id": ObjectId(data["group"])})
+    groupchat["messages"][0].append(str(message["_id"]))
+    db.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
+    
+
 
