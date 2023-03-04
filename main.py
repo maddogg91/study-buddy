@@ -280,7 +280,6 @@ def currentGroups():
     else:
         #Temporary, sending to create group or would it be better to send to search page???
         return redirect("/createGroup")
-
         
 @app.route('/profile', methods = ["GET", "POST"])
 def userProfile():
