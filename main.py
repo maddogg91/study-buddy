@@ -133,7 +133,8 @@ def signUp():
   return render_template("signUp.html")
 
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp',methods=['POST'])
+
 def trysignUp():
   signup = User().signUp()
   if (signup == True):
@@ -190,6 +191,7 @@ def search():
         return render_template("search.html")
     
 @app.route('/search1', methods=["GET"])
+
 def searchDB():
     query= request.args.get('query')
     query= query.split(": ")
@@ -214,6 +216,7 @@ def searchDB():
         results= results)
     else: 
         return render_template("results.html", len = 0, results= results)
+
     
 
 @app.route('/settings')
@@ -238,12 +241,9 @@ def savequiz():
     db.savequiz(data, session.get("user").get("_id"))
     return redirect('quiz')
 
-@app.route('/currentConvo')
-def currentConvo():
-    return render_template("currentConvo.html")
-
-@app.route('/createGroup', methods = ["GET", "POST"])
+@app.route('/createGroup', methods= ["GET", "POST"])
 def createGroup():
+
     if not session.get("user"):
         return redirect('/')
     if request.method == "POST":
@@ -258,7 +258,7 @@ def upload(file):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename)))
 
 
-@app.route('/existingGroups')
+@app.route('/existingGroups', methods= ["GET", "POST"])
 def currentGroups():
     if not session.get("user"):
         return redirect('/')
