@@ -4,19 +4,17 @@ import flask
 from flask import Flask, session, render_template, request, redirect, url_for
 import pymongo
 import db
-from db import Change, User, connectDB
-from Group import Group
+from db import Change, User
 from werkzeug.utils import secure_filename
-from google.oauth2.credentials import Credentials
 from google.oauth2 import id_token
 import requests
 import enc
 from google.auth.transport import requests as rq
-from google.oauth2 import service_account
 from flask_socketio import SocketIO
 from threading import Lock
 from passlib.hash import pbkdf2_sha256
 import json
+import unittest
 
 
 thread= None
@@ -216,9 +214,7 @@ def searchDB():
         results= results)
     else: 
         return render_template("results.html", len = 0, results= results)
-
-    
-
+        
 @app.route('/settings')
 def setting():
     if not session.get("type"):

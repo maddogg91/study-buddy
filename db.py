@@ -1,7 +1,6 @@
 import os
 import pymongo
 import enc
-import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
