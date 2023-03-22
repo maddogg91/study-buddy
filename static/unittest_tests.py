@@ -4,6 +4,7 @@ from unittest.mock import MagicMock # allows a mock of the database
 from pymongo import MongoClient # the actual database
 
 class Test(unittest.TestCase):
+
     #unmocked unit test for password encryption used for encrypting user passwords 
 
     def test_pbkdf2_sha256(self):
@@ -15,7 +16,13 @@ class Test(unittest.TestCase):
         # another password test to see hash
         other_password = "543"
         self.assertFalse(pbkdf2_sha256.verify(other_password, encrypted_password))
-
+    
+    #regardless of order of keys testing if dict are equal
+    def test_dict(self):
+        expected = {'c': 4, 'd': 7}
+        actual = {'d': 7, 'c': 4}#if c and d are put in different places the dict will know if they are the same values
+        self.assertDictEqual(expected, actual)
+   
 
 # Groupchat user input doc for groupchat photo upload to database
 # User must have a png file or a jpeg file 

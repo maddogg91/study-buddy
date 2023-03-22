@@ -2,7 +2,6 @@ import os
 import pathlib
 import flask
 from flask import Flask, session, render_template, request, redirect, url_for
-import pymongo
 import db
 from db import Change, User
 from werkzeug.utils import secure_filename
@@ -12,7 +11,6 @@ import enc
 from google.auth.transport import requests as rq
 from flask_socketio import SocketIO
 from threading import Lock
-from passlib.hash import pbkdf2_sha256
 import json
 
 
