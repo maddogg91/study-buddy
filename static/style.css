@@ -3,18 +3,6 @@ body{
 }
 
 /*For our logo in the middle*/
-.logoCircle{
-    box-sizing: border-box;
-
-    position: absolute;
-    width: 317px;
-    height: 297px;
-    left: 560px;
-    top: 24px;
-    background: #F3E9DC ;
-    border: 5px solid #5E3023;
-    border-radius: 50%;
-}
 
 /* Back segments are the base for each of the user signins, this one is the make account*/
 .firstBackSeg{
@@ -75,6 +63,29 @@ body{
     background: #DAB49D;
     border: 3px solid #000000;
     border-radius: 20px;
+}
+.sbLogo{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 393px;
+    height: 345px;
+    left: 527px;
+    top: 14px;
+    
+    background: url(StuddyBuddyLogo.png);
+}
+.logoCircle{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 327px;
+    height: 305px;
+    left: 559px;
+    top: 34px;
+    background: #F3E9DC;
+    border: 5px solid #5E3023;
+    border-radius: 50%;
 }
 .googleSignup{
     background-color: white; 
