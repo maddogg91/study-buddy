@@ -18,6 +18,40 @@ class Test(unittest.TestCase):
         expected = {'c': 4, 'd': 7}
         actual = {'d': 7, 'c': 4}
         self.assertDictEqual(expected, actual)
+def is_requiredphoto(doc):
+    for key, value in doc.items():
+        if key == "photo":
+            if value.lower().endswith(".png") or value.lower().endswith(".jpeg"):
+                return True
+            else: 
+                return False
+
+    #creating test document from groupchat schema for assertions
+    def testDoc(self):
+        #mock doc with correct jpeg or png
+        mock_doc = {
+            "_id": "63ed9884d30a9322054",
+            "users": [],
+            "name": "SUPER ICHIGO FANCLUB",
+            "description": "RAWR Ichigo",
+            "photo": "main-qimg-4beb7e63ca851119d172f8fd665f5fd5.jpeg",
+            "createTimestamp": "2023-02-15T21:44:20.835+00:00",
+            "messages": [] }
+
+        self.assertTrue(is_requiredphoto(mock_doc))
+
+        #mock doc with wrong picture file name
+        mock_doc = {
+            "_id": "63ed9884d30a9322054",
+            "users": [],
+            "name": "SUPER ICHIGO FANCLUB",
+            "description": "RAWR Ichigo",
+            "photo": "main-qimg-4beb7e63ca851119d172f8fd665f5fd5.jfif",
+            "createTimestamp": "2023-02-15T21:44:20.835+00:00",
+            "messages": [] }
+
+        self.assertFalse(is_requiredphoto(mock_doc))   
+
 
 
 if __name__ == "__main__":
