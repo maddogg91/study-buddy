@@ -35,6 +35,18 @@ app.config['TEMPLATES_AUTO_RELOAD']= True
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
 socketio= SocketIO(app, cors_allowed_origins='*')
 
+#unmocked unit test for password encryption used for encrypting user passwords 
+class Testpasswordncryption(unittest.TestCase):
+    
+    def test_pbkdf2_sha256(self):
+        # Test a known password and hash
+        passw = "123"
+        encrypted_password = pbkdf2_sha256.hash(passw)
+        self.assertTrue(pbkdf2_sha256.verify(passw, encrypted_password))
+
+        # Test a different password with the same hash
+        other_password = "notmypassword"
+        self.assertFalse(pbkdf2_sha256.verify(other_password, encrypted_password))
 """
 Stream messages as they come in 
 """
@@ -298,5 +310,7 @@ def userProfile():
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':
+    #unittest.main()
+
     #Added websocket functionality to stream data while running.
     socketio.run(app)

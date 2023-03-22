@@ -1,4 +1,5 @@
 import os
+import unittest
 import pymongo
 import enc
 import uuid
@@ -33,6 +34,7 @@ def login(user, passw):
     except:
         print("No user found, please try again.")
         return False
+
 class Change:
     def changeInfo(self,id):
         
