@@ -1,7 +1,7 @@
 import os
+import unittest
 import pymongo
 import enc
-import jsonify
 import uuid
 from passlib.hash import pbkdf2_sha256
 from flask import request
@@ -34,6 +34,7 @@ def login(user, passw):
     except:
         print("No user found, please try again.")
         return False
+
 class Change:
     def changeInfo(self,id):
         

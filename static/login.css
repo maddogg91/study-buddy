@@ -144,3 +144,30 @@ body{
 
 }
 
+.googleSignup{
+    background-color: white; 
+    position: bottom;
+  bottom: -4px;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  width: 1350px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;  
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.container {
+    height: 50px;
+    position: bottom;
+    bottom: -4px;
+    border: 3px solid green;
+}
+.vertical-center {
+    margin: 0;
+    position: bottom;
+  bottom: -4px;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
