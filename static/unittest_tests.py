@@ -13,7 +13,11 @@ class Test(unittest.TestCase):
         # another password test to see hash
         other_password = "543"
         self.assertFalse(pbkdf2_sha256.verify(other_password, encrypted_password))
-
+    #regardless of order of keys testing if dict are equal
+    def test_dict(self):
+        expected = {'c': 4, 'd': 7}
+        actual = {'d': 7, 'c': 4}
+        self.assertDictEqual(expected, actual)
 
 
 if __name__ == "__main__":
