@@ -19,19 +19,26 @@ import json
 thread= None
 thread_lock= Lock()
 
-app = flask.Flask(__name__)
+
 
 SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
 #Database Code 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-#App configuration
-app.config['UPLOAD_FOLDER']= basedir+ "/static/uploads"
-app.config['MAX_CONTENT_PATH']= 150000
-app.config['SERVER_NAME'] = "127.0.0.1:5000"
-app.config['DEBUG']= True
-app.config['TEMPLATES_AUTO_RELOAD']= True
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+
+def create_app():
+    #App configuration
+    app = flask.Flask(__name__)
+    app.config['UPLOAD_FOLDER']= basedir+ "/static/uploads"
+    app.config['MAX_CONTENT_PATH']= 150000
+    app.config['SERVER_NAME'] = "127.0.0.1:5000"
+    app.config['DEBUG']= True
+    app.config['TEMPLATES_AUTO_RELOAD']= True
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY", default="supersecretkey")
+   
+    return app
+
+app= create_app()
 socketio= SocketIO(app, cors_allowed_origins='*')
 
 """
@@ -161,6 +168,14 @@ def login():
   if not session.get("user"):
     return render_template("login.html")
   return redirect('/home')
+  
+#Logs out current session  
+@app.route('/logout')
+def logout():
+   if not session.get("user"):
+    return render_template("login.html")
+   session['user'] = ""  
+   return redirect('/')
 
 @app.route('/login', methods=["POST"])
 def trylogin():
@@ -170,7 +185,10 @@ def trylogin():
   login = db.login(user, password)
   if (login != False):
     session['user'] = login
-    return redirect('/home')
+    if(session['user']['username'] == "TestUser1"):
+        return logout()
+    else:
+        return redirect('/home')
   else:
     return render_template("login.html", alarm="1")
     
