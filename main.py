@@ -292,8 +292,7 @@ def currentGroups():
 def saveUserMessage(json):
     print('received message: ' + str(json))
     db.saveMessage(json, session.get("user").get("_id"))
-    
-        
+          
 @app.route('/profile', methods = ["GET", "POST"])
 def userProfile():
     if not session.get("user"):
