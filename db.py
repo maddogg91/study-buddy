@@ -158,7 +158,7 @@ def existingChats(keyword, criteria):
         for result in results:
             group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-            returnedGroups.append(group) 
+            returnedGroups.append(json.loads(json.dumps(group.__dict__))) 
         return returnedGroups
     except:
          print("Error with Group Chat search")

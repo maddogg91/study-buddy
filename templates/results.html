@@ -68,36 +68,66 @@
 		<br>
 	{%endfor%}
 	<!-- For loop for group search results -->
-	
-	  {%for i in range(0, len)%}
-	  
-		<div class="card" style="width: 18rem;">
-		<img class="card-img-top" id="pp" src="/static/uploads/{{results[i].photo}}">
-			<div class="card-body">
-			<h5 class="card-title">{{results[i].name}}</h5>
-			<p class="card-text">{{results[i].description}}</p>
-			<div class="card-body">
-				<a href="#" id= "join" class="card-link">Join Group</a>
-				<a href="#" class="card-link">Exit</a>
-		</div></div>
+		<div id= "card-holder">
 	  </div>
-	  <br>
-	{%endfor%}
+
 
 	<script>
-		function createItemTemplate(item) {
-  
-  const img= document.createElement("img");
-  img.classList.add('card-img-top');
-  //Placeholder until I add correct parse for results
-  img.src= "/static/uploads/defg.png";
-  
-  return img;
-}
-		// When the user clicks on div, open the popup
-		document.getElementById("join").onclick= function() {
-			alert(getIndexOfChat());
+	const res = JSON.parse('{{results | tojson}}');
+	 const div = document.querySelector("#card-holder");
+	 $(window).ready(function() {
+		
+		  for(let i=0; i < res.length; i++){
+		  const img = createImg(res[i]);
+		  const cardbody= createCardBody(res[i]);
+		  const card= document.createElement("div");
+		  card.classList.add("card");
+		  card.style= "width: 18rem;";
+		  card.appendChild(img);
+		  card.appendChild(cardbody);
+		  div.appendChild(card);
+		  div.appendChild(document.createElement("br"));
+		  }
+	});
+	 function createImg(item) {
+		const img= document.createElement("img");
+		//creates image object
+		img.classList.add('card-img-top');
+		img.src= "/static/uploads/"+ item.photo;
+		//creates 
+		return img;
 		}
+	  function createCardBody(item){
+		//div card body -> h5 card title &  p card text & (div card body -> a href Join Group & a href Exit)
+		const body= document.createElement("div");
+		const body2= document.createElement("div");
+		const title= document.createElement("h5");
+		const p= document.createElement("p");
+		const join= document.createElement("a");
+		const exit= document.createElement("a");
+		const node= document.createTextNode(item.name);
+		const text= document.createTextNode(item.description);
+		body.classList.add('card-body');
+		body2.classList.add('card-body');
+		title.classList.add('card-title');
+		title.appendChild(node);
+		p.appendChild(text);
+		p.classList.add('card-text');
+		join.href= "#";
+		exit.href= "#";
+		join.appendChild(document.createTextNode("JOIN GROUP"));
+		exit.appendChild(document.createTextNode("EXIT"));
+		join.classList.add('card-link');
+		exit.classList.add('card-link');
+		body2.appendChild(join);
+		body2.appendChild(exit);
+		body.appendChild(title);
+		body.appendChild(p);
+		body.appendChild(body2);
+		return body;
+	  }
+    
+			
 	</script>
 	
 	
