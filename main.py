@@ -14,9 +14,10 @@ from threading import Lock
 import json
 
 
-THREAD = None
-thread_lock = Lock()
-
+thread= None
+thread_lock= Lock()
+#returns list of all users
+active_users= db.get_users()
 
 
 SCOPES = ['https://www.googleapis.com/auth/calendar',
@@ -159,15 +160,19 @@ def signUp():
 @app.route('/signUp',methods=['POST'])
 
 def trysignUp():
-    """routing to to signup"""
+    """routing to to signup"""  
+    active_usernames=[]
+    for user in active_users:
+        active_usernames.append(user["username"])
+    if(request.form["name"] in active_usernames):
+        return render_template("signUp.html", alarm="1") 
     signup = User().signUp()
     if signup == True:
         session["user"] = signup
         return render_template("home.html")
     else:
-        return render_template("signUp.html", alarm="1")
-
-
+        return render_template("signUp.html", alarm="1") 
+    
 @app.route('/changeInfo', methods=['POST'])
 def changeInfo():
     """Changing user info"""
@@ -228,11 +233,19 @@ def home():
     """routing to Home"""
     if not session.get("user") and not session.get("email"):
         return redirect('/')
+    if not session.get("groups"):
+        groups= []
+    #Searches db for groups by user id 
+    userchats= db.userChats(session.get("user").get("_id"))
+    #Need a route to send to a page without userchats for chats under 1
+    if len(userchats) > 0:
+        for userchat in userchats:
+            groups.append(userchat["_id"])    
+    session["groups"]= groups
     if session.get("user").get("username"):
         return render_template("home.html", user=session.get("user").get("username"))
     if session.get("user").get("email"):
         return render_template("home.html", user= session.get("user").get("email"))
-
 
 @app.route('/search')
 def search():
@@ -241,10 +254,10 @@ def search():
 
 
 @app.route('/search1', methods=["GET"])
-
 def searchDB():
     """routing to searchDB"""
     query= request.args.get('query')
+    key= ""
     query= query.split(": ")
     if len(query) < 2:
         results = db.existingChats(query[0], "name")
@@ -253,22 +266,31 @@ def searchDB():
         keyword = query[1]
         chats= []
         #searches DB by username
-        if flter == "user":
-            results = db.searchUsers(keyword, "username")
-        # searches DB by group name
-        elif flter == "group":
-            results = db.existingChats(keyword, "name")
-        # searches DB by group description
-        elif flter == "gdesc":
-            results = db.existingChats(keyword, "description")
-        # search DB by user messages coming soon
+        if flter== "user":
+            results, profiles= db.searchUsers(keyword, "username")
+            key= "user"
+        #searches DB by group name    
+        elif flter== "group":
+            results= db.existingChats(keyword, "name")
+            key= "group"
+        #searches DB by group description    
+        elif flter== "gdesc":
+            results= db.existingChats(keyword, "description")
+            key= "group"
+        #search DB by user messages coming soon    
     if results != "No results found...":
-        return render_template("results.html", len= len(results),
-        results= results)
-    else:
-        return render_template("results.html", len=0, results=results)
-
-
+        if key== "user":
+            res= {
+                "results" : results,
+                "profiles": profiles
+            }
+            return render_template("results.html", groups=[], results= res, key= key)
+        else:
+            return render_template("results.html",
+            results= results, groups= session.get("groups"), key= key)
+    else: 
+        return render_template("results.html", groups=[], results= [], key= key)
+        
 @app.route('/settings')
 def setting():
     """routing to SETTINGS"""
@@ -361,8 +383,15 @@ def userProfile():
             upload(photo)
         db.saveUserProfile(session.get("user").get("_id"), request)
     profile= db.userProfile(session.get("user").get("_id"))
-    return render_template("profile.html", profile=profile)
-
+    return render_template("profile.html", profile= profile)
+     
+@app.route('/join', methods = ["POST"])
+def joingroup():
+    if request.method == "POST":
+        value= request.form['join']
+        db.joingroup(value, session.get("user").get("_id"))
+        return redirect('/existingGroups')
+        
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':

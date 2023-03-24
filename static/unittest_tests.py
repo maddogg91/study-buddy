@@ -1,10 +1,12 @@
 import unittest # Default python library for unit testing
+import pymongo
 from passlib.hash import pbkdf2_sha256
 from unittest.mock import MagicMock # allows a mock of the database
 from pymongo import MongoClient # the actual database
+import mongomock
+import bson
 
 class Test(unittest.TestCase):
-
     #unmocked unit test for password encryption used for encrypting user passwords 
 
     def test_pbkdf2_sha256(self):
@@ -61,8 +63,46 @@ class TestGroupInput(unittest.TestCase):
             "createTimestamp": "2023-02-15T21:44:20.835+00:00",
             "messages": [] }
         
-        self.assertFalse(is_requiredphoto(mock_doc))   
-    
+        self.assertFalse(is_requiredphoto(mock_doc))
+       
+    # validating that the syntax of our user's profile is correct
+    class TestMongo(unittest.TestCase):
+        # setting up a mock database
+            def setUp(self):
+                self.mongo_client = mongomock.MongoClient()
+                self.db = self.mongo_client['test_db']
+                self.collection = self.db['test_collection']
+
+            def test_insert_one(self):
+                # Insert a document into the collection
+                self.collection.insert_one({
+                    "_id":  "63ffa570fe83",
+                    "userId":  "e7aajageydvay443bc9a4d6",
+                    "fname" : "Robert",
+                    "lname": "Charity",
+                    "birthdate":  "May-8-1991",
+                    "age": "32"
+                    })
+
+                # Define the expected schema for the collection
+                expected_schema = {
+                    "_id":  str,
+                    "userId":  str,
+                    "fname" : str,
+                    "lname": str,
+                    "birthdate":  str,
+                    "age": int
+                }
+
+                # Retrieve the schema of the collection
+                collection_schema = {}
+                for doc in self.collection.find():
+                    for key, value in doc.items():
+                        if key not in collection_schema:
+                            collection_schema[key] = type(value)
+
+                # Compare the expected schema with the actual schema
+                self.assertDictEqual(expected_schema, collection_schema)
 
 if __name__ == "__main__":
     # You can run this file using:   python unittest_tests.py
