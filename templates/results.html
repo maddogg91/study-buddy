@@ -59,45 +59,57 @@
 		
 	</script>
     </div>  
-	Search results: {{len}} found
+	
 	<br><br><br><br>
-	<!-- For loop for user search results -->
-	{%for i in range(0, len)%}
-		<h4>{{results[i].username}}
-		</h4>
-		<br>
-	{%endfor%}
+
 	<!-- For loop for group search results -->
 		<div id= "card-holder">
 	  </div>
-
+		<form id= "join" action="/join" method="POST"><input id="txt" style="display: none" type="text" class="form-control" name= "join" >
+		</input></form>
 
 	<script>
-	const res = JSON.parse('{{results | tojson}}');
+	 var res = JSON.parse('{{results | tojson}}');
+	 var prof = "";
+	 var key= JSON.parse('{{key | tojson}}');
+	 var groupList= [];
+	 if(String(key) === "group"){
+		 groupList= JSON.parse('{{groups | tojson}}');
+	 }
+	 else{
+		prof= res.profiles;
+		res= res.results;
+	 }
 	 const div = document.querySelector("#card-holder");
 	 $(window).ready(function() {
-		
 		  for(let i=0; i < res.length; i++){
-		  const img = createImg(res[i]);
-		  const cardbody= createCardBody(res[i]);
-		  const card= document.createElement("div");
-		  card.classList.add("card");
-		  card.style= "width: 18rem;";
-		  card.appendChild(img);
-		  card.appendChild(cardbody);
-		  div.appendChild(card);
-		  div.appendChild(document.createElement("br"));
+			const img = createImg(res[i], String(key), i);
+			const cardbody= createCardBody(res[i], i);
+			const card= document.createElement("div");
+			card.classList.add("card");
+			card.id= "card"+i;
+			card.style= "width: 18rem;";
+			card.appendChild(img);
+			card.appendChild(cardbody);
+			div.appendChild(card);
+			div.appendChild(document.createElement("br"));
 		  }
 	});
-	 function createImg(item) {
+	 function createImg(item, key, i) {
 		const img= document.createElement("img");
 		//creates image object
 		img.classList.add('card-img-top');
-		img.src= "/static/uploads/"+ item.photo;
+		if(key=== "group"){
+			img.src= "/static/uploads/"+ item.photo;
+		}
+		if(key=== "user"){
+			img.src= "/static/uploads/" + prof[i].photo;
+		}
 		//creates 
 		return img;
 		}
-	  function createCardBody(item){
+	
+	  function createCardBody(item, value){
 		//div card body -> h5 card title &  p card text & (div card body -> a href Join Group & a href Exit)
 		const body= document.createElement("div");
 		const body2= document.createElement("div");
@@ -105,19 +117,47 @@
 		const p= document.createElement("p");
 		const join= document.createElement("a");
 		const exit= document.createElement("a");
-		const node= document.createTextNode(item.name);
-		const text= document.createTextNode(item.description);
+		if(String(key)=== "group"){
+		var node= document.createTextNode(item.name);
+		var text= document.createTextNode(item.description);
+		}
+		if(String(key)=== "user"){
+		node= document.createTextNode(prof[value].name);
+		text= document.createTextNode(prof[value].description);
+		}
+	
 		body.classList.add('card-body');
 		body2.classList.add('card-body');
 		title.classList.add('card-title');
 		title.appendChild(node);
 		p.appendChild(text);
 		p.classList.add('card-text');
-		join.href= "#";
+		
 		exit.href= "#";
-		join.appendChild(document.createTextNode("JOIN GROUP"));
-		exit.appendChild(document.createTextNode("EXIT"));
+		if(String(key)=== "group"){
+			if(groupList.includes(item._id)){
+			join.appendChild(document.createTextNode("CURRENT MEMBER"));
+			
+		}
+		else{
+			join.href= "#";
+			join.appendChild(document.createTextNode("JOIN GROUP"));
+			
+		}
+		}
+		
+		exit.appendChild(document.createTextNode("DISMISS"));
 		join.classList.add('card-link');
+		
+		join.addEventListener('click', (event) => {
+			document.getElementById("txt").setAttribute('value', item._id);
+			document.getElementById("join").submit();
+		});
+		exit.addEventListener('click', (event) => {
+			const card= document.querySelector("#card"+value);
+			card.remove();
+
+		});
 		exit.classList.add('card-link');
 		body2.appendChild(join);
 		body2.appendChild(exit);
