@@ -146,7 +146,7 @@ def google_callback():
         session["email"] = claims["email"]
         session["user"] = db.googleSignup(session.get("email"))
         session["type"] = 'google'
-        return flask.redirect('/home')
+        return redirect('/home')
 
     except KeyError:
         return redirect(url_for("/home"))
