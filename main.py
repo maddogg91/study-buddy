@@ -16,7 +16,8 @@ import json
 
 thread= None
 thread_lock= Lock()
-
+#returns list of all users
+active_users= db.get_users()
 
 
 SCOPES = ['https://www.googleapis.com/auth/calendar',"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email","openid"]
@@ -44,7 +45,6 @@ Stream messages as they come in
 """
 def get_user_messages():
     messages= []
-    print("im here")
     groups= session.get("groups")
     for i in groups:
         messages.append(db.loadGroupMessages(i))
@@ -138,6 +138,11 @@ def signUp():
 @app.route('/signUp',methods=['POST'])
 
 def trysignUp():
+  active_email=[]
+  for user in active_users:
+    active_usernames.append(user["username"])
+  if(request.form["name"] in active_usernames):
+    return render_template("signUp.html", alarm="1") 
   signup = User().signUp()
   if (signup == True):
     session["user"] = signup
@@ -194,6 +199,15 @@ def trylogin():
 def home():
   if not session.get("user") and not session.get("email"):
     return redirect('/')
+  if not session.get("groups"):
+    groups= []
+    #Searches db for groups by user id 
+    userchats= db.userChats(session.get("user").get("_id"))
+    #Need a route to send to a page without userchats for chats under 1
+    if len(userchats) > 0:
+        for userchat in userchats:
+            groups.append(userchat["_id"])    
+    session["groups"]= groups
   if session.get("user").get("username"):
     return render_template("home.html", user=session.get("user").get("username"))
   if session.get("user").get("email"):
@@ -204,10 +218,11 @@ def search():
         return render_template("search.html")
     
 @app.route('/search1', methods=["GET"])
-
 def searchDB():
     query= request.args.get('query')
+    key= ""
     query= query.split(": ")
+  
     if(len(query) < 2):
         results = db.existingChats(query[0], "name")
     else:  
@@ -216,19 +231,29 @@ def searchDB():
         chats= []
         #searches DB by username
         if(flter== "user"):
-            results= db.searchUsers(keyword, "username")
+            results, profiles= db.searchUsers(keyword, "username")
+            key= "user"
         #searches DB by group name    
         elif(flter== "group"):
             results= db.existingChats(keyword, "name")
+            key= "group"
         #searches DB by group description    
         elif(flter== "gdesc"):
             results= db.existingChats(keyword, "description")
+            key= "group"
         #search DB by user messages coming soon    
     if results != "No results found...":
-        return render_template("results.html", len= len(results),
-        results= results)
+        if(key== "user"):
+            res= {
+                "results" : results,
+                "profiles": profiles
+            }
+            return render_template("results.html", groups=[], results= res, key= key)
+        else:
+            return render_template("results.html",
+            results= results, groups= session.get("groups"), key= key)
     else: 
-        return render_template("results.html", len = 0, results= results)
+        return render_template("results.html", groups=[], results= [], key= key)
         
 @app.route('/settings')
 def setting():
@@ -292,8 +317,7 @@ def currentGroups():
 def saveUserMessage(json):
     print('received message: ' + str(json))
     db.saveMessage(json, session.get("user").get("_id"))
-    
-        
+          
 @app.route('/profile', methods = ["GET", "POST"])
 def userProfile():
     if not session.get("user"):
@@ -310,6 +334,13 @@ def userProfile():
     profile= db.userProfile(session.get("user").get("_id"))
     return render_template("profile.html", profile= profile)
      
+@app.route('/join', methods = ["POST"])
+def joingroup():
+    if request.method == "POST":
+        value= request.form['join']
+        db.joingroup(value, session.get("user").get("_id"))
+        return redirect('/existingGroups')
+        
 #created a reloader for easier code running in localhost
 #debug to find bugs
 if __name__=='__main__':

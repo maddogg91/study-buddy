@@ -121,19 +121,31 @@ def search(keyword, criteria, collection):
         #return specified results
         query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
         return col.find(query)
-    
+
+def get_users():
+    return db.users.find()
+ 
 def searchUsers(keyword, criteria):
     foundUsers= []
+    profiles= []
     try:
         results= search(keyword, criteria, "users")
-        #print(results)
+      
         for result in results:
-            
-            foundUsers.append(result) 
-        return foundUsers
+            print(result["_id"])
+            profile= db.profile.find_one({"userId": result["_id"]})
+            foundUsers.append(result)
+            print(profile)
+            primary_info= {
+                "name" : profile["fname"] + " " + profile["lname"], 
+                "photo" : profile["profilepic"],
+                "description": profile["bio"]
+            }
+            profiles.append(primary_info)
+        return foundUsers, profiles
     except:
          print("Error with users search")
-         return "No results found..."
+         return "No results found...", ""
 
 def createChat(data, file, _id):
     groupDB = db["groupchat"]
@@ -158,7 +170,7 @@ def existingChats(keyword, criteria):
         for result in results:
             group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-            returnedGroups.append(group) 
+            returnedGroups.append(json.loads(json.dumps(group.__dict__))) 
         return returnedGroups
     except:
          print("Error with Group Chat search")
@@ -313,5 +325,12 @@ def saveMessage(data, _id):
     groupchat["messages"][0].append(str(message["_id"]))
     db.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
     
-
+def joingroup(gid, uid):
+    groupchat= db.groupchat.find_one({"_id": ObjectId(gid)})
+    user = {
+            "id": uid,
+            "permissionType": "user"
+    }
+    groupchat["users"].append(user)
+    db.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
 
