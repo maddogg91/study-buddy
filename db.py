@@ -96,9 +96,9 @@ class User:
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         #if user already signed up with error address they will have error
         if db.users.find_one({"email":user['email']}):
-           return False
+           return False, db.users.find_one({"email":user['email']})
         if db.users.insert_one(user):
-            return True
+            return True, db.users.find_one({"email":user['email']})
 
 def googleSignup(email):
     google= db.googleUsers.find_one({"email": email})
@@ -159,7 +159,8 @@ def createChat(data, file, _id):
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
         "createTimestamp": datetime.datetime.now(),
-        "messages": []
+        #Creates default message
+        "messages": [["641df8d9b1292a0a0e1c2781"]]
     }
     return groupDB.insert_one(newChat)
 
