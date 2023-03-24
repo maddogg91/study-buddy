@@ -9,12 +9,12 @@
 
 /* Create Study Group */
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&family=Nunito:wght@400;900&family=Roboto:wght@400;900&display=swap");
+
 body{
-    position: relative;
-    width: 1440px;
-    height: 973px;
-    
-    background: #DAB49D;
+    background: linear-gradient(to right, #5e3023, #f9ca24);
+    overflow-x: hidden;
+    box-sizing: border-box;
     }
     
     /* C08552 */
@@ -171,82 +171,74 @@ body{
         padding: 14px 16px;
         text-decoration: none;
       }
+
+      .container{
+        background: #fff;
+        width: 950px;
+        height: 620px;
+        margin: 0 auto;
+        position: relative;
+        margin-top: 5%;
+        box-shadow: 2px 5px 20px rgba(119,119,.5);
+      }
+      .leftbox{
+        float: left;
+        top: -15px;
+        right: 70%;
+        position: absolute;
+        width: 20%;
+        height: 110%;
+        background: #dab49d;
+        box-shadow: 3px 3px 10px 
+        rgba(119,119,119,.5);
+        border: .1em solid #fff;
+        
+    }
+    .btn{
+      width: 180px;
+      height: 92px;
+      
+      border: none;
+      margin-bottom: 20px;
+      margin-left: 10px;
+      font-size: 25px;
+      border-radius: 300px;
+      cursor: pointer;
+      border: .1em solid #fff;
+    background: #C08552;
+  
+    }
+    .btn:focus{
+      outline: none;
+    }  
+  .btn:hover{
+    text-decoration:#000000;
+    font-weight: 900;
+}
+h2{
+    width:fit-content;
+    height: 50px;
+    color:#5E3023;
+    border: none;
+    margin-bottom: 60px;
+    margin-left: 60px;
+    font-size: 20px;
+    border-radius:auto;
+    font-family: "Roboto", sans-serif;
+    letter-spacing: 1px;
+    
+    border: 10;
+    background-color: white;
+
+  }
+
+
+
       
 
 
 
-     .container{
-        width: 100%;
-        min-height: 100vh;
-        height: auto;
-        padding: 5%;
-        background-color: white;
-        background-position: center;
-        background-size: cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        padding: 5px;
-        
-       
-  }
-
-  .form{
-    width: 90%;
-    height: auto;
-    min-height: 90vh;
-    padding: 4%;
-    background-color: #DAB49D;
-  
-    background-position: center;
-    background-size:cover;
-    display:flex;
-    border-style: double;
-    
-
-    }
-
-
-  .btn{
-    width: 200px;
-    height: 100px;
-    
-    border: none;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    font-size: 25px;
-    border-radius: 300px;
-    cursor: pointer;
-    border: 20;
-    
-  
-  
-  
-  background: #C08552;
-
-  }
-  .btn:focus{
-    outline: none;
-  }
-  h2{
-    width: 150px;
-    height: 50px;
-    
-    border: none;
-    margin-bottom: 40px;
-    margin-left: 40px;
-    font-size: 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    border: 10;
-    background-color: white;
-
-
-  }
-  .btn:hover {
-    background-color: white;
-  }
+   
 
 
   
