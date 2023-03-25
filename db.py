@@ -12,7 +12,7 @@ import json
 from groupmsg import groupmsg
 
 def connectDB():
-    client = pymongo.MongoClient($DB)
+    client = pymongo.MongoClient(os.environ['DB'])
     db = client["studybuddy"]
     return db
 
