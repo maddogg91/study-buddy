@@ -1,28 +1,29 @@
-import os
-import unittest
+"""load modules"""
+import json
+from bson.objectid import ObjectId
 import pymongo
-import enc
 import uuid
 from passlib.hash import pbkdf2_sha256
-from flask import request
-from Group import Group
 import datetime
-from bson.objectid import ObjectId
-import json
+from flask import request
+import enc
+from Group import Group
 from groupmsg import groupmsg
 
-def connectDB():
+def connect_db():
+    """connect to db"""
     with open('keys/db.txt', 'rb') as p:
         conn = p.read()
     client = pymongo.MongoClient(enc.decrypt(conn))
     db = client["studybuddy"]
     return db
 
-db = connectDB()
+db = connect_db()
 
 def login(user, passw):
+    """attempts login"""
     collection= db["users"]
-    if "@" not in user: 
+    if "@" not in user:
         query = { "username" : user }
     else:
         query = { "email" : user }
@@ -36,8 +37,9 @@ def login(user, passw):
         return False
 
 class Change:
-    def changeInfo(self,id):
-        
+    """Change class"""
+    def change_info(self,id):
+        """attempts change info"""
         collection=db['users']
         # get the user's current password and new password from the form data
         current_password = request.form['current_password']
@@ -59,13 +61,13 @@ class Change:
                             'password':pbkdf2_sha256.encrypt(new_password),
                             'email':new_email,
                             'birthday':new_bday
-                        }                            
+                        }
             )
             return True
         except:
-            return("Password Wrong, Please enter correct password to update information")
-    def googlesettingsInfo(self,id):
-        
+            return "Password Wrong, Please enter correct password to update information"
+    def googlesettingsinfo(self,id):
+        """google settings"""
         collection=db['googleUsers']
         new_username=request.form['new_username']
         new_bday=request.form['new_bday']
@@ -79,11 +81,13 @@ class Change:
                             'username':new_username,
                             'birthday':new_bday
                         }
-                        }                            
+                        }
             )
         return True
-class User:   
-    def signUp(self):
+class User:
+    """User class"""
+    def signup(self):
+        """attempts signup"""
             #Create user obj for submitted fields
         user={
             "_id":uuid.uuid4().hex,
@@ -96,11 +100,12 @@ class User:
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         #if user already signed up with error address they will have error
         if db.users.find_one({"email":user['email']}):
-           return False, db.users.find_one({"email":user['email']})
+            return False, db.users.find_one({"email":user['email']})
         if db.users.insert_one(user):
             return True, db.users.find_one({"email":user['email']})
 
-def googleSignup(email):
+def googlesignup(email):
+    """attempts google signup"""
     google= db.googleUsers.find_one({"email": email})
     if google is not None:
         return google
@@ -109,12 +114,12 @@ def googleSignup(email):
         db.googleUsers.insert_one(query)
         google= db.googleUsers.find_one({"email": email})
         return google
-    
+
 def search(keyword, criteria, collection):
     #selects col or collection based off collection var
     col= db[collection]
     if(keyword=="" or criteria==""):
-        
+
         #return all results
         return col.find()
     else:
@@ -124,17 +129,17 @@ def search(keyword, criteria, collection):
 
 def get_users():
     return db.users.find()
- 
-def searchUsers(keyword, criteria):
-    foundUsers= []
+
+def searchusers(keyword, criteria):
+    foundusers= []
     profiles= []
     try:
         results= search(keyword, criteria, "users")
-      
+
         for result in results:
             print(result["_id"])
             profile= db.profile.find_one({"userId": result["_id"]})
-            foundUsers.append(result)
+            foundusers.append(result)
             print(profile)
             primary_info= {
                 "name" : profile["fname"] + " " + profile["lname"], 
@@ -142,19 +147,19 @@ def searchUsers(keyword, criteria):
                 "description": profile["bio"]
             }
             profiles.append(primary_info)
-        return foundUsers, profiles
+        return foundusers, profiles
     except:
-         print("Error with users search")
-         return "No results found...", ""
+        print("Error with users search")
+        return "No results found...", ""
 
-def createChat(data, file, _id):
-    groupDB = db["groupchat"]
-    newUser = []
+def createchat(data, file, _id):
+    groupdb = db["groupchat"]
+    newuser = []
     user= {"id": _id, "permissionType": "admin"}
-    newUser.append(user)
-    newChat= {
+    newuser.append(user)
+    newchat= {
 
-        "users": newUser,
+        "users": newuser,
         "name": data.form.get("groupName"),
         "description": data.form.get("groupDescription"),
         "photo": file.filename,
@@ -162,39 +167,38 @@ def createChat(data, file, _id):
         #Creates default message
         "messages": [["641df8d9b1292a0a0e1c2781"]]
     }
-    return groupDB.insert_one(newChat)
+    return groupdb.insert_one(newchat)
 
-def existingChats(keyword, criteria):
-    returnedGroups= []
+def existingchats(keyword, criteria):
+    returnedgroups= []
     try:
         results= search(keyword, criteria, "groupchat")
         for result in results:
-            group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+            group= Group(result["_id"], result["name"], result["users"],
+            result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-            returnedGroups.append(json.loads(json.dumps(group.__dict__))) 
-        return returnedGroups
+            returnedgroups.append(json.loads(json.dumps(group.__dict__)))
+        return returnedgroups
     except:
-         print("Error with Group Chat search")
-         return "No results found..."
-         
+        print("Error with Group Chat search")
+        return "No results found..."
+
 def savequiz(data, user):
     coll= db["profile"]
     answers= []
     for i in data:
         answers.append(data[i])
     profile= db.profile.find_one({"userId": user})
-   
-    if(profile!= ""):
-       profile["quizAnswers"]= answers
 
-       coll.replace_one({"userId":profile["userId"]}, profile)
-       return answers
-    else:
-        db.profile.insert({"userId": user, "quizAnswers": answers})
+    if profile != "":
+        profile["quizAnswers"]= answers
+        coll.replace_one({"userId":profile["userId"]}, profile)
         return answers
-        
-        
-def loadGroupMessages(groupId):
+    db.profile.insert({"userId": user, "quizAnswers": answers})
+    return answers
+
+
+def loadgroupmessages(groupId):
     messages= []
     results= []
     try:
@@ -202,15 +206,16 @@ def loadGroupMessages(groupId):
         query= {"_id" : _id }
         #Searches group chat db for groupchat with specified id.
         group= db.groupchat.find_one(query)
-        #Grabs messages Array 
+        #Grabs messages Array
         groupMessages= group['messages'][0]
         #For each message in messages, create results list
         for m in groupMessages:
             results.append(db.messages.find_one(ObjectId(m)))
-            
-        #Each result create group message object which includes groupid, sender, timestamp, and message
+
+        #Each result create group message object which
+        #includes groupid, sender, timestamp, and message
         for result in results:
-           
+
             timestamp= result["createTimestamp"]
             msg = result["message"]
             sender= db.users.find_one(result["sender"])
@@ -223,35 +228,36 @@ def loadGroupMessages(groupId):
             if profile is None:
                 userProfile(sender["_id"])
                 profile= db.profile.find_one({"userId":sender["_id"]})
-                
-            gm= groupmsg(groupId, sender, profile["fname"], profile["lname"], timestamp, msg, profile["profilepic"])
+
+            gm= groupmsg(groupId, sender, profile["fname"], profile["lname"],
+            timestamp, msg, profile["profilepic"])
             messages.append(json.loads(json.dumps(gm.__dict__)))
-        
         return messages
-   
+
     except Exception as e:
         print(e)
         print("No messages found")
-    
-def userChats(username):
+
+def userchats(username):
     returnedGroups= []
     userchats= db.groupchat.find({"users.id": username})
     for result in userchats:
-        group= Group(result["_id"], result["name"], result["users"], result["createTimestamp"], result["description"],
+        group= Group(result["_id"], result["name"], result["users"],
+        result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
         returnedGroups.append(json.loads(json.dumps(group.__dict__)))
-   
+
     return returnedGroups
 
 
-def userProfile(id):
+def userprofile(id):
     profile= search(id, "userId", "profile")
     count= list(profile)
     user=""
     try:
         if len(count) > 0:
             for i in count:
-               user= {
+                user= {
                     "_id": str(i["_id"]),
                      "fname": i["fname"],
                      "lname": i["lname"],
@@ -284,37 +290,37 @@ def userProfile(id):
     except Exception as e:
         print(e)
         return user
-   
-def saveUserProfile(_id, req):
-        print(_id)
-        data= search(_id, "userId", "profile")
-        profile= list(data)
-        profile= profile[0]
-        for i in req.form:
-            if(req.form[i]== ""):
-                print("No change for " + i)
-            else:
-                profile[i]= req.form[i]
-        try:
-            if(req.files["profilepic"].filename== ""):
-                print("No change for Profile Pic")
-                
-            else:
-                profile["profilepic"]= req.files["profilepic"].filename
-        except:
-            print("No update needed for profile photo")
-        db.profile.replace_one({"userId": _id}, profile)
 
-def loadQuizAnswers(_id):
+def saveuserprofile(_id, req):
+    print(_id)
+    data= search(_id, "userId", "profile")
+    profile= list(data)
+    profile= profile[0]
+    for i in req.form:
+        if req.form[i] == "":
+            print("No change for " + i)
+        else:
+            profile[i]= req.form[i]
+    try:
+        if req.files["profilepic"].filename == "":
+            print("No change for Profile Pic")
+
+        else:
+            profile["profilepic"]= req.files["profilepic"].filename
+    except:
+        print("No update needed for profile photo")
+    db.profile.replace_one({"userId": _id}, profile)
+
+def loadquizanswers(_id):
     data= search(_id, "userId", "profile")
     profile= list(data)
     profile= profile[0]
     return profile["quizAnswers"]
-    
-def saveMessage(data, _id):
-   
+
+def savemessage(data, _id):
+
     messageId= str(uuid.uuid4().hex)
-    
+
     message= {
                 "_id": ObjectId(messageId[:24]),
                 "sender": _id,
@@ -325,7 +331,7 @@ def saveMessage(data, _id):
     groupchat= db.groupchat.find_one({"_id": ObjectId(data["group"])})
     groupchat["messages"][0].append(str(message["_id"]))
     db.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
-    
+
 def joingroup(gid, uid):
     groupchat= db.groupchat.find_one({"_id": ObjectId(gid)})
     user = {
@@ -334,4 +340,3 @@ def joingroup(gid, uid):
     }
     groupchat["users"].append(user)
     db.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
-

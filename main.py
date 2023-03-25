@@ -57,7 +57,7 @@ def get_user_messages():
     messages = []
     groups = session.get("groups")
     for i in groups:
-        messages.append(db.loadGroupMessages(i))
+        messages.append(db.loadgroupmessages(i))
     return messages
 
 
@@ -144,7 +144,7 @@ def google_callback():
             CLIENT_ID
         )
         session["email"] = claims["email"]
-        session["user"] = db.googleSignup(session.get("email"))
+        session["user"] = db.googlesignup(session.get("email"))
         session["type"] = 'google'
         return redirect('/home')
 
@@ -166,7 +166,7 @@ def trysignup():
         active_usernames.append(user["username"])
     if request.form["name"] in active_usernames:
         return render_template("signUp.html", alarm="1")
-    sign_up, new_user = User().signUp()
+    sign_up, new_user = User().signup()
     if sign_up is True:
         session["user"] = new_user
         return render_template("home.html")
@@ -176,7 +176,7 @@ def trysignup():
 @app_init.route('/changeInfo', methods=['POST'])
 def changeinfo():
     """Changing user info"""
-    change_info = Change().changeInfo(session.get("user").get("_id"))
+    change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
         session["user"] = change_info
         return "info updated"
@@ -186,7 +186,7 @@ def changeinfo():
 @app_init.route('/changegoogleInfo', methods=['POST'])
 def changegoogleinfo():
     """Changing google account info"""
-    google_add = Change().googlesettingsInfo(session.get("user").get("_id"))
+    google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
         session["user"] = google_add
         return "info added"
@@ -234,7 +234,7 @@ def home():
     if not session.get("user") and not session.get("email"):
         return redirect('/')
     # Searches db for groups by user id
-    userchats = db.userChats(session.get("user").get("_id"))
+    userchats = db.userchats(session.get("user").get("_id"))
     # Need a route to send to a page without userchats for chats under 1
     if len(userchats) > 0:
         for userchat in userchats:
@@ -259,21 +259,21 @@ def searchdb():
     key = ""
     query = query.split(": ")
     if len(query) < 2:
-        results = db.existingChats(query[0], "name")
+        results = db.existingchats(query[0], "name")
     else:
         flter = query[0].strip()
         keyword = query[1]
         # searches DB by username
         if flter == "user":
-            results, profiles = db.searchUsers(keyword, "username")
+            results, profiles = db.searchusers(keyword, "username")
             key = "user"
         # searches DB by group name
         elif flter == "group":
-            results = db.existingChats(keyword, "name")
+            results = db.existingchats(keyword, "name")
             key = "group"
         # searches DB by group description
         elif flter == "gdesc":
-            results = db.existingChats(keyword, "description")
+            results = db.existingchats(keyword, "description")
             key = "group"
         # search DB by user messages coming soon
     if results != "No results found...":
@@ -302,7 +302,7 @@ def quiz():
     """routing to quiz"""
     if not session.get("user"):
         return redirect('/')
-    match = db.loadQuizAnswers(session.get("user").get("_id"))
+    match = db.loadquizanswers(session.get("user").get("_id"))
     return render_template("quiz.html", mm= match)
 
 
@@ -324,7 +324,7 @@ def creategroup():
         userid = session.get("user").get("_id")
         photo = request.files['groupPhoto']
         upload(photo)
-        db.createChat(request, photo, userid)
+        db.createchat(request, photo, userid)
         return redirect('/existingGroups')
     return render_template("createGroup.html")
 
@@ -343,12 +343,12 @@ def current_groups():
     messages = []
     groups = []
     # Searches db for groups by user id
-    userchats = db.userChats(session.get("user").get("_id"))
+    userchats = db.userchats(session.get("user").get("_id"))
     # Need a route to send to a page without userchats for chats under 1
     if len(userchats) > 0:
         for userchat in userchats:
             groups.append(userchat["_id"])
-            messages.append(db.loadGroupMessages(userchat["_id"]))
+            messages.append(db.loadgroupmessages(userchat["_id"]))
         session["groups"] = groups
         return render_template("existingGroups.html",
                                user=session.get("user"),
@@ -362,7 +362,7 @@ def current_groups():
 def save_user_message(message):
     """saves user messages to the database"""
     print('received message: ' + str(message))
-    db.saveMessage(message, session.get("user").get("_id"))
+    db.savemessage(message, session.get("user").get("_id"))
 
 
 @app_init.route('/profile', methods=["GET", "POST"])
@@ -378,8 +378,8 @@ def user_profile():
         else:
             # uploads a photo if given
             upload(photo)
-        db.saveUserProfile(session.get("user").get("_id"), request)
-    profile = db.userProfile(session.get("user").get("_id"))
+        db.saveuserprofile(session.get("user").get("_id"), request)
+    profile = db.userprofile(session.get("user").get("_id"))
     return render_template("profile.html", profile=profile)
 
 
