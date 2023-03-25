@@ -29,7 +29,7 @@
                 </ul>
 				
             </div>
-			<div class="chat" id= "chat" value= 0 style= "visibility: hidden">
+			<div class="chat" id= "chat" value= 0 style= "width: 1400px; visibility: hidden">
                 <div class="chat-header clearfix">
                     <div class="row">
                         <div class="col-lg-6">
@@ -43,16 +43,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-history">
+                <div class="chat-history" style="height: 400px; overflow:auto;">
                     <ul id= "history" class="m-b-0">
                       
                     </ul>
-                </div>
-                <div class="chat-message clearfix">
+					<div class="chat-message clearfix">
                     <div id="m-box" class="input-group mb-0">
                                               
                     </div>
                 </div>
+                </div>
+                
             </div>
             
         </div>
@@ -108,13 +109,8 @@
 	  var socket= io.connect();
 	  socket.on("updateMessages", function(msg){
 		const updatedmsg = JSON.parse(msg);
-		const idx= getIndexOfChat;
-		if(idx == null){
-			idx= 0;
-		}
 		const selectedupdatedmsg= updatedmsg[0];
-		
-		for(let i= 0; i < selectedupdatedmsg.length; i++){
+		for(let i= 0; i < updatedmsg.length; i++){
 			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(selectedupdatedmsg[selectedupdatedmsg.length-1].timestamp)){
 				const new_chat= createMessages(user, updatedmsg[i])
 				history.appendChild(new_chat);
@@ -210,7 +206,6 @@
 				
 			}
 			else{
-			console.log(m);
 			
 			for(let i=0; i < m.length; i++){
 			const chat_history= createMessages(user, m[i]);
@@ -228,10 +223,12 @@
 			send.classList.add('input-group-prepend');
 			const sendbutton= document.createElement("span");
 			const fafa= document.createElement("i");
+			fafa.style= "cursor: pointer";
 			sendbutton.classList.add('input-group-text');
 			var socket= io.connect();
-			sendbutton.addEventListener('click', (event)=>{
+			fafa.addEventListener('click', (event)=>{
 				//Creates message event handler
+				console.log("message sent");
 				var usermessage= document.getElementById('sendmessage').value;
 				var groupchat= res[selected]._id;
 				
@@ -240,6 +237,7 @@
 						message : usermessage
 					});
 				document.getElementById('sendmessage').value= "";
+				
 				//TODO: Add call for appending group messages
 			});
 		
