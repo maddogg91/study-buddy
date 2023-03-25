@@ -29,7 +29,7 @@
                 </ul>
 				
             </div>
-			<div class="chat" id= "chat" value= 0 style= "width: 1400px; visibility: hidden">
+			<div class="chat" id= "chat" value= 0 style= "visibility: hidden">
                 <div class="chat-header clearfix">
                     <div class="row">
                         <div class="col-lg-6">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-history" style="height: 400px; overflow:auto;">
+                <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
                     <ul id= "history" class="m-b-0">
                       
                     </ul>
@@ -80,7 +80,7 @@
 	
 	//Creates variable for chatbox list
 	let chatbox= document.getElementById('card')
-	
+	let time;
 	//Returns current chat id
 	function getIndexOfChat() {
 	let target = getEventTarget(event);
@@ -98,7 +98,7 @@
 	//newer messages.
   $(window).ready(function() {
      
-	  
+	  time= Date.now(); 
 	  const ul = document.querySelector("#card");
 	  for(let i=0; i < res.length; i++){
 	  
@@ -110,11 +110,12 @@
 	  socket.on("updateMessages", function(msg){
 		const updatedmsg = JSON.parse(msg);
 		const selectedupdatedmsg= updatedmsg[0];
+		
 		for(let i= 0; i < updatedmsg.length; i++){
-			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(selectedupdatedmsg[selectedupdatedmsg.length-1].timestamp)){
-				const new_chat= createMessages(user, updatedmsg[i])
-				history.appendChild(new_chat);
-			}
+			//if (Date.parse(selectedupdatedmsg[i].timestamp).getTime()) > (time){
+				//const new_chat= createMessages(user, updatedmsg[i])
+				//history.appendChild(new_chat);
+		//	}
 		}
 		
 		
