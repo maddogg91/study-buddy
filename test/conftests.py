@@ -9,7 +9,7 @@ directory = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(directory)
 
 sys.path.append(parent)
-
+"""
 from main import create_app
 
 @pytest.fixture(scope='module')
@@ -30,3 +30,4 @@ def login_default_user(test_client):
                      follow_redirects=True)
 
     yield  # this is where the testing happens!
+"""
