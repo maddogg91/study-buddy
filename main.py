@@ -329,7 +329,15 @@ def savequiz():
 @app_init.route('/createGroup', methods=["GET", "POST"])
 def creategroup():
     """routing to createGroup"""
-
+    users_list= list(active_users)
+    users_by_username= []
+    for users in users_list:
+        user= {
+            "user" : users["username"],
+            "email": users["email"]
+        }
+        users_by_username.append(user)
+    print(users_by_username)
     if not session.get("user"):
         return redirect('/')
     if request.method == "POST":
@@ -338,7 +346,7 @@ def creategroup():
         upload(photo)
         db.createchat(request, photo, userid)
         return redirect('/existingGroups')
-    return render_template("createGroup.html")
+    return render_template("createGroup.html", userobj= users_by_username)
 
 
 def upload(file):

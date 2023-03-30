@@ -2,6 +2,7 @@
 <html>
     <head> 
         <link rel="stylesheet" href="/static/createGroup.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqBootstrapValidation/1.3.6/jqBootstrapValidation.js"></script>
@@ -45,18 +46,72 @@
         
           <label for="photo" required></label>
           <input type="file" accept="image/png, image/jpeg" name="groupPhoto" class="photoAdder" required>
-      
+		
           <input type="submit" style= "background: transparent; border: none;" value="Create new group chat" class="saveButton">
+		  
         </form>
         <div class="bottompanel">
+		<!-- A button to open the popup form -->
+		<button class="open-button" onclick="openForm()">User Lookup</button>	
         <div class="search-container">
-            <form action="/action_page.php">
-              <input type="text" placeholder="Search.." name="search">
+			
+			<div class="form-popup" id="myForm">
+            <form action="/action_page.php" class="form-container">
+				<h1>Search for users to add</h1>
+              <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search.." name="search">
+			  <ul id="myUL">
+			  <li><a href="#">Adele</a></li>
+			  <li><a href="#">Agnes</a></li>
+
+			  <li><a href="#">Billy</a></li>
+			  <li><a href="#">Bob</a></li>
+
+			  <li><a href="#">Calvin</a></li>
+			  <li><a href="#">Christina</a></li>
+			  <li><a href="#">Cindy</a></li>
+			  </ul>
               <button type="submit"><i class="fa fa-search"></i></button>
+			  <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
+			</div>
+			
             Add Group Members
-          </div></div>
+			
+          </div>
         </div>
+		<script>
+		var users= '{{userobj}}';
+			 $(window).ready(function() {
+				console.log(users);
+			
+			  });
+			function myFunction() {
+			  // Declare variables
+			  var input, filter, ul, li, a, i, txtValue;
+			  input = document.getElementById('myInput');
+			  filter = input.value.toUpperCase();
+			  ul = document.getElementById("myUL");
+			  li = ul.getElementsByTagName('li');
+				
+			  // Loop through all list items, and hide those who don't match the search query
+			  for (i = 0; i < li.length; i++) {
+				a = li[i].getElementsByTagName("a")[0];
+				txtValue = a.textContent || a.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				  li[i].style.display = "";
+				} else {
+				  li[i].style.display = "none";
+				}
+			  }
+			}
+			function openForm() {
+		document.getElementById("myForm").style.display = "block";
+			}
+
+			function closeForm() {
+			  document.getElementById("myForm").style.display = "none";
+			}
+		</script>
     </body>
 </html>
 
