@@ -43,16 +43,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-history">
+                <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
                     <ul id= "history" class="m-b-0">
                       
                     </ul>
-                </div>
-                <div class="chat-message clearfix">
+					<div class="chat-message clearfix">
                     <div id="m-box" class="input-group mb-0">
                                               
                     </div>
                 </div>
+                </div>
+                
             </div>
             
         </div>
@@ -67,6 +68,8 @@
 	//Loads userchats and user 
 	const res = JSON.parse('{{results | tojson}}');
 	const user= JSON.parse('{{user | tojson}}');
+	let tempMessages;
+	let socket;
 	
 	//Gets event target and returns
 	function getEventTarget(e) {
@@ -79,7 +82,12 @@
 	
 	//Creates variable for chatbox list
 	let chatbox= document.getElementById('card')
+	let time;
 	
+	function changeUpdateTime(item){
+		time = item;
+		return time;
+	}
 	//Returns current chat id
 	function getIndexOfChat() {
 	let target = getEventTarget(event);
@@ -87,45 +95,47 @@
 	let nodes = Array.from( li.closest('ul').children ); // get array
 	let index = nodes.indexOf( li ); 
 	selected= index;
-	console.log(selected);
 	return selected;
 	};
 	
+	function findUpdate() {
+		console.log("Updating..." + selected)
+		socket.emit('updateTime', {
+			updateTime: time
+		} );
+		
+		socket.on("updateMessages", function(msg){
+		const updatedmsg = JSON.parse(msg);
+		const checkmsg= updatedmsg[selected];
+		for(let i= 0; i < checkmsg.length; i++){
+			console.log(checkmsg[i]);
+			const history= document.querySelector("#history");
+			const chat_history= createMessages(user, checkmsg[i]);
+			history.appendChild(chat_history);
+			
+		}      
+		});
+	};
+	 
+	 function updateSentMessage() {
+		
+	 };
 	
 	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
   $(window).ready(function() {
-     
-	  
+	  socket= io.connect() 		
 	  const ul = document.querySelector("#card");
+	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
 	  
 	  const item = createItemTemplate(res[i]);
+	  
 	  ul.appendChild(item);
 	  }
 	
-	  var socket= io.connect();
-	  socket.on("updateMessages", function(msg){
-		const updatedmsg = JSON.parse(msg);
-		const idx= getIndexOfChat;
-		if(idx == null){
-			idx= 0;
-		}
-		const selectedupdatedmsg= updatedmsg[0];
-		
-		for(let i= 0; i < selectedupdatedmsg.length; i++){
-			if (Date.parse(updatedmsg[i].timestamp) > Date.parse(selectedupdatedmsg[selectedupdatedmsg.length-1].timestamp)){
-				const new_chat= createMessages(user, updatedmsg[i])
-				history.appendChild(new_chat);
-			}
-		}
-		
-		
-
 	  });
-	
-   });
 	//This function creates messages by the format for each chat separately when called.
    function createMessages(user, item){
     const date= document.createElement("div");
@@ -194,6 +204,7 @@
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
 		selected= getIndexOfChat();
+		findUpdate();
 		if(document.getElementById("chat").style.value == 0){
 			document.getElementById("chat").style.value = 1;
 			document.getElementById("chat").style.visibility = "visible";
@@ -210,28 +221,29 @@
 				
 			}
 			else{
-			console.log(m);
 			
 			for(let i=0; i < m.length; i++){
 			const chat_history= createMessages(user, m[i]);
 			history.appendChild(chat_history);
 				}
 			}
+			
 			const box = document.querySelector("#m-box");
 			while (box.firstChild){
 				box.removeChild(box.firstChild);
 				
 			}
 			const latest= m[m.length-1].timestamp;
-			
+			time= changeUpdateTime(latest);
 			const send= document.createElement("div");
 			send.classList.add('input-group-prepend');
 			const sendbutton= document.createElement("span");
 			const fafa= document.createElement("i");
+			fafa.style= "cursor: pointer";
 			sendbutton.classList.add('input-group-text');
-			var socket= io.connect();
-			sendbutton.addEventListener('click', (event)=>{
+			fafa.addEventListener('click', (event)=>{
 				//Creates message event handler
+				console.log("message sent");
 				var usermessage= document.getElementById('sendmessage').value;
 				var groupchat= res[selected]._id;
 				
@@ -239,7 +251,17 @@
 						group : groupchat,
 						message : usermessage
 					});
+				socket.on('returnMessageResponse', function(response) {
+						const update = JSON.parse(response);
+						const checkmsg= update[0];
+						const history= document.querySelector("#history");
+						time= checkmsg.timestamp;
+						console.log(time);
+						const chat_history= createMessages(user, checkmsg);
+						history.appendChild(chat_history);    
+				});	
 				document.getElementById('sendmessage').value= "";
+				
 				//TODO: Add call for appending group messages
 			});
 		

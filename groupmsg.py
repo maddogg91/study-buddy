@@ -4,7 +4,7 @@ class groupmsg:
         self.lastname= lastname
         self.firstname= firstname
         self.group= group
-        self.timestamp= str(timestamp)
+        self.timestamp= timestamp
         self.message= message
         self.profilepic= profilepic
        
