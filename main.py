@@ -6,6 +6,7 @@ import json
 from flask import Flask, session, render_template, request, redirect, url_for
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
+from datetime import datetime, timedelta
 import requests
 from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
@@ -54,20 +55,22 @@ Stream messages as they come in
 
 def get_user_messages():
     """request messages from user"""
+    time= datetime.strptime(session.get("time"),'%Y-%m-%d %H:%M:%S')
     messages = []
     groups = session.get("groups")
     for i in groups:
-        messages.append(db.loadgroupmessages(i))
+        messages.append(db.messages_by_time(time.timestamp(),i))
     return messages
 
 
 def background_thread():
-    """Calls in the background updateMessages every minute"""
+    """Calls in the background updateMessages every 10 seconds"""
     while True:
+        print("Running get_user_messages")
         socketio.emit('updateMessages', json.dumps(
             get_user_messages(), separators=(',', ':')))
 
-        socketio.sleep(60)
+        socketio.sleep(10)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -84,7 +87,8 @@ client_secrets_file = os.path.join(
 
 session = {
     "start": False,
-    "user": ""
+    "user": "",
+    "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 }
 
 
@@ -99,11 +103,13 @@ def connect():
     """connecting client"""
     global THREAD
     print('Client connected')
+    socketio.start_background_task(background_thread)
 
-    global THREAD
-    with thread_lock:
-        if THREAD is None:
-            THREAD = socketio.start_background_task(background_thread)
+    # global THREAD
+    # with thread_lock:
+        # if THREAD is None:
+            # print('Starting background task')
+            # THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
@@ -112,6 +118,12 @@ def disconnect():
     print("disconnected")
 
 
+@socketio.on('updateTime')
+def update_local_time(time):
+    """updates time"""
+    print('received time: ' + str(time))
+    session["local"]= time
+    
 @app_init.route("/google-login")
 def google_login():
     """loggin in to google"""
@@ -362,8 +374,10 @@ def current_groups():
 def save_user_message(message):
     """saves user messages to the database"""
     print('received message: ' + str(message))
-    db.savemessage(message, session.get("user").get("_id"))
-
+    response= db.savemessage(message, session.get("user").get("_id"))
+    if len(response) > 0:
+        print('sending response: ' + str(message))
+        socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():

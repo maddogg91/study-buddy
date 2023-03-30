@@ -128,9 +128,11 @@ def search(keyword, criteria, collection):
         return col.find(query)
 
 def get_users():
+    """get_users"""
     return db.users.find()
 
 def searchusers(keyword, criteria):
+    """searchusers"""
     foundusers= []
     profiles= []
     try:
@@ -153,6 +155,7 @@ def searchusers(keyword, criteria):
         return "No results found...", ""
 
 def createchat(data, file, _id):
+    """createchat"""
     groupdb = db["groupchat"]
     newuser = []
     user= {"id": _id, "permissionType": "admin"}
@@ -170,6 +173,7 @@ def createchat(data, file, _id):
     return groupdb.insert_one(newchat)
 
 def existingchats(keyword, criteria):
+    """existingchats"""
     returnedgroups= []
     try:
         results= search(keyword, criteria, "groupchat")
@@ -184,6 +188,7 @@ def existingchats(keyword, criteria):
         return "No results found..."
 
 def savequiz(data, user):
+    """savequiz"""
     coll= db["profile"]
     answers= []
     for i in data:
@@ -199,10 +204,12 @@ def savequiz(data, user):
 
 
 def loadgroupmessages(groupId):
+    """loadgroupmessages"""
     messages= []
     results= []
     try:
         _id= ObjectId(groupId)
+        
         query= {"_id" : _id }
         #Searches group chat db for groupchat with specified id.
         group= db.groupchat.find_one(query)
@@ -238,7 +245,21 @@ def loadgroupmessages(groupId):
         print(e)
         print("No messages found")
 
+def messages_by_time(timestamp, group_id):
+    """messages by time"""
+    messages_sort= []
+    messages= loadgroupmessages(group_id)
+    print("attempting to update")
+    for message in messages:
+        #Checks timestamp of the messages and removes older messages
+        msg_ts= datetime.datetime.strptime(message["timestamp"],'%Y-%m-%d %H:%M:%S')
+        if timestamp <= msg_ts.timestamp():
+            messages_sort.append(message)
+    print(messages_sort)        
+    return messages_sort
+
 def userchats(username):
+    """userchats"""
     returnedGroups= []
     userchats= db.groupchat.find({"users.id": username})
     for result in userchats:
@@ -251,6 +272,7 @@ def userchats(username):
 
 
 def userprofile(id):
+    """userprofile"""
     profile= search(id, "userId", "profile")
     count= list(profile)
     user=""
@@ -292,6 +314,7 @@ def userprofile(id):
         return user
 
 def saveuserprofile(_id, req):
+    """saveuserprofile"""
     print(_id)
     data= search(_id, "userId", "profile")
     profile= list(data)
@@ -312,27 +335,37 @@ def saveuserprofile(_id, req):
     db.profile.replace_one({"userId": _id}, profile)
 
 def loadquizanswers(_id):
+    """loadquizanswers"""
     data= search(_id, "userId", "profile")
     profile= list(data)
     profile= profile[0]
     return profile["quizAnswers"]
 
 def savemessage(data, _id):
-
+    """save messages"""
     messageId= str(uuid.uuid4().hex)
-
+    response= []
+    time= datetime.datetime.now()
+    time= time.strftime("%Y-%m-%d %H:%M:%S")
     message= {
                 "_id": ObjectId(messageId[:24]),
                 "sender": _id,
-                "createTimestamp": datetime.datetime.now(),
+                "createTimestamp": time,
                 "message": data["message"]
     }
     db.messages.insert_one(message)
     groupchat= db.groupchat.find_one({"_id": ObjectId(data["group"])})
     groupchat["messages"][0].append(str(message["_id"]))
     db.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
+    user_message= loadgroupmessages(str(groupchat["_id"]))
+    for filter_message in user_message:
+        if filter_message["message"] == data["message"]:
+            print("match!")
+            response.append(filter_message)
+    return response
 
 def joingroup(gid, uid):
+    """joingroup"""
     groupchat= db.groupchat.find_one({"_id": ObjectId(gid)})
     user = {
             "id": uid,
@@ -340,3 +373,10 @@ def joingroup(gid, uid):
     }
     groupchat["users"].append(user)
     db.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
+    
+# def test(message):
+    # msg_ts= datetime.datetime.strptime(message,'%Y-%m-%d %H:%M:%S' )
+    # print(msg_ts.timestamp())
+    
+
+# test("2023-02-21 05:00:00")
