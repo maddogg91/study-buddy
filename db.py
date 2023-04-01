@@ -130,6 +130,10 @@ def search(keyword, criteria, collection):
 def get_users():
     """get_users"""
     return db.users.find()
+    
+def get_google():
+    """returns all google_users"""
+    return list(db.googleUsers.find())
 
 def searchusers(keyword, criteria):
     """searchusers"""
@@ -158,10 +162,15 @@ def createchat(data, file, _id):
     """createchat"""
     groupdb = db["groupchat"]
     newuser = []
+    group_users= data.form.get("groupUsers")
+    if len(group_users) > 0:
+        users_by_id= rip_email(group_users)
+        for _uid in users_by_id:
+            _user= {"id": _uid, "permissionType": "user"}
+            newuser.append(_user)
     user= {"id": _id, "permissionType": "admin"}
     newuser.append(user)
     newchat= {
-
         "users": newuser,
         "name": data.form.get("groupName"),
         "description": data.form.get("groupDescription"),
@@ -374,9 +383,14 @@ def joingroup(gid, uid):
     groupchat["users"].append(user)
     db.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
     
-# def test(message):
-    # msg_ts= datetime.datetime.strptime(message,'%Y-%m-%d %H:%M:%S' )
-    # print(msg_ts.timestamp())
-    
-
-# test("2023-02-21 05:00:00")
+def rip_email(data):
+    """rips email from data query"""
+    users= data.split(",")
+    user_list= []
+    for user in users:
+        print(user.split(":::")[0])
+        email= db.users.find_one({"username": user.split(":::")[0]})
+        if email is None:
+            email= db.googleUsers.find_one({"email": user.split(":::")[1]})
+        user_list.append(email["_id"])
+    return user_list

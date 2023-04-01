@@ -46,44 +46,85 @@
         
           <label for="photo" required></label>
           <input type="file" accept="image/png, image/jpeg" name="groupPhoto" class="photoAdder" required>
-		
+		  <input type="text" id= "groupUsers" hidden name="groupUsers" value= "" >	
           <input type="submit" style= "background: transparent; border: none;" value="Create new group chat" class="saveButton">
 		  
         </form>
         <div class="bottompanel">
 		<!-- A button to open the popup form -->
-		<button class="open-button" onclick="openForm()">User Lookup</button>	
+		<button class="open-button" onclick="openForm()">Add members</button>	
         <div class="search-container">
 			
 			<div class="form-popup" id="myForm">
             <form action="/action_page.php" class="form-container">
-				<h1>Search for users to add</h1>
+				<h4>Search for users to add</h4>
               <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search.." name="search">
-			  <ul id="myUL">
-			  <li><a href="#">Adele</a></li>
-			  <li><a href="#">Agnes</a></li>
-
-			  <li><a href="#">Billy</a></li>
-			  <li><a href="#">Bob</a></li>
-
-			  <li><a href="#">Calvin</a></li>
-			  <li><a href="#">Christina</a></li>
-			  <li><a href="#">Cindy</a></li>
-			  </ul>
-              <button type="submit"><i class="fa fa-search"></i></button>
+			  <select id="myUL" name="add" multiple >
+			
+			  </select>
 			  <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
+			
 			</div>
 			
-            Add Group Members
+          
 			
           </div>
         </div>
+		<div id= "user-container" class="user-container">
+			<ul id="user-l">
+				
+			</ul>
+			</div>
 		<script>
-		var users= '{{userobj}}';
+		  Array.prototype.removeByValue = function (val) {
+		  for (var i = 0; i < this.length; i++) {
+			if (this[i] === val) {
+			  this.splice(i, 1);
+			  i--;
+			}
+		  }
+		  return this;
+		}
+
+		var options_clicked= [];
+		var users= JSON.parse('{{userobj | tojson}}');
 			 $(window).ready(function() {
-				console.log(users);
-			
+				const user_list= document.querySelector("#myUL");
+				const container= document.querySelector("#user-l");
+				for (i = 0; i < users.length; i++){
+					const list= document.createElement("option");
+					const text= users[i].user + ":::" + users[i].email
+					const info= document.createTextNode(text);
+					const child= document.createTextNode(text);
+					const item= document.createElement("li");
+					
+					list.addEventListener('click', (event) => {
+					    item.appendChild(child);
+						if(options_clicked.length > -1){
+							
+							document.getElementById("user-container").style.display="block";
+						}
+						else{
+							document.getElementById("user-container").style.display="none";
+						}
+						if (options_clicked.includes(text)){
+							options_clicked.removeByValue(text);
+							console.log(options_clicked);
+							//list.style.display= "none";
+							container.removeChild(item);
+						}
+						else{
+							options_clicked.push(text);
+							 //list.setAttribute('selected', true);
+							console.log(options_clicked);
+							//list.style.display= "block";
+							container.appendChild(item);
+						}
+					});
+					list.appendChild(info);
+					user_list.appendChild(list);
+					}
 			  });
 			function myFunction() {
 			  // Declare variables
@@ -91,25 +132,36 @@
 			  input = document.getElementById('myInput');
 			  filter = input.value.toUpperCase();
 			  ul = document.getElementById("myUL");
-			  li = ul.getElementsByTagName('li');
+			  if(filter.length > 0){
+			    console.log(filter);
+				ul.style.display= "block";
+			  }
+			  else{
+				ul.style.display= "none";
+			  }
+			  li = ul.getElementsByTagName('option');
 				
 			  // Loop through all list items, and hide those who don't match the search query
 			  for (i = 0; i < li.length; i++) {
-				a = li[i].getElementsByTagName("a")[0];
-				txtValue = a.textContent || a.innerText;
-				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				
+				//a = li[i].getElementsByTagName("a")[0];
+				//txtValue = a.textContent || a.innerText;
+				if (filter.length > -1) {
 				  li[i].style.display = "";
 				} else {
 				  li[i].style.display = "none";
 				}
 			  }
 			}
+			
 			function openForm() {
 		document.getElementById("myForm").style.display = "block";
 			}
 
 			function closeForm() {
-			  document.getElementById("myForm").style.display = "none";
+			 document.getElementById("myForm").style.display = "none";
+			 document.getElementById("groupUsers").value= options_clicked;
+			 
 			}
 		</script>
     </body>
