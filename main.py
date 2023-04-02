@@ -19,7 +19,7 @@ THREAD = None
 thread_lock = Lock()
 # returns list of all users
 active_users = db.get_users()
-
+active_google_users= db.get_google()
 
 SCOPES = ['https://www.googleapis.com/auth/calendar',
           "https://www.googleapis.com/auth/userinfo.profile",
@@ -329,7 +329,32 @@ def savequiz():
 @app_init.route('/createGroup', methods=["GET", "POST"])
 def creategroup():
     """routing to createGroup"""
-
+    print(session.get("user"))
+    users_list= list(active_users)
+    for google_users in active_google_users:
+        users_list.append(google_users)
+    try:
+        users_list.remove(session.get("user"))
+    except:
+        print("No users loaded")
+        users_list= list(db.get_users())
+        for google_users in db.get_google():
+            users_list.append(google_users)
+        users_list.remove(session.get("user"))
+    users_by_username= []
+    for users in users_list:
+        try: 
+            user= {
+            "user" : users["username"],
+            "email": users["email"]
+        }
+        except:
+            user= {
+            "user" : users["email"],
+            "email": users["email"]
+        }
+       
+        users_by_username.append(json.loads(json.dumps(user)))
     if not session.get("user"):
         return redirect('/')
     if request.method == "POST":
@@ -338,7 +363,7 @@ def creategroup():
         upload(photo)
         db.createchat(request, photo, userid)
         return redirect('/existingGroups')
-    return render_template("createGroup.html")
+    return render_template("createGroup.html", userobj= users_by_username)
 
 
 def upload(file):
