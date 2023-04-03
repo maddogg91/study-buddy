@@ -11,7 +11,7 @@ body{
     position: absolute;
     width: 554.69px;
     height: 661.04px;
-    left: 81.31px;
+    left: 10.31px;
     top: 317px;
     
     background: #C08552;
@@ -27,7 +27,7 @@ body{
     position: absolute;
     width: 554.69px;
     height: 661.04px;
-    left: 806.31px;
+    left: 625.31px;
     top: 317px;
 
     background: #C08552;
@@ -43,7 +43,7 @@ body{
     position: absolute;
     width: 448px;
     height: 375px;
-    left: 128px;
+    left: 68px;
     top: 390px;
     
     background: #DAB49D;
@@ -57,7 +57,7 @@ body{
     position: absolute;
     width: 448px;
     height: 375px;
-    left: 853px;
+    left: 680px;
     top: 390px;
 
     background: #DAB49D;
@@ -70,7 +70,7 @@ body{
     position: absolute;
     width: 393px;
     height: 345px;
-    left: 527px;
+    left: 400px;
     top: 14px;
     
     background: url(StuddyBuddyLogo.png);
@@ -81,7 +81,7 @@ body{
     position: absolute;
     width: 327px;
     height: 305px;
-    left: 559px;
+    left: 470px;
     top: 34px;
     background: #F3E9DC;
     border: 5px solid #5E3023;
@@ -100,6 +100,7 @@ body{
   font-size: 16px;  
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
+
 .container {
     height: 200px;
     position: relative;
@@ -119,7 +120,7 @@ body{
     position: absolute;
     width: 448px;
     height: 100px;
-    left: 128px;
+    left: 68px;
     top: 826px;
 
     background: #895737;
@@ -132,7 +133,7 @@ body{
     position: absolute;
     width: 448px;
     height: 100px;
-    left: 853px;
+    left: 683px;
     top: 826px;
 
     background: #895737;
@@ -144,7 +145,7 @@ body{
     position: absolute;
     width: 386px;
     height: 48px;
-    left: 159px;
+    left: 100px;
     top: 810px;
 
     font-family: 'Inter';
@@ -161,7 +162,7 @@ body{
     position: absolute;
     width: 386px;
     height: 48px;
-    left: 884px;
+    left: 734px;
     top: 810px;
 
     font-family: 'Inter';
@@ -407,4 +408,32 @@ color: #DAB49D;
 .navbar a:hover {
     background-color: #5E3023;
     position: center;
+}
+
+section{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+.container {
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 2px;
+}
+
+.one{
+    background-image: url("/static/sb_lib.png");
+    overflow-y: auto;
+}
+.two{
+    height: 100vh;
+}
+html{
+    scroll-behavior: smooth;
 }
