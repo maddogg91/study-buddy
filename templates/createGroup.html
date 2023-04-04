@@ -25,23 +25,24 @@
         </style>
     </head>
     <body>
-      <div class="navbar">
-        <ul>
-        <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
-        <li><a href="#"><i class="fa fa-save"></i></a></li></li>
-        <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-        <li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-        </ul>
-        </div>
+		<div class="navbar">
+
+			<ul class="thatlist">
+			<li><a href="/home"><i class="fa fa-home"></a></i></a></li></li>
+		
+			<li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
+			<li><a href="/search"><i class="fa fa-search"></a></i></a></li>
+			</ul>
+			</div>
         <div class="panel"></div>
         <form name="createGroup_form" method = "POST" action="/createGroup" enctype = "multipart/form-data">
           <label for="name" required></label>
 
-          <input type="text" name= "groupName" class="groupName" placeholder="name" required>
+          <input type="text" color="white" name= "groupName" class="groupName" placeholder="name" required>
 
           <p class ="text-danger help-block"></p>
           
-          <label for="description" required></label>
+          <label for="description" color="white" required></label>
           <input type="text" name="groupDescription" class="description" placeholder="description" required>
         
           <label for="photo" required></label>

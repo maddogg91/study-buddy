@@ -4,7 +4,7 @@ body{
   position: relative;
   width: 1440px;
   height: 973px;
-  background: #DAB49D;
+  background: linear-gradient(to right, #5e3023, #f9ca24);
 }
 
 /* C08552 */
@@ -84,9 +84,9 @@ body{
   width: 100%;
   background-color: #895737;
   overflow: hidden;
-}
-  
-.navbar a {
+  }
+    
+  .navbar a {
   float: right;
   width: 20%;
   text-align: center;
@@ -95,13 +95,12 @@ body{
   color: white;
   font-size: 20px;
   position: center;
-}
-
-.navbar a:hover {
+  }
+  
+  .navbar a:hover {
   background-color: #5E3023;
   position: center;
-}
-
+  }
 ul {
   list-style-type: none;
   margin: 0;
@@ -291,7 +290,6 @@ ul.thatlist li{
 }
 
 
-{box-sizing: border-box;}
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
