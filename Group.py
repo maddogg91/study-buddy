@@ -1,5 +1,6 @@
 class Group: # pylint: disable=C0103, R0903, C0114
     """creates basic group"""
+    #Group
     def __init__(self, _id, name, users, created_timestamp, desc, photo, messages):
         """class group attributes"""
         self._id= str(_id)
