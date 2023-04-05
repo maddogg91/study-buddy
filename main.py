@@ -16,6 +16,7 @@ from db import Change, User
 import enc
 
 
+
 THREAD = None
 thread_lock = Lock()
 # returns list of all users
