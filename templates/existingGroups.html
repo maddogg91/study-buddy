@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>Groupchat</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
 <link rel="stylesheet" href="/static/groupchats.css"> 
@@ -105,15 +105,32 @@
 		} );
 		
 		socket.on("updateMessages", function(msg){
+		msgList= res[selected].messages;
 		const updatedmsg = JSON.parse(msg);
 		const checkmsg= updatedmsg[selected];
+		
 		for(let i= 0; i < checkmsg.length; i++){
-			console.log(checkmsg[i]);
-			const history= document.querySelector("#history");
-			const chat_history= createMessages(user, checkmsg[i]);
-			history.appendChild(chat_history);
-			
-		}      
+			if(msgList.includes(checkmsg[i].timestamp)){
+				console.log("Message exists")
+				time= checkmsg[i].timestamp
+			}
+			else{
+				console.log(checkmsg[i]);
+				const history= document.querySelector("#history");
+				if(checkmsg[i].sender._id != user._id){
+					const chat_history= createMessages(user, checkmsg[i]);
+					res.push(checkmsg[i])
+					print(res)
+					history.appendChild(chat_history);
+				}
+			}
+		}	
+		if(checkmsg.length > 0){
+		 time= checkmsg[checkmsg.length-1].timestamp;
+		}
+		else{
+		 console.log("No new updates");
+		}
 		});
 	};
 	 
@@ -233,8 +250,7 @@
 				box.removeChild(box.firstChild);
 				
 			}
-			const latest= m[m.length-1].timestamp;
-			time= changeUpdateTime(latest);
+			
 			const send= document.createElement("div");
 			send.classList.add('input-group-prepend');
 			const sendbutton= document.createElement("span");
@@ -259,6 +275,7 @@
 						console.log(time);
 						const chat_history= createMessages(user, checkmsg);
 						history.appendChild(chat_history);    
+						res.push(checkmsg);
 				});	
 				document.getElementById('sendmessage').value= "";
 				
