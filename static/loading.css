@@ -1,0 +1,18 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppons', sans-serif;
+}
+
+body{
+    background: linear-gradient(to right, #5e3023, #f9ca24);
+    overflow-x: hidden;
+    box-sizing: border-box;
+    }
+
+.loader {
+  position: absolute;
+  left: 38%;
+}
