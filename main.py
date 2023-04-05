@@ -4,6 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from flask import Flask, session, render_template, request, redirect, url_for
+from flask_caching import Cache
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 from datetime import datetime, timedelta
@@ -41,11 +42,13 @@ def create_app():
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.secret_key = os.environ.get(
         "FLASK_SECRET_KEY", default="supersecretkey")
-
+    app.config['CACHE_TYPE'] = "SimpleCache"
+    app.config['CACHE_DEFAULT_TIMEOUT'] = 300
     return app
 
 
 app_init = create_app()
+cache= Cache(app_init)
 socketio = SocketIO(app_init, cors_allowed_origins='*')
 
 """
@@ -64,13 +67,13 @@ def get_user_messages():
 
 
 def background_thread():
-    """Calls in the background updateMessages every 10 seconds"""
+    """Calls in the background updateMessages every 60 seconds"""
     while True:
         print("Running get_user_messages")
         socketio.emit('updateMessages', json.dumps(
             get_user_messages(), separators=(',', ':')))
 
-        socketio.sleep(10)
+        socketio.sleep(60)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -362,7 +365,7 @@ def creategroup():
         photo = request.files['groupPhoto']
         upload(photo)
         db.createchat(request, photo, userid)
-        return redirect('/existingGroups')
+        return redirect('/loading')
     return render_template("createGroup.html", userobj= users_by_username)
 
 
@@ -373,6 +376,7 @@ def upload(file):
 
 
 @app_init.route('/existingGroups', methods=["GET", "POST"])
+@cache.cached(timeout=50)
 def current_groups():
     """routing to currentGroups"""
     if not session.get("user"):
@@ -387,6 +391,7 @@ def current_groups():
             groups.append(userchat["_id"])
             messages.append(db.loadgroupmessages(userchat["_id"]))
         session["groups"] = groups
+        session["load"] = True
         return render_template("existingGroups.html",
                                user=session.get("user"),
                                len=len(userchats),
@@ -429,7 +434,11 @@ def joingroup():
         value = request.form['join']
         db.joingroup(value, session.get("user").get("_id"))
         return redirect('/existingGroups')
-
+        
+@app_init.route('/loading')        
+def loading():        
+    """adds buffer for existing groups loading page"""
+    return render_template("loading.html")
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
