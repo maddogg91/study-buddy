@@ -10,6 +10,9 @@ body{
     overflow: hidden;
     }
       
+.fixtxt{
+  text-align: right;
+}
     .navbar a {
     float: right;
     width: 20%;
