@@ -90,8 +90,6 @@ client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
 session = {
-    "start": False,
-    "user": "",
     "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 }
 
