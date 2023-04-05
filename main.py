@@ -365,7 +365,7 @@ def creategroup():
         photo = request.files['groupPhoto']
         upload(photo)
         db.createchat(request, photo, userid)
-        return redirect('/existingGroups')
+        return redirect('/loading')
     return render_template("createGroup.html", userobj= users_by_username)
 
 
