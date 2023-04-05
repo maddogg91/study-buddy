@@ -23,21 +23,19 @@ def load_key():
 
 def decrypt(message):
     """ decryot a message"""
-    pbk, prk= load_key()
-    pbk= ""
+    pbk, prk= load_key() # pylint: disable=unused-variable
     try:
         return rsa.decrypt(message, prk).decode('ascii')
-    except:
+    except: # pylint: disable=bare-except
         return False
 
 
 def encrypt(message):
     """ encrypt"""
-    pbk, prk= load_key()
-    prk= ""
+    pbk, prk= load_key() # pylint: disable=unused-variable
     try:
         return rsa.encrypt(message.encode('ascii'), pbk)
-    except:
+    except: # pylint: disable=bare-except
         return False
 
 
