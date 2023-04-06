@@ -38,7 +38,7 @@ def create_app():
     app = Flask(__name__)
     app.config['UPLOAD_FOLDER'] = basedir + "/static/uploads"
     app.config['MAX_CONTENT_PATH'] = 150000
-    app.config['SERVER_NAME'] = "127.0.0.1:5000"
+    app.config['SERVER_NAME'] = "studybuddy.fly.dev"
     app.config['DEBUG'] = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.secret_key = os.environ.get(
@@ -59,7 +59,7 @@ Stream messages as they come in
 
 def get_user_messages():
     """request messages from user"""
-    time= datetime.strptime(session.get("time"),'%Y-%m-%d %H:%M:%S')
+    time= datetime.strptime(session.get("local"),'%Y-%m-%d %H:%M:%S')
     messages = []
     groups = session.get("groups")
     for i in groups:
@@ -89,14 +89,10 @@ SECR = enc.decrypt(s)
 client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
-session = {
-    "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-}
-
-
 @app_init.route("/")
 def index():
     """routing to index html"""
+    session["local"]= str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     return render_template("index.html")
 
 
@@ -105,13 +101,13 @@ def connect():
     """connecting client"""
     global THREAD # pylint: disable= W0602
     print('Client connected')
-    socketio.start_background_task(background_thread)
+    
 
-    # global THREAD
-    # with thread_lock:
-        # if THREAD is None:
-            # print('Starting background task')
-            # THREAD = socketio.start_background_task(background_thread)
+    global THREAD
+    with thread_lock:
+        if THREAD is None:
+            print('Starting background task')
+            THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
