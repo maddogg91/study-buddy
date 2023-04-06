@@ -89,14 +89,10 @@ SECR = enc.decrypt(s)
 client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
-session = {
-    "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-}
-
-
 @app_init.route("/")
 def index():
     """routing to index html"""
+    session["time"]= str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     return render_template("index.html")
 
 
