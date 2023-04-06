@@ -101,7 +101,7 @@ def connect():
     """connecting client"""
     global THREAD # pylint: disable= W0602
     print('Client connected')
-    
+
 
     global THREAD
     with thread_lock:
