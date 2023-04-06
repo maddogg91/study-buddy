@@ -1,5 +1,5 @@
 body{
-    background: linear-gradient(to right, #8d3e2b, #f9ca24);
+    background: white;
 }
 
 /*For our logo in the middle*/
@@ -88,8 +88,7 @@ body{
     border-radius: 50%;
 }
 .googleSignup{
-   background-color: transparent;
-   color: #F3E9DC; 
+   background-color: transparent; 
    height:fit-content;
     margin: -25px 0;
   text-align: center;

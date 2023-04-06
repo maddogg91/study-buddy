@@ -1,0 +1,441 @@
+body{
+    background: linear-gradient(to right, #8d3e2b, #f9ca24);
+}
+
+/*For our logo in the middle*/
+
+/* Back segments are the base for each of the user signins, this one is the make account*/
+.firstBackSeg{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 554.69px;
+    height: 661.04px;
+    left: 10.31px;
+    top: 317px;
+    
+    background: #C08552;
+    border: 5px solid #5E3023;
+    border-radius: 20px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+/*Second back segment for old users */
+.secBackSeg{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 554.69px;
+    height: 661.04px;
+    left: 625.31px;
+    top: 317px;
+
+    background: #C08552;
+    border: 5px solid #5E3023;
+    border-radius: 20px;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+/* The User Image boxes hold the temporary avatars*/
+.newUserImage{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 375px;
+    left: 68px;
+    top: 390px;
+    
+    background: #DAB49D;
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+
+.oldUserImage{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 375px;
+    left: 680px;
+    top: 390px;
+
+    background: #DAB49D;
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+.sbLogo{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 393px;
+    height: 345px;
+    left: 400px;
+    top: 14px;
+    
+    background: url(StuddyBuddyLogo.png);
+}
+.logoCircle{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 327px;
+    height: 305px;
+    left: 440px;
+    top: 34px;
+    background: #F3E9DC;
+    border: 5px solid #5E3023;
+    border-radius: 50%;
+}
+.googleSignup{
+   background-color: transparent;
+   color: #F3E9DC; 
+   height:fit-content;
+    margin: -25px 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
+  margin: -25px 0;
+  font-size: 16px;  
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.container {
+  height: 100vh;
+  text-align: center;
+  border: 3px solid green;
+}
+
+.vertical-center {
+  position: center;
+  width: 100%;
+  left: 50%;
+  bottom: 0;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+/* Similar Buttons thawt will allow a user to login or make account*/
+.makeAccButton{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 448px;
+    height: 100px;
+    left: 68px;
+    top: 826px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+}
+
+.oldUserSigninButton{
+    box-sizing: border-box;
+    position: absolute;
+    width: 448px;
+    height: 100px;
+    left: 683px;
+    top: 826px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+}
+
+.innerTextLeft{
+    position: absolute;
+    width: 386px;
+    height: 48px;
+    left: 100px;
+    top: 810px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+.innerTextRight{
+    position: absolute;
+    width: 386px;
+    height: 48px;
+    left: 734px;
+    top: 810px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+/* can not get logo code to work on top of the circle */
+.middleLogo{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 381px;
+    height: 337px;
+    left: -181px;
+    top: -522px;
+    
+    background: url(StudyBuddyLogo.png);
+
+}
+
+/*sign up page */
+.bodySign{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 882px;
+    height: 882px;
+    left: 279px;
+    top: 72px;
+
+    background: #C08552;
+    border: 5px solid #5E3023;
+}
+
+/* Add Profile Pic */
+.proPic{
+    box-sizing: border-box;
+    text-align: center;
+    font-size:150px;
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    left: 550px;
+    bottom: 50px;
+    border-radius: 50%;
+    background: #DAB49D;
+    border: 3px solid #5E3023;
+    color: #5E3023;
+
+}
+
+/* Add-one (添加) */
+span {
+    content: "\002B";
+    font-size: 200px;
+    position:absolute;
+  }
+
+.add{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 652px;
+    top: 146px;
+    color:#5E3023
+
+}
+
+/* Username */
+.userBox{
+box-sizing: border-box;
+
+position: absolute;
+width: 821px;
+height: 77px;
+left: 312px;
+top: 362px;
+    
+background: #895737;
+border: 3px solid #DAB49D;
+border-radius: 20px;
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 36px;
+line-height: 44px;
+text-align: center;
+
+color: #DAB49D;
+}
+
+/* pass entery */
+.passWord{
+position: absolute;
+width: 669px;
+height: 54px;
+left: 388px;
+top: 374px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 36px;
+line-height: 44px;
+text-align: center;
+
+color: #DAB49D;
+}
+
+/* email */
+.email{
+box-sizing: border-box;
+
+position: absolute;
+width: 821px;
+height: 77px;
+left: 312px;
+top: 502px;
+
+background: #895737;
+border: 3px solid #DAB49D;
+border-radius: 20px;
+font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 36px;
+line-height: 44px;
+text-align: center;
+
+color: #DAB49D;
+}
+
+.bday{
+    position: absolute;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 782px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+.sPass{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 502px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+.email{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 821px;
+    height: 77px;
+    left: 312px;
+    top: 642px;
+
+    background: #895737;
+    border: 3px solid #DAB49D;
+    border-radius: 20px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    text-align: center;
+
+    color: #DAB49D;
+}
+
+.saveCircle{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    left: 1187px;
+    top: 820px;
+    background: #5E3023;
+    border-radius: 50%;
+    border: 1px solid #DAB49D;  
+}
+
+.savePosition{
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 1233px;
+    top: 887px;
+}
+
+/*nav bar*/
+.navbar {
+    width: 100%;
+    background-color: #895737;
+    overflow: auto;
+}
+      
+.navbar a {
+    float: right;
+    width: 20%;
+    text-align: center;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;
+    position: center;
+}
+    
+.navbar a:hover {
+    background-color: #5E3023;
+    position: center;
+}
+
+section{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+.container {
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    perspective: 2px;
+}
+
+.one{
+    background-image: url("/static/sb_lib.png");
+    overflow-y: auto;
+}
+.two{
+    height: 100vh;
+}
+html{
+    scroll-behavior: smooth;
+}
