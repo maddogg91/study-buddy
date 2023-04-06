@@ -1,0 +1,47 @@
+.navbar {
+    background-color: #895737;
+    padding-right: 20px;
+    }
+    
+.parent {
+      width: 80%; /* set a fixed width for the parent container */
+      margin: 0 auto; /* center the parent container horizontally */
+}
+    
+.fixtxt{
+  text-align: right;
+}
+    .navbar a {
+    float: right;
+    width: 20%;
+    text-align: center;
+    padding: 20 px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;
+    position: center;
+    }
+    
+    .navbar a:hover {
+    background-color: #5E3023;
+    position: center;
+    width:auto
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    li {
+      float: left; /* Change float to left */
+    }
+    
+    li a {
+      display: block;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    

@@ -5,10 +5,8 @@ body{
     }
     /*nav bar*/
 .navbar {
-    width: 100%;
     background-color: #895737;
-    overflow: hidden;
-    margin-left: 20px;
+    padding-right: 20px;
     }
     
 .parent {
