@@ -1,5 +1,5 @@
 body{
-    background-color: #DAB49D;
+    background: linear-gradient(to right, #8d3e2b, #f9ca24);
 }
 
 /*For our logo in the middle*/
@@ -88,31 +88,33 @@ body{
     border-radius: 50%;
 }
 .googleSignup{
-    background-color: white; 
- position: center;
-  border: none;
-  color: black;
-  padding: 15px 32px;
-  width: 1925px;
+   background-color: transparent;
+   color: #F3E9DC; 
+   height:fit-content;
+    margin: -25px 0;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  width: 100%;
+  margin: -25px 0;
   font-size: 16px;  
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .container {
-    height: 200px;
-    position: relative;
-    border: 3px solid green;
+  height: 100vh;
+  text-align: center;
+  border: 3px solid green;
 }
+
 .vertical-center {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
+  position: center;
+  width: 100%;
+  left: 50%;
+  bottom: 0;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 /* Similar Buttons thawt will allow a user to login or make account*/
 .makeAccButton{
     box-sizing: border-box;

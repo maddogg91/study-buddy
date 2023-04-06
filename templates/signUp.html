@@ -37,11 +37,6 @@
 		</script>
 </head>
 <body>
-   <div class="navbar">
-            <a class="active" href="#"><a href="/login"><i class="fa fa-home"></a></i></a> 
-            <a href="#"><i class="fa fa-save"></i></a> 
-            <a href="#"><a href="/login"><i class="fa fa-gear"></a></i></a>
-          </div>
 
 <form name="signUp_form"method = "POST", action="/signUp">
   <label for="name" required></label>
@@ -50,7 +45,7 @@
 
 
   <label for="birthday" required></label>
-  <input type="date"style= "background: rgb(114, 69, 36); border: none;" name="birthday"class="form-control form-control-lg" placeholder="birthday" required>
+  <input type="date"style= "background: rgb(114, 69, 36); color:white; border: none;" name="birthday"class="form-control form-control-lg" placeholder="birthday" required>
 
 
   <label for="password" required></label>
@@ -61,14 +56,14 @@
   <label for="email" required></label>
   <input type="email" name="email" style= "background: rgb(114, 69, 36); border: none;"class="form-control form-control-lg"placeholder="email" required>
   <p class = "error error--hidden"></p>
-<input type="submit"style= "background: transparent; border: none;" value="Sign Up!" class="saveButton">
+<input type="submit"style= "background: transparent; border: none;color:white;" value="Sign Up!" class="saveButton">
 </form>
 <br>
 <br>
 <div class="'container">
-  <div class="verticlal-center">
+  <div class="vertical-center">
 <a href="{{ url_for('google_login') }}" class="googleSignup">
-  <img src="static\google-icon-logo-png-transparent.png" width="50"height='50'> Sign up with Google 
+  <img src="static\google-icon-logo-png-transparent.png" width="40"height='40'> Sign up with Google 
 </a>
 </div>
 </div>

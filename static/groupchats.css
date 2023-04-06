@@ -61,6 +61,8 @@ body {
     position: absolute;
     left: 0;
     top: 0;
+    
+    background-color: #f6d1b9;
     padding: 20px;
     z-index: 7;
   }
