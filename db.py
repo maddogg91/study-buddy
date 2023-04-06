@@ -1,10 +1,10 @@
 """load modules"""
 import json
+import uuid
+import datetime
 from bson.objectid import ObjectId
 import pymongo
-import uuid
 from passlib.hash import pbkdf2_sha256
-import datetime
 from flask import request
 import enc
 from Group import Group
@@ -12,35 +12,35 @@ from groupmsg import groupmsg
 
 def connect_db():
     """connect to db"""
-    with open('keys/db.txt', 'rb') as p:
-        conn = p.read()
+    with open('keys/db.txt', 'rb') as reader:
+        conn = reader.read()
     client = pymongo.MongoClient(enc.decrypt(conn))
-    db = client["studybuddy"]
-    return db
+    db_studybuddy = client["studybuddy"]
+    return db_studybuddy
 
-db = connect_db()
+db_connection = connect_db()
 
 def login(user, passw):
     """attempts login"""
-    collection= db["users"]
+    collection= db_connection["users"]
     if "@" not in user:
         query = { "username" : user }
     else:
         query = { "email" : user }
     try:
-        loginInfo = collection.find_one(query)
-        pbkdf2_sha256.verify(passw, loginInfo["password"])
-        return loginInfo
+        login_info = collection.find_one(query)
+        pbkdf2_sha256.verify(passw, login_info["password"])
+        return login_info
 
-    except:
+    except: # pylint: disable=bare-except
         print("No user found, please try again.")
         return False
 
 class Change:
     """Change class"""
-    def change_info(self,id):
+    def change_info(self,_id):
         """attempts change info"""
-        collection=db['users']
+        collection=db_connection['users']
         # get the user's current password and new password from the form data
         current_password = request.form['current_password']
         new_password = request.form['new_password']
@@ -51,11 +51,11 @@ class Change:
 
         # check if the current password is correct
         try:
-            user = collection.find_one({'_id': id})
+            user = collection.find_one({'_id': _id})
             pbkdf2_sha256.verify(current_password, user["password"])
                 # replace the user's information in the database
             collection.replace_one(
-                        {'_id': id},
+                        {'_id': _id},
                         {
                             'username':new_username,
                             'password':pbkdf2_sha256.encrypt(new_password),
@@ -64,19 +64,18 @@ class Change:
                         }
             )
             return True
-        except:
+        except: # pylint: disable=bare-except
             return "Password Wrong, Please enter correct password to update information"
-    def googlesettingsinfo(self,id):
+    def googlesettingsinfo(self,_id):
         """google settings"""
-        collection=db['googleUsers']
+        collection=db_connection['googleUsers']
         new_username=request.form['new_username']
         new_bday=request.form['new_bday']
         # get the user's ID from the google users session
-
-        user = collection.find_one({'_id': id})
+        collection.find_one({'_id': _id})
                 # update the user's information in the database
         collection.update_one(
-                        {'_id': id},
+                        {'_id': _id},
                         {"$set":{
                             'username':new_username,
                             'birthday':new_bday
@@ -84,9 +83,9 @@ class Change:
                         }
             )
         return True
-class User:
+class User: # pylint: disable=R0903
     """User class"""
-    def signup(self):
+    def signup(self): # pylint: disable=R1710
         """attempts signup"""
             #Create user obj for submitted fields
         user={
@@ -99,41 +98,38 @@ class User:
         #encryption of data of password
         user['password']=pbkdf2_sha256.encrypt(user['password'])
         #if user already signed up with error address they will have error
-        if db.users.find_one({"email":user['email']}):
-            return False, db.users.find_one({"email":user['email']})
-        if db.users.insert_one(user):
-            return True, db.users.find_one({"email":user['email']})
+        if db_connection.users.find_one({"email":user['email']}):
+            return False, db_connection.users.find_one({"email":user['email']})
+        if db_connection.users.insert_one(user):
+            return True, db_connection.users.find_one({"email":user['email']})
 
 def googlesignup(email):
     """attempts google signup"""
-    google= db.googleUsers.find_one({"email": email})
+    google= db_connection.googleUsers.find_one({"email": email})
     if google is not None:
         return google
-    else:
-        query= {"_id": uuid.uuid4().hex ,"email" : email}
-        db.googleUsers.insert_one(query)
-        google= db.googleUsers.find_one({"email": email})
-        return google
+    query= {"_id": uuid.uuid4().hex ,"email" : email}
+    db_connection.googleUsers.insert_one(query)
+    google= db_connection.googleUsers.find_one({"email": email})
+    return google
 
 def search(keyword, criteria, collection):
+    """Search collection"""
     #selects col or collection based off collection var
-    col= db[collection]
+    col= db_connection[collection]
     if(keyword=="" or criteria==""):
-
         #return all results
         return col.find()
-    else:
-        #return specified results
-        query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
-        return col.find(query)
+    query = { criteria: {'$regex' : keyword , '$options' : 'i'}}
+    return col.find(query)
 
 def get_users():
     """get_users"""
-    return db.users.find()
-    
+    return db_connection.users.find()
+
 def get_google():
     """returns all google_users"""
-    return list(db.googleUsers.find())
+    return list(db_connection.googleUsers.find())
 
 def searchusers(keyword, criteria):
     """searchusers"""
@@ -143,10 +139,8 @@ def searchusers(keyword, criteria):
         results= search(keyword, criteria, "users")
 
         for result in results:
-            print(result["_id"])
-            profile= db.profile.find_one({"userId": result["_id"]})
+            profile= db_connection.profile.find_one({"userId": result["_id"]})
             foundusers.append(result)
-            print(profile)
             primary_info= {
                 "name" : profile["fname"] + " " + profile["lname"], 
                 "photo" : profile["profilepic"],
@@ -154,13 +148,13 @@ def searchusers(keyword, criteria):
             }
             profiles.append(primary_info)
         return foundusers, profiles
-    except:
+    except: # pylint: disable=bare-except
         print("Error with users search")
         return "No results found...", ""
 
 def createchat(data, file, _id):
     """createchat"""
-    groupdb = db["groupchat"]
+    groupdb = db_connection["groupchat"]
     newuser = []
     group_users= data.form.get("groupUsers")
     if len(group_users) > 0:
@@ -192,41 +186,41 @@ def existingchats(keyword, criteria):
             result["photo"], result["messages"])
             returnedgroups.append(json.loads(json.dumps(group.__dict__)))
         return returnedgroups
-    except:
+    except: # pylint: disable=bare-except
         print("Error with Group Chat search")
         return "No results found..."
 
 def savequiz(data, user):
     """savequiz"""
-    coll= db["profile"]
+    coll= db_connection["profile"]
     answers= []
     for i in data:
         answers.append(data[i])
-    profile= db.profile.find_one({"userId": user})
+    profile= db_connection.profile.find_one({"userId": user})
 
     if profile != "":
         profile["quizAnswers"]= answers
         coll.replace_one({"userId":profile["userId"]}, profile)
         return answers
-    db.profile.insert({"userId": user, "quizAnswers": answers})
+    db_connection.profile.insert({"userId": user, "quizAnswers": answers})
     return answers
 
 
-def loadgroupmessages(groupId):
+def loadgroupmessages(group_id): # pylint: disable=R0914, R1710
     """loadgroupmessages"""
     messages= []
     results= []
     try:
-        _id= ObjectId(groupId)
-        
+        _id= ObjectId(group_id)
+
         query= {"_id" : _id }
         #Searches group chat db for groupchat with specified id.
-        group= db.groupchat.find_one(query)
+        group= db_connection.groupchat.find_one(query)
         #Grabs messages Array
-        groupMessages= group['messages'][0]
+        group_messages= group['messages'][0]
         #For each message in messages, create results list
-        for m in groupMessages:
-            results.append(db.messages.find_one(ObjectId(m)))
+        for found_message in group_messages:
+            results.append(db_connection.messages.find_one(ObjectId(found_message)))
 
         #Each result create group message object which
         #includes groupid, sender, timestamp, and message
@@ -234,24 +228,20 @@ def loadgroupmessages(groupId):
 
             timestamp= result["createTimestamp"]
             msg = result["message"]
-            sender= db.users.find_one(result["sender"])
-            if sender is not None:
-                fromsender = sender["username"]
-            else:
-                sender= db.googleUsers.find_one(result["sender"])
-                fromsender = sender["email"]
-            profile= db.profile.find_one({"userId":sender["_id"]})
+            sender= db_connection.users.find_one(result["sender"])
+            if sender is None:
+                sender= db_connection.googleUsers.find_one(result["sender"])
+            profile= db_connection.profile.find_one({"userId":sender["_id"]})
             if profile is None:
-                userProfile(sender["_id"])
-                profile= db.profile.find_one({"userId":sender["_id"]})
-
-            gm= groupmsg(groupId, sender, profile["fname"], profile["lname"],
+                user_profile(sender["_id"])
+                profile= db_connection.profile.find_one({"userId":sender["_id"]})
+            group_message= groupmsg(group_id, sender, profile["fname"], profile["lname"],
             timestamp, msg, profile["profilepic"])
-            messages.append(json.loads(json.dumps(gm.__dict__)))
+            messages.append(json.loads(json.dumps(group_message.__dict__)))
         return messages
 
-    except Exception as e:
-        print(e)
+    except Exception as exeption: # pylint: disable=bare-except, broad-exception-caught
+        print(exeption)
         print("No messages found")
 
 def messages_by_time(timestamp, group_id):
@@ -262,27 +252,26 @@ def messages_by_time(timestamp, group_id):
     for message in messages:
         #Checks timestamp of the messages and removes older messages
         msg_ts= datetime.datetime.strptime(message["timestamp"],'%Y-%m-%d %H:%M:%S')
-        if timestamp <= msg_ts.timestamp():
+        if timestamp < msg_ts.timestamp():
             messages_sort.append(message)
-    print(messages_sort)        
+    print(messages_sort)
     return messages_sort
 
 def userchats(username):
     """userchats"""
-    returnedGroups= []
-    userchats= db.groupchat.find({"users.id": username})
-    for result in userchats:
+    returned_groups= []
+    user_chats= db_connection.groupchat.find({"users.id": username})
+    for result in user_chats:
         group= Group(result["_id"], result["name"], result["users"],
         result["createTimestamp"], result["description"],
             result["photo"], result["messages"])
-        returnedGroups.append(json.loads(json.dumps(group.__dict__)))
+        returned_groups.append(json.loads(json.dumps(group.__dict__)))
+    return returned_groups
 
-    return returnedGroups
 
-
-def userprofile(id):
+def user_profile(_id):
     """userprofile"""
-    profile= search(id, "userId", "profile")
+    profile= search(_id, "userId", "profile")
     count= list(profile)
     user=""
     try:
@@ -301,30 +290,27 @@ def userprofile(id):
                      "quizAnswers": i["quizAnswers"]
                 }
             return user
-        else:
-            user= {
-                    "_id": uuid.uuid4().hex,
-                     "userId": str(id),    
-                     "fname": "",
-                     "lname": "",
-                     "major": "",
-                     "minor": "",
-                     "status": "",
-                     "gender": "",
-                     "profilepic": "defG.png",
-                     "bio": "",
-                     "quizAnswers": ""
-            }
-            db.profile.insert_one(user)
-            user._id = str(user._id)
-            return user
-    except Exception as e:
-        print(e)
+        user= {
+                "_id": uuid.uuid4().hex,
+                 "userId": str(_id),    
+                 "fname": "",
+                 "lname": "",
+                 "major": "",
+                 "minor": "",
+                 "status": "",
+                 "gender": "",
+                 "profilepic": "defG.png",
+                 "bio": "",
+                 "quizAnswers": ""
+        }
+        db_connection.profile.insert_one(user)
+        return user
+    except Exception as exeption: # pylint: disable=bare-except, broad-exception-caught
+        print(exeption)
         return user
 
 def saveuserprofile(_id, req):
     """saveuserprofile"""
-    print(_id)
     data= search(_id, "userId", "profile")
     profile= list(data)
     profile= profile[0]
@@ -339,9 +325,9 @@ def saveuserprofile(_id, req):
 
         else:
             profile["profilepic"]= req.files["profilepic"].filename
-    except:
+    except: # pylint: disable=bare-except
         print("No update needed for profile photo")
-    db.profile.replace_one({"userId": _id}, profile)
+    db_connection.profile.replace_one({"userId": _id}, profile)
 
 def loadquizanswers(_id):
     """loadquizanswers"""
@@ -352,20 +338,20 @@ def loadquizanswers(_id):
 
 def savemessage(data, _id):
     """save messages"""
-    messageId= str(uuid.uuid4().hex)
+    message_id= str(uuid.uuid4().hex)
     response= []
     time= datetime.datetime.now()
     time= time.strftime("%Y-%m-%d %H:%M:%S")
     message= {
-                "_id": ObjectId(messageId[:24]),
+                "_id": ObjectId(message_id[:24]),
                 "sender": _id,
                 "createTimestamp": time,
                 "message": data["message"]
     }
-    db.messages.insert_one(message)
-    groupchat= db.groupchat.find_one({"_id": ObjectId(data["group"])})
+    db_connection.messages.insert_one(message)
+    groupchat= db_connection.groupchat.find_one({"_id": ObjectId(data["group"])})
     groupchat["messages"][0].append(str(message["_id"]))
-    db.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
+    db_connection.groupchat.replace_one({"_id": ObjectId(data["group"])}, groupchat)
     user_message= loadgroupmessages(str(groupchat["_id"]))
     for filter_message in user_message:
         if filter_message["message"] == data["message"]:
@@ -375,22 +361,22 @@ def savemessage(data, _id):
 
 def joingroup(gid, uid):
     """joingroup"""
-    groupchat= db.groupchat.find_one({"_id": ObjectId(gid)})
+    groupchat= db_connection.groupchat.find_one({"_id": ObjectId(gid)})
     user = {
             "id": uid,
             "permissionType": "user"
     }
     groupchat["users"].append(user)
-    db.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
-    
+    db_connection.groupchat.replace_one({"_id": ObjectId(gid)}, groupchat)
+
 def rip_email(data):
     """rips email from data query"""
     users= data.split(",")
     user_list= []
     for user in users:
         print(user.split(":::")[0])
-        email= db.users.find_one({"username": user.split(":::")[0]})
+        email= db_connection.users.find_one({"username": user.split(":::")[0]})
         if email is None:
-            email= db.googleUsers.find_one({"email": user.split(":::")[1]})
+            email= db_connection.googleUsers.find_one({"email": user.split(":::")[1]})
         user_list.append(email["_id"])
     return user_list
