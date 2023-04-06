@@ -8,8 +8,14 @@ body{
     width: 100%;
     background-color: #895737;
     overflow: hidden;
+    margin-left: 20px;
     }
-      
+    
+.parent {
+      width: 80%; /* set a fixed width for the parent container */
+      margin: 0 auto; /* center the parent container horizontally */
+}
+    
 .fixtxt{
   text-align: right;
 }
@@ -27,24 +33,26 @@ body{
     .navbar a:hover {
     background-color: #5E3023;
     position: center;
+    width:auto
     }
 
     ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      
-      li{
-        float: right;
-      }
-      
-      li a{
-        display: block;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-      }
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    li {
+      float: left; /* Change float to left */
+    }
+    
+    li a {
+      display: block;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
 
       .container{
         background: #fff;
