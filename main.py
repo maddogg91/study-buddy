@@ -101,13 +101,13 @@ def connect():
     """connecting client"""
     global THREAD # pylint: disable= W0602
     print('Client connected')
-    socketio.start_background_task(background_thread)
+    
 
-    # global THREAD
-    # with thread_lock:
-        # if THREAD is None:
-            # print('Starting background task')
-            # THREAD = socketio.start_background_task(background_thread)
+    global THREAD
+    with thread_lock:
+        if THREAD is None:
+            print('Starting background task')
+            THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
