@@ -10,15 +10,8 @@
 	</script>
 </head>
 <body>
-	<div class="navbar">
+	{% include 'header.html' %}
 
-		<ul class="thatlist"style='margin-left: auto;'>
-		<li><a href="/home"><i class="fa fa-home"></a></i></a></li></li>
-	
-		<li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-		<li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-		</ul>
-		</div>
 		<div class= "tooltip">
 		<span class="tooltiptext"> 
 			For users 'user : [username]'
@@ -62,8 +55,8 @@
 	<br><br><br><br>
 
 	<!-- For loop for group search results -->
-		<div id= "card-holder"style="display: flex; flex-wrap: wrap;padding: 100px 50px;margin: 0 auto;">
-	  </div>
+	<div id="card-holder" style="display: flex; flex-wrap: wrap; padding: 10px 50px 100px; margin: 0 auto;">
+	</div>
 		<form id= "join" action="/join" method="POST"><input id="txt" style="display: none" type="text" class="form-control" name= "join" >
 		</input></form>
 
