@@ -2,8 +2,7 @@
 
 body{
   position: relative;
-  width: 1440px;
-  height: 973px;
+
   background: linear-gradient(to right, #5e3023, #f9ca24);
 }
 
@@ -178,7 +177,18 @@ ul.thatlist li{
   justify-content: center;
   border-radius: 32px;
 }
-
+.create{
+  display: block;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  padding: 10px 20px;
+  border-radius: 5px;
+}
 .saveLogo{
   position: relative;
   height: 80px;

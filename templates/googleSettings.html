@@ -26,45 +26,37 @@
 </style>
 </head>
 <body>
-  <div class="navbar">
-
-    <ul class="thatlist">
-    <li><a href="/home"><i class="fa fa-home"></a></i></a></li>
-    <li><a href="#"><i class="fa fa-save"></i></a></li></li>
-
-    <li><a href="/settings"><i class="fa fa-gear"></a></i></a></li>
-    <li><a href="/search"><i class="fa fa-search"></a></i></a></li>
-    </ul>
+  {% include 'header.html' %}
+  <div class="container">
+    <div class="leftbox">
+      <h2>googleSetting</h2>
+      <p></p>
+      <p><a href="/signUp">Go to signup</a></p>
+      <p><a href="/login">Go to login</a></p>
+      <p><a href="/currentConvo">Convo</a></p>
+      <p><a href="/settings">Go to Setting</a></p>
+      <p><a href="/createGroup">create Convo</a></p>
+      <p><a href="/home">create Convo</a></p>
     </div>
-
-    <div class="container">
-      <div class="leftbox">
-<h2>googleSetting</h2>
-<p></p>
-<p><a href="/signUp">Go to signup</a></p>
-<p><a href="/login">Go to login</a></p>
-<p><a href="/currentConvo">Convo</a></p>
-<p><a href="/settings">Go to Setting</a></p>
-<p><a href="/createGroup">create Convo</a></p>
-<p><a href="/home">create Convo</a></p>
-
-</div>
-
-<div class="rightbox">
-  <div class="profile">
-
-<form method="POST" action="/changegoogleInfo">
-    
-      <h2>New Username:</h2>
-      <p><input type="name" id="new_username" name="new_username"required></p>
-    
-      <h2>New Birthday:</h2>
-      <p><input type="date" id="new_bday" name="new_bday"required></p>
-      <p><input type="submit" value="Add/ Update Information"required></p>
-</div>
-</div>
-</div>
-    </form>
+    <div class="rightbox">
+      <div class="profile">
+        <form method="POST" action="/changegoogleInfo">    
+          <h2>New Username:</h2>
+          <p><input type="name" id="new_username" name="new_username" required></p>
+          <h2>New Birthday:</h2>
+          <p><input type="date" id="new_bday" name="new_bday" required></p>
+          <p><input type="submit" value="Add/ Update Information" required></p>
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+
+<style>
+  body {
+    background: linear-gradient(to right, #5e3023, #f9ca24);
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
 
