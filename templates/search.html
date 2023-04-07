@@ -14,18 +14,50 @@
 		  style="background-color:#895737" aria-hidden= "true" class="fa fa-search"></a></li>
 		
 		<li>
-		<div class= "tooltip">
-		<span class="tooltiptext"> 
-			For users 'user : [username]'
-			For groups 'group: [groupname]'
-			Groups by description 'gdesc : [keywords]'
-		</span>
-		
-		<input placeholder= "search anything" style= "background-color: #5E3023;color:white;
-		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
-		type="search1" id="form1" class="form-control" name= "query"/>
-		
-		</div>
+			<div class="tooltip">
+				<span class="tooltiptext"> 
+				  For users 'user: [username]'
+				  For groups 'group: [groupname]'
+				  Groups by description 'gdesc: [keywords]'
+				</span>
+				<form>
+					<select id="search-option" class="btn" style="background-color: #5E3023;color:white;border-radius: 60px;position: absolute;right: 1px;top: 40px;padding: 8px 20px;font-size: 16px;backdrop-filter: blur(4px) saturate(180%);transform: translateY(-100%);">
+						<option value="gdesc:">Group Description name</option>
+						<option value="group:">Group Name</option>
+						<option value="user:">Username</option>
+					  </select>
+					  
+					  
+				  <input placeholder="search anything!" style="background-color: #5E3023;color:white;border-radius: 60px;position: absolute;right: 1px;top: 9px;padding: 10px 120px 10px 30px;backdrop-filter: blur(4px) saturate(180%);"
+					type="search" id="form1" class="form-control" name="query" />
+				</form>
+			  </div>
+			  
+			  <script>
+const searchOption = document.getElementById("search-option");
+const formInput = document.getElementById("form1");
+
+searchOption.addEventListener("change", function() {
+  const selectedOption = searchOption.value;
+  const optionText = searchOption.options[searchOption.selectedIndex].text;
+  formInput.value = optionText + " " + selectedOption;
+  formInput.focus();
+});
+
+formInput.addEventListener("focus", function() {
+  formInput.value = searchOption.options[searchOption.selectedIndex].text + " " + searchOption.value;
+});
+
+formInput.addEventListener("blur", function() {
+  const optionText = searchOption.options[searchOption.selectedIndex].text;
+  const query = formInput.value.substr(optionText.length + 1);
+  formInput.value = query;
+  formInput.placeholder = "Search by " + optionText;
+});
+
+			  </script>
+			  
+			  
 		</li>
        
 		</form>
