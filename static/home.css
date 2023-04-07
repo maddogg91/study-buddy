@@ -98,26 +98,46 @@ body{
 
 /*nav bar*/
 .navbar {
-    width: 100%;
-    background-color: #895737;
-    overflow: hidden;
-    }
-      
-    .navbar a {
-    float: right;
-    width: 20%;
-    text-align: center;
-    padding: 20 px;
-    transition: all 0.3s ease;
-    color: white;
-    font-size: 20px;
-    position: center;
-    }
-    
-    .navbar a:hover {
-    background-color: #5E3023;
-    position: center;
-    }
+  width: 100%;
+  background-color: #895737;
+  overflow: hidden;
+}
+
+.fixtxt {
+  text-align: right;
+}
+
+.navbar a {
+  float: right;
+  width: 20%;
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 20px;
+}
+
+.navbar a:hover {
+  background-color: #5e3023;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
     .addGrouppic{
         position: absolute;
         width: 156.21px;
