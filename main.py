@@ -3,11 +3,11 @@ import os
 import pathlib
 from threading import Lock
 import json
+from datetime import datetime
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
-from datetime import datetime, timedelta
 import requests
 from flask_socketio import SocketIO
 from werkzeug.utils import secure_filename
@@ -90,8 +90,6 @@ client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
 session = {
-    "start": False,
-    "user": "",
     "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 }
 
@@ -105,7 +103,7 @@ def index():
 @socketio.on('connect')
 def connect():
     """connecting client"""
-    global THREAD
+    global THREAD # pylint: disable= W0602
     print('Client connected')
     socketio.start_background_task(background_thread)
 
@@ -127,7 +125,7 @@ def update_local_time(time):
     """updates time"""
     print('received time: ' + str(time))
     session["local"]= time
-    
+
 @app_init.route("/google-login")
 def google_login():
     """loggin in to google"""
@@ -151,7 +149,7 @@ def google_callback():
         "redirect_uri": url_for('google_callback', _external=True),
         "grant_type": "authorization_code"
     }
-    res = requests.post(token_url, data=data)
+    res = requests.post(token_url, data=data) # pylint: disable= W3101
     try:
         token = res.json()["id_token"]
         claims = id_token.verify_oauth2_token(
@@ -237,14 +235,14 @@ def trylogin():
     login_user = db.login(user, password)
     if login_user is not False:
         session['user'] = login_user
-        if session['user']['username'] == "TestUser1":
+        if session['user']['username'] == "TestUser1": # pylint: disable= E1126
             return logout()
         return redirect('/home')
     return render_template("login.html", alarm="1")
 
 
 @app_init.route('/home')
-def home():
+def home(): # pylint: disable= R1710
     """routing to Home"""
     groups=[]
     if not session.get("user") and not session.get("email"):
@@ -333,13 +331,12 @@ def savequiz():
 @app_init.route('/createGroup', methods=["GET", "POST"])
 def creategroup():
     """routing to createGroup"""
-    print(session.get("user"))
     users_list= list(active_users)
     for google_users in active_google_users:
         users_list.append(google_users)
     try:
         users_list.remove(session.get("user"))
-    except:
+    except: # pylint: disable=bare-except
         print("No users loaded")
         users_list= list(db.get_users())
         for google_users in db.get_google():
@@ -347,17 +344,17 @@ def creategroup():
         users_list.remove(session.get("user"))
     users_by_username= []
     for users in users_list:
-        try: 
+        try:
             user= {
             "user" : users["username"],
             "email": users["email"]
         }
-        except:
+        except: # pylint: disable=bare-except
             user= {
             "user" : users["email"],
             "email": users["email"]
         }
-       
+
         users_by_username.append(json.loads(json.dumps(user)))
     if not session.get("user"):
         return redirect('/')
@@ -404,10 +401,8 @@ def current_groups():
 @socketio.on('savemessage')
 def save_user_message(message):
     """saves user messages to the database"""
-    print('received message: ' + str(message))
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
-        print('sending response: ' + str(message))
         socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
 
 @app_init.route('/profile', methods=["GET", "POST"])
@@ -424,20 +419,20 @@ def user_profile():
             # uploads a photo if given
             upload(photo)
         db.saveuserprofile(session.get("user").get("_id"), request)
-    profile = db.userprofile(session.get("user").get("_id"))
+    profile = db.user_profile(session.get("user").get("_id"))
     return render_template("profile.html", profile=profile)
 
 
 @app_init.route('/join', methods=["POST"])
-def joingroup():
+def joingroup(): # pylint: disable= R1710
     """routing to joingroup"""
     if request.method == "POST":
         value = request.form['join']
         db.joingroup(value, session.get("user").get("_id"))
         return redirect('/existingGroups')
-        
-@app_init.route('/loading')        
-def loading():        
+
+@app_init.route('/loading')
+def loading():
     """adds buffer for existing groups loading page"""
     return render_template("loading.html")
 

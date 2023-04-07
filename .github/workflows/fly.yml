@@ -5,7 +5,7 @@ on:
       - deploy
 jobs:
   deploy:
-    name: Deploy app
+    name: studybuddy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
