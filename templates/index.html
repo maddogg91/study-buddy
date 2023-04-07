@@ -2,30 +2,93 @@
 <html>
 <head>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-
-    <section class="one">
+    <div class="navbar">
+        <center>
+        <a href="#login"> Login </a>
+        <a href="#use"> How to use</a>
+        <a href="#mission"> Our Mission</a>
+        <a href="#welcome"> Welcome </a>
+        </center>
+    </div>
+    
+    <section id="welcome" class="one">
         <h1>Welcome to Study Buddy</h1>
     </section> 
 
+    
     <section class="two">
-        <div class="logoCircle"></div>
-        <div class="sbLogo"></div>
-        <div class="firstBackSeg"></div>
-        <div class="secBackSeg"></div>
-        <div class="newUserImage"></div>
-        <div class="oldUserImage"></div>
-        <div class="makeAccButton"></div>
+        <div class="rightbox">
+        <div id="mission" class="mission">
+        <center>
+        <h1> Our Mission </h1>
+        <br>
+        <p> <h3>Our mission statement: Never study alone </h3>
+        <br>
+        <br>
+        <h2>
+        At Study Buddy, we believe that studying alone can be tough, 
+        and that's why our mission is to create a platform where no student has to study alone. 
+        Our app is designed to connect students with like-minded peers who share their academic 
+        goals and aspirations. Through Study Buddy, students can find mutual study partners and 
+        form group chats to communicate, collaborate, and motivate each other to achieve academic success. 
+        Our goal is to make studying a fun and social experience that empowers students to learn and grow together. 
+        With Study Buddy, you'll never have to go through the struggles of studying alone again.
+        </h2>
+        </center></p></div></div>
+    </section>
 
-        <div class="innerTextLeft">
-            <p><a href="/signUp"> Make Account </a></p>
-        </div>
+    <section class ="three">
+        <div id="use" class="mission">
+        <div class="rightbox">
+        <center>
+        <h1> How to Use </h1>
+        <p><ol>
+            <h3><li>Sign in or log in:</h3></li>
+                <ul>As a new user, you will need to create an account or log in using your existing credentials. This will take you to the home page of the app.</ul>
+            <br>
 
-        <div class="oldUserSigninButton"></div>
+            <h3><li>Home page: </h3></li>
+                
+                <ul>Settings: This option will allow you to customize your profile, notifications, and privacy settings according to your preferences.</ul>
+                <br>
+                <ul>New Chat: If you want to start a new study group chat, this option will let you do that. You can choose to create a group with specific people or open it up to anyone who wants to join.</ul>
+                <br>
+                <ul>Search: This option will allow you to search for other users or groups to connect with based on common interests or academic goals. You can search by keywords, topics, or subject areas.</ul>
+                <br>
+                <ul>Existing Chats: Here, you will see a list of all the study groups you have joined or created. You can easily access any of these chats to communicate with your study buddies, share notes, or ask questions.</ul>
 
-        <div class="innerTextRight">
-            <p><a href="/login"> Sign-in </a></p>
+            <br>
+
+            <h3><li>Communicate with your study buddies:</h3></li>
+                <ul>Once you're in a study group chat, you can communicate with other members by sending messages, sharing files, or scheduling study sessions. You can also leave the chat at any time if you no longer want to be a part of the group.</ul>
+            <br>
+
+            That's the basic flow of the Study Buddy app for new users. It's designed to be intuitive and user-friendly, so you can easily find and connect with other students who share your academic goals and interests.
+        </center></div></p></ol></div>
+    </section> 
+
+    <section class="four">
+        <div id="login" class="login">
+            
+            <div class="firstBackSeg"></div>
+            <div class="secBackSeg"></div>
+            <div class="newUserImage"></div>
+            <div class="oldUserImage"></div>
+            <div class="makeAccButton"></div>
+            <div class="logoCircle"></div>
+            <div class="sbLogo"></div>
+            <div class="innerTextLeft">
+                <p><a href="/signUp"> Make Account </a></p>
+            </div>
+
+            <div class="oldUserSigninButton"></div>
+
+            <div class="innerTextRight">
+                <p><a href="/login"> Sign-in </a></p>
+            </div>
         </div>
     </section>
 
