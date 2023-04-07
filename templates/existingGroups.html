@@ -63,7 +63,7 @@
 	const res = JSON.parse('{{results | tojson}}');
 	const user= JSON.parse('{{user | tojson}}');
 	let tempMessages;
-	let socket;
+	var socket= io.connect();
 	
 	//Gets event target and returns
 	function getEventTarget(e) {
@@ -128,21 +128,28 @@
 		}
 		});
 	};
-	 
-	 function turnOnSocket() {
-		
-	 };
 	
+	function sleep(ms) {
+  return Promise.resolve(setTimeout(ms));
+}
+	 
+	 async function turnOnSocket() {
+			socket.on("connect");
+			console.log("Socket Open");
+			await sleep(15000);
+			console.log("Socket Closed");
+			socket.on("disconnect");
+	}
+	
+	
+
 	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
   $(window).ready(function() {
-	  	const interval = async () => {
-				socket= io.connect();
-				await sleep(15000);
-				socket= io.disconnect();
-		}, 60000);
-		
+  
+	  setInterval(turnOnSocket(), 60000);
+
 	  const ul = document.querySelector("#card");
 	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
