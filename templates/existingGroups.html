@@ -137,9 +137,9 @@
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
   $(window).ready(function() {
-	  	const interval = setInterval(function() {
+	  	const interval = async () => {
 				socket= io.connect();
-				await delay(15000);
+				await sleep(15000);
 				socket= io.disconnect();
 		}, 60000);
 		
