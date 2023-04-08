@@ -10,7 +10,16 @@
 	
 </head>
 <body>
-	{% include 'header.html' %}
+      <div class="navbar">
+        <ul>
+        <li><a href="/home"><i class="fa fa-home"></a></i></li>
+        <li><a href="#"><i class="fa fa-save"></i></a></li>
+        <li><a href="/settings"><i class="fa fa-gear"></a></i></li>
+		<form id= "search" action="/search1" method="GET">
+		<li><a  id="f"
+		  style="background-color#cac7ff" aria-hidden= "true" class="fa fa-search"></a></li>
+		
+		<li>
 		<div class= "tooltip">
 		<span class="tooltiptext"> 
 			For users 'user : [username]'
@@ -75,7 +84,7 @@
 	<br><br><br>
 	<button style="position: absolute; right: 50%;" type= "submit">SAVE</button>
 	</form>
-	<a href="/quiz">Want to take the Study Buddy Match Making Quiz? Click Here</a>
+	<button href= "/quiz" class=btn> Click Here To Take Quiz</button>
 	<script>
 		document.getElementById("edit").onclick = function() {
 		document.getElementById("update value").readOnly= false;

@@ -252,6 +252,41 @@ h2{
     background-color: white;
 
   }
+  .logoCircle{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 327px;
+    height: 305px;
+    left: 302px;
+    top: 106px;
+
+    background: #F3E9DC;
+    border: 5px solid #5E3023;
+    border-radius: 50%;
+}
+
+.sbLogo{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 393px;
+    height: 345px;
+    left: 269px;
+    top: 96px;
+    
+    background: url(StuddyBuddyLogo.png);
+}
+
+.saveLogo{
+    position: relative;
+    height: 80px;
+    width: 80px;
+    left: 555px;
+    top: 1632px;
+    border-radius: 0px;
+    background: url(saveButton.png);
+}
 
 
 
