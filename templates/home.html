@@ -2,21 +2,25 @@
 <html>
 <head>
 
-<link rel="stylesheet" href="/static/home.css">
+
 
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+
 <title>home</title>
 </head>
 <body>
   {% include 'header.html' %}
+  <link rel="stylesheet" href="/static/home.css">
     <!--<h1>home</h1> -->
    <h2> Welcome to Studybuddy:<p>{{user}} </p></h2>
    
 
     <div class="container">
+      <div class="logoCircle"></div>
+        <div class="sbLogo"></div>
       <ul class="leftbox"> 
         <li> <a href ="/loading" class=btn>Current Convo</a></li>
        <li> <a href ="/settings" class=btn>Settings</a></li>
