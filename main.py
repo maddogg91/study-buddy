@@ -63,7 +63,10 @@ def get_user_messages():
     messages = []
     groups = session.get("groups")
     for i in groups:
-        messages.append(db.messages_by_time(time.timestamp(),i))
+        message= db.messages_by_time(time.timestamp(),i)
+        if message is None:
+            print("No new messages")
+        messages.append(message)
     return messages
 
 
@@ -71,9 +74,10 @@ def background_thread():
     """Calls in the background updateMessages every 60 seconds"""
     while True:
         print("Running get_user_messages")
-        socketio.emit('updateMessages', json.dumps(
-            get_user_messages(), separators=(',', ':')))
-
+        messages= get_user_messages()
+        if len(messages) > 0:
+            socketio.emit('updateMessages', json.dumps(
+                get_user_messages(), separators=(',', ':')))
         socketio.sleep(60)
 
 
