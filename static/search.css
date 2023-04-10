@@ -75,7 +75,8 @@ body{
 }
 
 .Search-bar button img{
-    width: 25px;
+    width: 50px;
+    height: 50px;
 }
 
 .Search-bar button{
@@ -164,8 +165,9 @@ li a {
     text-transform: uppercase;
     font-size: 35px;
     width: 80%;
-    letter-spacing: 1px;
-    margin-left: 2px;
+    letter-spacing: 3px;
+    padding-left: 50px;
+
   }
 h1{
     color: #777;
@@ -173,16 +175,19 @@ h1{
     text-transform: uppercase;
     font-size: 20px;
     width: 80%;
-    letter-spacing: 1px;
-    margin-left: 2px;
+    letter-spacing: 3px;
+    padding-left: 50px;
+
 }
 .rightbox{
     float: right;
-    top: -3%;
-    right: 5%;
+    top: -8%;
+    right: -10%;
+    padding-left: 5%;
+    margin:auto;
     position: absolute;
     width: 35%;
-    height: 110%;
+    height: 120%;
     background: #dab49d;
     box-shadow: 3px 3px 10px 
     rgba(119,119,119,.5);
@@ -191,11 +196,13 @@ h1{
 }
 img{
     size: 100px;
+    position:right;
 }
 h3{
 
         color: #5E3023;
         font-family: sans-serif;
+        font-weight:bold;
         font-size: 20px;
         width: 80%;
         letter-spacing: 3px;
@@ -209,7 +216,20 @@ h4{
     font-family: "Lucida Console", "Courier New", monospace;
     font-size: 18px;
     width: 80%;
-    letter-spacing: 1px;
+    letter-spacing: 3px;
     margin-left: 2px;
 
 }
+h5{
+    color: black;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-size: 28px;
+    width: 80%;
+    letter-spacing: 3px;
+    margin-left: 2px;
+  }
+  img {
+    height:500px;
+    width: 500px;
+  }
