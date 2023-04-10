@@ -132,10 +132,9 @@ def disconnect():
 
 
 @socketio.on('updateTime')
-def update_local_time(time, user):
+def update_local_time(user):
     """updates time"""
-    print('received time: ' + str(time))
-    session["local"]= time
+    print('received user: ' + user)
     session["localid"]= user
 
 @app_init.route("/google-login")
