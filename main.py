@@ -134,10 +134,10 @@ def update_local_time(user):
     """updates time"""
     print('received user: ' + str(user))
     print("Running get_user_messages")
-        messages= get_user_messages(user)
-        if len(messages) > 0:
-            socketio.emit('updateMessages', json.dumps(
-                messages, separators=(',', ':')))
+    messages= get_user_messages(user)
+    if len(messages) > 0:
+        socketio.emit('updateMessages', json.dumps(
+            messages, separators=(',', ':')))
     return user
 
 @app_init.route("/google-login")
