@@ -65,7 +65,7 @@ def get_user_messages():
     except:
         time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
-    if session.get("groups") is None:
+    if not session.get("groups"):
         # Searches db for groups by user id
         userchats = db.userchats(session.get("user").get("_id"))
     # Need a route to send to a page without userchats for chats under 1
