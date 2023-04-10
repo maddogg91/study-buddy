@@ -57,7 +57,7 @@ Stream messages as they come in
 """
 
 
-def get_user_messages():
+def get_user_messages(user_id):
     """request messages from user"""
     groups= []
     try:
@@ -66,7 +66,7 @@ def get_user_messages():
         time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
     # Searches db for groups by user id
-    userchats = db.userchats(update_local_time())
+    userchats = db.userchats(user_id)
     # Need a route to send to a page without userchats for chats under 1
     if len(userchats) > 0:
         for userchat in userchats:
@@ -79,15 +79,15 @@ def get_user_messages():
     return messages
 
 
-def background_thread():
-    """Calls in the background updateMessages every 60 seconds"""
-    while True:
-        print("Running get_user_messages")
-        messages= get_user_messages()
-        if len(messages) > 0:
-            socketio.emit('updateMessages', json.dumps(
-                get_user_messages(), separators=(',', ':')))
-        socketio.sleep(60)
+# def background_thread():
+    # """Calls in the background updateMessages every 60 seconds"""
+    # while True:
+        # print("Running get_user_messages")
+        # messages= get_user_messages()
+        # if len(messages) > 0:
+            # socketio.emit('updateMessages', json.dumps(
+                # get_user_messages(), separators=(',', ':')))
+        # socketio.sleep(60)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -116,11 +116,11 @@ def connect():
     print('Client connected')
 
 
-    global THREAD
-    with thread_lock:
-        if THREAD is None:
-            print('Starting background task')
-            THREAD = socketio.start_background_task(background_thread)
+    # global THREAD
+    # with thread_lock:
+        # if THREAD is None:
+            # print('Starting background task')
+            # THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
@@ -133,6 +133,11 @@ def disconnect():
 def update_local_time(user):
     """updates time"""
     print('received user: ' + str(user))
+    print("Running get_user_messages")
+        messages= get_user_messages(user)
+        if len(messages) > 0:
+            socketio.emit('updateMessages', json.dumps(
+                messages, separators=(',', ':')))
     return user
 
 @app_init.route("/google-login")
