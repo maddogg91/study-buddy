@@ -59,7 +59,10 @@ Stream messages as they come in
 
 def get_user_messages():
     """request messages from user"""
-    time= datetime.strptime(session.get("local"),'%Y-%m-%d %H:%M:%S')
+    try:
+        time= session.get("local")
+    except:
+        time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
     groups = session.get("groups")
     for i in groups:
@@ -96,7 +99,7 @@ client_secrets_file = os.path.join(
 @app_init.route("/")
 def index():
     """routing to index html"""
-    session["local"]= str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    session["local"]= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return render_template("index.html")
 
 
