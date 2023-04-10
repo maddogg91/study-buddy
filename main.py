@@ -59,13 +59,13 @@ Stream messages as they come in
 
 def get_user_messages():
     """request messages from user"""
+    groups= []
     try:
         time= session.get("local")
     except:
         time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
-    groups = session.get("groups")
-    if groups is None:
+    if session.get("groups") is None:
         # Searches db for groups by user id
         userchats = db.userchats(session.get("user").get("_id"))
     # Need a route to send to a page without userchats for chats under 1
@@ -73,6 +73,7 @@ def get_user_messages():
             for userchat in userchats:
                 groups.append(userchat["_id"])
             session["groups"] = groups
+    groups = session.get("groups")
     for i in groups:
         message= db.messages_by_time(time.timestamp(),i)
         if message is None:
