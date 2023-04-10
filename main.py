@@ -66,7 +66,7 @@ def get_user_messages():
         time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
     # Searches db for groups by user id
-    userchats = db.userchats(session.get("user").get("_id"))
+    userchats = db.userchats(session.get("localid"))
     # Need a route to send to a page without userchats for chats under 1
     if len(userchats) > 0:
         for userchat in userchats:
@@ -132,10 +132,11 @@ def disconnect():
 
 
 @socketio.on('updateTime')
-def update_local_time(time):
+def update_local_time(time, user):
     """updates time"""
     print('received time: ' + str(time))
     session["local"]= time
+    session["localid"]= user
 
 @app_init.route("/google-login")
 def google_login():
