@@ -60,10 +60,7 @@ Stream messages as they come in
 def get_user_messages(user_id):
     """request messages from user"""
     groups= []
-    try:
-        time= session.get("local")
-    except:
-        time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
     # Searches db for groups by user id
     userchats = db.userchats(user_id)
