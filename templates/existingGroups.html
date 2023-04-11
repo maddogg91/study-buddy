@@ -138,7 +138,7 @@
 	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
-  $(document).ready(async function() {
+  $(document).ready(function() {
 	  const ul = document.querySelector("#card");
 	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
