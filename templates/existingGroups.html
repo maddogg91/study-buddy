@@ -134,7 +134,10 @@
 	};
 	 
 	
-
+  $('a').live('click', function(e){
+	alert('It is brewing');
+	return true;
+  });
 	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
