@@ -199,8 +199,7 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
-        session["user"] = change_info
-        return "info updated"
+        return render_template("home.html")
     return render_template("settings.html", alarm="1")
 
 
