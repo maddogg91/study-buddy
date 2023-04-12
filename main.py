@@ -50,7 +50,7 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-socketio = SocketIO(app_init, async_mode='threading', cors_allowed_origins='*')
+socketio = SocketIO(app_init, cors_allowed_origins='*')
 
 """
 Stream messages as they come in 
@@ -77,9 +77,13 @@ def get_user_messages(user_id):
 
 
 # def background_thread():
-    # # """Calls in the background updateMessages every 60 seconds"""
+    # """Calls in the background updateMessages every 60 seconds"""
     # while True:
-        # # print("Running get_user_messages")
+        # print("Running get_user_messages")
+        # messages= get_user_messages()
+        # if len(messages) > 0:
+            # socketio.emit('updateMessages', json.dumps(
+                # get_user_messages(), separators=(',', ':')))
         # socketio.sleep(60)
 
 
@@ -199,7 +203,8 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
-        return render_template("home.html")
+        session["user"] = change_info
+        return "info updated"
     return render_template("settings.html", alarm="1")
 
 
