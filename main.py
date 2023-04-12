@@ -50,7 +50,7 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-socketio = SocketIO(app_init, threaded= False, cors_allowed_origins='*')
+socketio = SocketIO(app_init, cors_allowed_origins='*')
 
 """
 Stream messages as they come in 
