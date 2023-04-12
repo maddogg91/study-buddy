@@ -50,7 +50,7 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-socketio = SocketIO(app_init, cors_allowed_origins='*')
+socketio = SocketIO(app_init, threaded= False, cors_allowed_origins='*')
 
 """
 Stream messages as they come in 
@@ -76,15 +76,11 @@ def get_user_messages(user_id):
     return messages
 
 
-# def background_thread():
+def background_thread():
     # """Calls in the background updateMessages every 60 seconds"""
-    # while True:
+    while True:
         # print("Running get_user_messages")
-        # messages= get_user_messages()
-        # if len(messages) > 0:
-            # socketio.emit('updateMessages', json.dumps(
-                # get_user_messages(), separators=(',', ':')))
-        # socketio.sleep(60)
+        socketio.sleep(60)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -113,11 +109,11 @@ def connect():
     print('Client connected')
 
 
-    # global THREAD
-    # with thread_lock:
-        # if THREAD is None:
-            # print('Starting background task')
-            # THREAD = socketio.start_background_task(background_thread)
+    global THREAD
+    with thread_lock:
+        if THREAD is None:
+            print('Starting background task')
+            THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
