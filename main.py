@@ -76,11 +76,11 @@ def get_user_messages(user_id):
     return messages
 
 
-def background_thread():
-    # """Calls in the background updateMessages every 60 seconds"""
-    while True:
-        # print("Running get_user_messages")
-        socketio.sleep(60)
+# def background_thread():
+    # # """Calls in the background updateMessages every 60 seconds"""
+    # while True:
+        # # print("Running get_user_messages")
+        # socketio.sleep(60)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -109,11 +109,11 @@ def connect():
     print('Client connected')
 
 
-    global THREAD
-    with thread_lock:
-        if THREAD is None:
-            print('Starting background task')
-            THREAD = socketio.start_background_task(background_thread)
+    # global THREAD
+    # with thread_lock:
+        # if THREAD is None:
+            # print('Starting background task')
+            # THREAD = socketio.start_background_task(background_thread)
 
 
 @socketio.on('disconnect')
