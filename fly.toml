@@ -23,8 +23,6 @@ primary_region = "iad"
   [[services.ports]]
     port = 443
     handlers = ["tls", "http"]
-    start_port = 8080
-    end_port = 8089
   [services.concurrency]
     type = "connections"
     hard_limit = 25
