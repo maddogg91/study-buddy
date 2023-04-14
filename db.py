@@ -178,6 +178,7 @@ def createchat(data, file, _id):
 def existingchats(keyword, criteria):
     """existingchats"""
     returnedgroups= []
+
     try:
         results= search(keyword, criteria, "groupchat")
         for result in results:
@@ -380,3 +381,9 @@ def rip_email(data):
             email= db_connection.googleUsers.find_one({"email": user.split(":::")[1]})
         user_list.append(email["_id"])
     return user_list
+
+def loadgroupchat(gid):
+    """loads current instance of group chat called"""
+    group_chat= db_connection.groupchat.find_one(gid)
+    group_chat["_id"]= str(group_chat["_id"])
+    return group_chat

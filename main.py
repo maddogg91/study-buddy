@@ -4,6 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from datetime import datetime
+from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 from google.auth.transport import requests as rq
@@ -413,7 +414,8 @@ def chat_box():
     group_id= request.args.get("gid")
     print(group_id)
     messages.append(db.loadgroupmessages(group_id))
-    return render_template("chatbox.html", messages= messages, user= session.get("user"))
+    group_info= db.loadgroupchat(ObjectId(group_id))
+    return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
