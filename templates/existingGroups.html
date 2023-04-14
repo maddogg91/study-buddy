@@ -39,7 +39,9 @@
                 </div>
                 <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
                     <ul id= "history" class="m-b-0">
-                      
+                     <iframe id= "iframe" src="/chatbox" width="100%" height="100%" name="targetframe" style= "display: none"
+					 allowTransparency="true" scrolling="yes" frameborder="0" >
+					 </iframe> 
                     </ul>
 					<div class="chat-message clearfix">
                     <div id="m-box" class="input-group mb-0">
@@ -63,7 +65,7 @@
 	const res = JSON.parse('{{results | tojson}}');
 	const user= JSON.parse('{{user | tojson}}');
 	let tempMessages;
-	let socket;
+	
 	
 	//Gets event target and returns
 	function getEventTarget(e) {
@@ -92,10 +94,13 @@
 	return selected;
 	};
 	
-	function findUpdate() {
+	function findUpdate(user) {
+		const socket= io.connect();
+		socket.on("connect");
+		console.log("Socket Open");
 		console.log("Updating..." + selected)
 		socket.emit('updateTime', {
-			updateTime: time
+			user: user
 		} );
 		
 		socket.on("updateMessages", function(msg){
@@ -126,17 +131,13 @@
 		 console.log("No new updates");
 		}
 		});
+		console.log("Socket Closed");
+		socket= ""
 	};
 	 
-	 function updateSentMessage() {
-		
-	 };
-	
-	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
-  $(window).ready(function() {
-	  socket= io.connect() 		
+  $(document).ready(function() {
 	  const ul = document.querySelector("#card");
 	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
@@ -147,6 +148,21 @@
 	  }
 	
 	  });
+	  
+	  //Creates Temporary message
+	function createPlaceholderMessage(item){
+		const br= document.createElement("br");
+		const li= document.createElement("li");
+		li.classList.add('clearfix');
+		const div = document.createElement("div");
+		div.classList.add("message", "my-message");
+		const text= document.createTextNode(item);
+		div.appendChild(text);
+		li.appendChild(div);
+		li.appendChild(br);
+		li.id= "temporary";
+		return li;
+}
 	//This function creates messages by the format for each chat separately when called.
    function createMessages(user, item){
     const date= document.createElement("div");
@@ -214,8 +230,10 @@
   div.appendChild(desc);
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
+		document.getElementById("iframe").src= "/chatbox?gid=" + item._id
+		document.getElementById("iframe").style.display= "block";
 		selected= getIndexOfChat();
-		findUpdate();
+		setInterval(findUpdate(user._id), 60000);
 		if(document.getElementById("chat").style.value == 0){
 			document.getElementById("chat").style.value = 1;
 			document.getElementById("chat").style.visibility = "visible";
@@ -256,11 +274,15 @@
 				console.log("message sent");
 				var usermessage= document.getElementById('sendmessage').value;
 				var groupchat= res[selected]._id;
-				
+				const socket= io.connect();
+				console.log("Socket Open");
 				socket.emit('savemessage', {
 						group : groupchat,
 						message : usermessage
 					});
+				//Creates temporary message and adds to history	
+				const temporary= createPlaceholderMessage(usermessage);
+				history.appendChild(temporary);	
 				socket.on('returnMessageResponse', function(response) {
 						const update = JSON.parse(response);
 						const checkmsg= update[0];
@@ -268,9 +290,12 @@
 						time= checkmsg.timestamp;
 						console.log(time);
 						const chat_history= createMessages(user, checkmsg);
+						history.removeChild(history.lastChild);
 						history.appendChild(chat_history);    
 						res.push(checkmsg);
 				});	
+				console.log("Socket Closed");
+				//socket.on("disconnect");
 				document.getElementById('sendmessage').value= "";
 				
 				//TODO: Add call for appending group messages
