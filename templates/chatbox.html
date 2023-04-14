@@ -1,0 +1,175 @@
+<html>
+<head>
+<title>Groupchat</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+<link rel="stylesheet" href="/static/groupchats.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+</head>
+<body>
+{% include 'header.html' %}
+
+
+<p id="messages">F</p>
+<div class="card chat-app">
+
+<div class="chat" id= "chat" value= 0>
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                <img id="gp" src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png" alt="avatar">
+                            </a>
+                            <div class="chat-about">
+                                <h6 id="gc" class="m-b-0">Best Group</h6>
+                                <small id= "desc">First Test Groupchat</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
+                    <ul id= "history" class="m-b-0">
+                      
+                    </ul>
+					<div class="chat-message clearfix">
+                    <div id="m-box" class="input-group mb-0">
+                                              
+                    </div>
+                </div>
+                </div>
+                 </div>
+           
+
+
+ 
+   </div>
+
+<script>
+const loadmess= JSON.parse('{{messages | tojson}}');
+$(document).ready(function() {
+		console.log(loadmess);
+		createGroupTemplate();
+		
+	  });
+	
+	function createMessages(user, item){
+    const date= document.createElement("div");
+	date.classList.add("message-data");
+	const span= document.createElement("span");
+	span.classList.add("message-data-time");
+	
+	const li= document.createElement("li");
+	li.classList.add('clearfix');
+	const div = document.createElement("div");
+	if (user._id === item.sender._id){
+		div.classList.add("message", "my-message");
+		
+	}
+	else{
+		div.classList.add("message", "other-message", "float-right");
+		span.classList.add("float-right");
+	}
+	const img= document.createElement("img");
+	if(item.profilepic== ""){
+		item.profilepic= "defG.png";
+	}	
+	img.src= "/static/uploads/" + item.profilepic;
+	img.style= "width: 10%";
+	div.appendChild(img);
+	const usernode= document.createTextNode(item.firstname + " " + item.lastname);
+	usernode.style= "font-weight: bolder";
+   
+	div.appendChild(usernode);
+	const br= document.createElement("br");
+	div.appendChild(br);
+	div.appendChild(br);
+	div.appendChild(br);
+	
+	
+	div.appendChild(br);
+	
+	const node= document.createTextNode(item.timestamp);
+	span.appendChild(node);
+	date.appendChild(span);
+	const text= document.createTextNode(item.message);
+	div.appendChild(text);
+	li.appendChild(date);
+	li.appendChild(div);
+	return li;
+   }
+	 //Creates group msg template 
+	  function createGroupTemplate(){
+		const history= document.querySelector("#history");
+		const m= loadmess[0];
+		console.log(m);
+		for(let i=0; i < m.length; i++){
+			const chat_history= createMessages(user, m);
+			history.appendChild(chat_history);
+		}
+			
+			
+			const box = document.querySelector("#m-box");
+			while (box.firstChild){
+				box.removeChild(box.firstChild);
+				
+			}
+			
+			const send= document.createElement("div");
+			send.classList.add('input-group-prepend');
+			const sendbutton= document.createElement("span");
+			const fafa= document.createElement("i");
+			fafa.style= "cursor: pointer";
+			sendbutton.classList.add('input-group-text');
+			fafa.addEventListener('click', (event)=>{
+				//Creates message event handler
+				console.log("message sent");
+				var usermessage= document.getElementById('sendmessage').value;
+				var groupchat= res[selected]._id;
+				const socket= io.connect();
+				console.log("Socket Open");
+				socket.emit('savemessage', {
+						group : groupchat,
+						message : usermessage
+					});
+				//Creates temporary message and adds to history	
+				const temporary= createPlaceholderMessage(usermessage);
+				history.appendChild(temporary);	
+				socket.on('returnMessageResponse', function(response) {
+						const update = JSON.parse(response);
+						const checkmsg= update[0];
+						const history= document.querySelector("#history");
+						time= checkmsg.timestamp;
+						console.log(time);
+						const chat_history= createMessages(user, checkmsg);
+						history.removeChild(history.lastChild);
+						history.appendChild(chat_history);    
+						res.push(checkmsg);
+				});	
+				console.log("Socket Closed");
+				//socket.on("disconnect");
+				document.getElementById('sendmessage').value= "";
+				
+				//TODO: Add call for appending group messages
+			});
+		
+			fafa.classList.add('fa', 'fa-send');
+			const input= document.createElement("input");
+			input.id= "sendmessage";
+			input.type= "text";
+			input.classList.add('form-control');
+			input.placeholder= "Enter text here...";
+			sendbutton.appendChild(fafa);
+			send.appendChild(sendbutton);
+			box.appendChild(send);
+			box.appendChild(input);
+			document.getElementById("chat").style.visibility = "hidden";
+			document.getElementById("gc").innerHTML= item.name;
+			document.getElementById("desc").innerHTML= item.description;
+			document.getElementById("gp").src= "/static/uploads/"+item.photo;
+			document.getElementById("gp").style= "width: 100px";
+	  }
+</script>   
+</body>

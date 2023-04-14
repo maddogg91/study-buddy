@@ -39,7 +39,9 @@
                 </div>
                 <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
                     <ul id= "history" class="m-b-0">
-                      
+                     <iframe id= "iframe" src="/chatbox" width="100%" height="100%" name="targetframe" style= "display: none"
+					 allowTransparency="true" scrolling="yes" frameborder="0" >
+					 </iframe> 
                     </ul>
 					<div class="chat-message clearfix">
                     <div id="m-box" class="input-group mb-0">
@@ -92,13 +94,14 @@
 	return selected;
 	};
 	
+
 	function findUpdate() {
 		const socket= io.connect();
 		//socket.on("connect");
 		console.log("Socket Open");
 		console.log("Updating..." + selected)
 		socket.emit('updateTime', {
-			updateTime: time
+			user: user
 		} );
 		
 		socket.on("updateMessages", function(msg){
@@ -130,15 +133,12 @@
 		}
 		});
 		console.log("Socket Closed");
-		//socket.on("disconnect");
+		socket= ""
 	};
 	 
-	
-
-	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
-  $(window).ready(function() {
+  $(document).ready(function() {
 	  const ul = document.querySelector("#card");
 	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
@@ -231,8 +231,10 @@
   div.appendChild(desc);
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
+		document.getElementById("iframe").src= "/chatbox?gid=" + item._id
+		document.getElementById("iframe").style.display= "block";
 		selected= getIndexOfChat();
-		setInterval(findUpdate(), 60000);
+		setInterval(findUpdate(user._id), 60000);
 		if(document.getElementById("chat").style.value == 0){
 			document.getElementById("chat").style.value = 1;
 			document.getElementById("chat").style.visibility = "visible";
@@ -323,8 +325,6 @@
   });
   return li;
 }
-
-
 
   </script>
 
