@@ -1,0 +1,18 @@
+<html> 
+  <head> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script> 
+    $(function(){
+      $("#divId").load("existingGroups.html"); 
+    });
+    </script> 
+  </head> 
+	Ready to chat to your favorite buddies? Window is buffering below
+  <body> 
+	<div>
+    <iframe src="/existingGroups" width="100%" height="100%" name="targetframe" allowTransparency="true" scrolling="yes" frameborder="0" >
+    </iframe>
+  </div>
+     <div id="divId" ></div>
+  </body> 
+</html>

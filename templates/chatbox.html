@@ -1,0 +1,203 @@
+<html>
+<head>
+<title>Groupchat</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+<link rel="stylesheet" href="/static/chat.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+</head>
+<body>
+
+
+<div class="chat" id= "chat" value= 0>
+                <div class="chat-header clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                <img id="gp" src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png" alt="avatar">
+                            </a>
+                            <div class="chat-about">
+                                <h6 id="gc" class="m-b-0">Best Group</h6>
+                                <small id= "desc">First Test Groupchat</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-history" overflow="auto">
+                    <ul id= "history" class="m-b-0">
+                      
+                    </ul>
+					
+                </div>
+				 <div class="chat-message clearfix text-center">
+	
+                    <div id="m-box" class="input-group mb-0 ">
+                                              
+                    </div>
+                </div>
+				
+                 </div>
+          
+
+
+ 
+   
+
+<script>
+const loadmess= JSON.parse('{{messages | tojson}}');
+const user= JSON.parse('{{user | tojson}}');
+const group= JSON.parse('{{group_info | tojson}}');
+const socket= io.connect();
+$(document).ready(function() {
+		createGroupTemplate();
+		socket.on("broadcastMessage", function(response) {
+				const broadcast = JSON.parse(response);
+				const newMessage= broadcast[0];
+				if (newMessage.sender._id != user._id){
+					if(newMessage.group === group._id){
+						console.log("New message alert!");
+						const history= document.querySelector("#history");
+						time= newMessage.timestamp;
+						const chat_history= createMessages(user, newMessage);
+						loadmess[0].push(newMessage);
+					}
+				}
+		});	
+	  });
+	  //Creates Temporary message
+	function createPlaceholderMessage(item){
+		const br= document.createElement("br");
+		const li= document.createElement("li");
+		li.classList.add('clearfix');
+		const div = document.createElement("div");
+		div.classList.add("message", "my-message");
+		const text= document.createTextNode(item);
+		div.appendChild(text);
+		li.appendChild(div);
+		li.appendChild(br);
+		li.id= "temporary";
+		return li;
+}
+	function createMessages(user, item){
+    const date= document.createElement("div");
+	const other= document.createElement("div");
+	other.classList.add("message-data");
+	date.classList.add("message-data");
+	const span= document.createElement("span");
+	span.classList.add("message-data-time");
+	const br= document.createElement("br");
+	const li= document.createElement("li");
+	li.classList.add('clearfix');
+	const div = document.createElement("div");
+	if (user._id === item.sender._id){
+		div.classList.add("message", "my-message");
+		
+	}
+	else{
+		date.classList.add("other-message-date");
+		other.classList.add("other-message-date");
+		div.classList.add("message", "other-message", "float-right");
+		span.classList.add("text-right");
+	}
+	const img= document.createElement("img");
+	if(item.profilepic== ""){
+		item.profilepic= "defG.png";
+	}	
+	img.src= "/static/uploads/" + item.profilepic;
+	$(img).on('error', function() {
+		this.src = '/static/uploads/defG.png';
+		});
+	img.style= "width: 10%";
+	
+	
+	var usernode= document.createTextNode(item.firstname + " " + item.lastname);
+	if(item.firstname === "" && item.lastname=== ""){
+		usernode= document.createTextNode(item.sender.email);
+	}
+	usernode.style= "font-weight: bolder";
+	other.appendChild(usernode);
+	const node= document.createTextNode(item.timestamp);
+	span.appendChild(node);
+	img.style= "width: 5%; border-radius: 50%";
+	date.appendChild(span);
+	date.appendChild(img);
+	date.appendChild(br);
+	
+	const text= document.createTextNode(item.message);
+	div.appendChild(br);
+	div.appendChild(text);
+	li.appendChild(date);
+	li.appendChild(other);
+	li.appendChild(br);
+	li.appendChild(div);
+	
+	return li;
+   }
+	 //Creates group msg template 
+	  function createGroupTemplate(){
+	  const box = document.querySelector("#m-box");
+		const history= document.querySelector("#history");
+		const m= loadmess[0];
+		for(let i=0; i < m.length; i++){
+			const chat_history= createMessages(user, m[i]);
+			history.appendChild(chat_history);
+		}	
+		const send_cont= document.createElement("div");
+		send_cont.classList.add("input-group", "mb-0", "row");
+		const send= document.createElement("div");
+		send.classList.add('input-group-prepend', 'col-md-8', 'offset-md-2');
+		const sendbutton= document.createElement("span");
+		const fafa= document.createElement("i");
+		fafa.style= "cursor: pointer";
+		sendbutton.classList.add('input-group-text','col-md-8', 'offset-md-2' );
+		fafa.addEventListener('click', (event)=>{
+		//Creates message event handler
+		console.log("message sent");
+		var usermessage= document.getElementById('sendmessage').value;
+		
+		console.log("Socket Open");
+		socket.emit('savemessage', {
+			group : group._id,
+			message : usermessage
+		});
+		//Creates temporary message and adds to history	
+		const temporary= createPlaceholderMessage(usermessage);
+		history.appendChild(temporary);	
+		socket.on('returnMessageResponse', function(response) {
+				const update = JSON.parse(response);
+				const checkmsg= update[0];
+				const history= document.querySelector("#history");
+				time= checkmsg.timestamp;
+				console.log(time);
+				const chat_history= createMessages(user, checkmsg);
+				history.removeChild(history.lastChild);
+				history.appendChild(chat_history); 
+				loadmess[0].push(checkmsg);
+		});	
+		
+		document.getElementById('sendmessage').value= "";
+		
+		//TODO: Add call for appending group messages
+		});
+		
+		fafa.classList.add('fa', 'fa-send');
+		const input= document.createElement("input");
+		input.id= "sendmessage";
+		input.type= "text";
+		input.classList.add('form-control' ,'-lg-6');
+		input.placeholder= "Enter text here...";
+		sendbutton.appendChild(fafa);
+		sendbutton.appendChild(input);
+		send.appendChild(sendbutton);
+		send_cont.appendChild(send);
+		box.appendChild(send_cont);
+		document.getElementById("gc").innerHTML= group.name;
+		document.getElementById("desc").innerHTML= group.description;
+		document.getElementById("gp").src= "/static/uploads/"+group.photo;
+		document.getElementById("gp").style= "width: 100px";
+	  }
+</script>   
+</body>

@@ -4,6 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from datetime import datetime
+from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 from google.auth.transport import requests as rq
@@ -203,8 +204,7 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
-        session["user"] = change_info
-        return "info updated"
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
@@ -213,8 +213,7 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
-        session["user"] = google_add
-        return "info added"
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
@@ -398,16 +397,23 @@ def current_groups():
     if len(userchats) > 0:
         for userchat in userchats:
             groups.append(userchat["_id"])
-            messages.append(db.loadgroupmessages(userchat["_id"]))
         session["groups"] = groups
         session["load"] = True
         return render_template("existingGroups.html",
                                user=session.get("user"),
                                len=len(userchats),
-                               results=userchats, messages=messages)
+                               results=userchats)
         # Temporary, sending to create group or would it be better to send to search page???
     return redirect("/createGroup")
 
+@app_init.route('/chatbox')
+def chat_box():
+    """routing to chatbox"""
+    messages = []
+    group_id= request.args.get("gid")
+    messages.append(db.loadgroupmessages(group_id))
+    group_info= db.loadgroupchat(ObjectId(group_id))
+    return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
@@ -415,6 +421,7 @@ def save_user_message(message):
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
         socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
+        socketio.emit('broadcastMessage', json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():
@@ -440,12 +447,19 @@ def joingroup(): # pylint: disable= R1710
     if request.method == "POST":
         value = request.form['join']
         db.joingroup(value, session.get("user").get("_id"))
-        return redirect('/existingGroups')
+        return redirect('/loading')
 
 @app_init.route('/loading')
 def loading():
     """adds buffer for existing groups loading page"""
     return render_template("loading.html")
+
+@app_init.route('/chatload')
+def loading_chat():
+    """adds buffer for existing groups loading page"""
+    group_id= request.args.get("gid")
+    return render_template("chatload.html", gid= group_id)    
+    
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
