@@ -397,13 +397,12 @@ def current_groups():
     if len(userchats) > 0:
         for userchat in userchats:
             groups.append(userchat["_id"])
-            messages.append(db.loadgroupmessages(userchat["_id"]))
         session["groups"] = groups
         session["load"] = True
         return render_template("existingGroups.html",
                                user=session.get("user"),
                                len=len(userchats),
-                               results=userchats, messages=messages)
+                               results=userchats)
         # Temporary, sending to create group or would it be better to send to search page???
     return redirect("/createGroup")
 
@@ -412,7 +411,6 @@ def chat_box():
     """routing to chatbox"""
     messages = []
     group_id= request.args.get("gid")
-    print(group_id)
     messages.append(db.loadgroupmessages(group_id))
     group_info= db.loadgroupchat(ObjectId(group_id))
     return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
@@ -423,6 +421,7 @@ def save_user_message(message):
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
         socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
+        socketio.emit('broadcastMessage', json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():
@@ -454,11 +453,13 @@ def joingroup(): # pylint: disable= R1710
 def loading():
     """adds buffer for existing groups loading page"""
     return render_template("loading.html")
+
+@app_init.route('/chatload')
+def loading_chat():
+    """adds buffer for existing groups loading page"""
+    group_id= request.args.get("gid")
+    return render_template("chatload.html", gid= group_id)    
     
-@app_init.route('/chat')
-def chat():
-    """adds a form host"""
-    return render_template("chat.html")
 
 # created a reloader for easier code running in localhost
 # debug to find bugs

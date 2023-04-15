@@ -24,8 +24,7 @@
 				
             </div>
 			
-                
-               <iframe id= "iframe" style="overflow:hidden;height:100%;width:100% display: none" height="600px" width="600px" name="targetframe" allowTransparency="true" scrolling="no" frameborder="0" >
+                <iframe id= "iframe" height="100%" width="100%" name="targetframe" allowTransparency="true" scrolling="yes" frameborder="0" >
 					 </iframe> 
            
             
@@ -33,10 +32,7 @@
     </div>
 </div>
 </div>
-<template id="template">
- 
-					
-</template>
+
  <script>
 	//Loads userchats and user 
 	const res = JSON.parse('{{results | tojson}}');
@@ -84,7 +80,6 @@
 	  }
 	
 	  });
-	  
 	
    //This creates the chat templates
   function createItemTemplate(item) {
@@ -107,8 +102,9 @@
   div.appendChild(desc);
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
-		document.getElementById("iframe").src= "/chatbox?gid=" + item._id
 		document.getElementById("iframe").style.display= "block";
+		document.getElementById("iframe").src= "/chatload?gid=" + item._id
+		
 		});
   return li;
 }

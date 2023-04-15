@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<div class="card chat-app">
+
 
 <div class="chat" id= "chat" value= 0>
                 <div class="chat-header clearfix">
@@ -26,35 +26,65 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-history" style="height: 500px; width: 800px; overflow:auto;">
+                <div class="chat-history" overflow="auto">
                     <ul id= "history" class="m-b-0">
                       
                     </ul>
 					
                 </div>
-				<div class="chat-message clearfix">
-                    <div id="m-box" class="input-group mb-0">
+				 <div class="chat-message clearfix text-center">
+	
+                    <div id="m-box" class="input-group mb-0 ">
                                               
                     </div>
                 </div>
+				
                  </div>
-           
+          
 
 
  
-   </div>
+   
 
 <script>
 const loadmess= JSON.parse('{{messages | tojson}}');
 const user= JSON.parse('{{user | tojson}}');
 const group= JSON.parse('{{group_info | tojson}}');
+const socket= io.connect();
 $(document).ready(function() {
 		createGroupTemplate();
-		
+		socket.on("broadcastMessage", function(response) {
+				const broadcast = JSON.parse(response);
+				const newMessage= broadcast[0];
+				if (newMessage.sender._id != user._id){
+					if(newMessage.group === group._id){
+						console.log("New message alert!");
+						const history= document.querySelector("#history");
+						time= newMessage.timestamp;
+						const chat_history= createMessages(user, newMessage);
+						loadmess[0].push(newMessage);
+					}
+				}
+		});	
 	  });
-
+	  //Creates Temporary message
+	function createPlaceholderMessage(item){
+		const br= document.createElement("br");
+		const li= document.createElement("li");
+		li.classList.add('clearfix');
+		const div = document.createElement("div");
+		div.classList.add("message", "my-message");
+		const text= document.createTextNode(item);
+		div.appendChild(text);
+		li.appendChild(div);
+		li.appendChild(br);
+		li.id= "temporary";
+		return li;
+}
 	function createMessages(user, item){
     const date= document.createElement("div");
+	const other= document.createElement("div");
+	other.classList.add("message-data");
 	date.classList.add("message-data");
 	const span= document.createElement("span");
 	span.classList.add("message-data-time");
@@ -67,8 +97,9 @@ $(document).ready(function() {
 		
 	}
 	else{
-		
-		div.classList.add("message", "other-message", "text-right");
+		date.classList.add("other-message-date");
+		other.classList.add("other-message-date");
+		div.classList.add("message", "other-message", "float-right");
 		span.classList.add("text-right");
 	}
 	const img= document.createElement("img");
@@ -80,25 +111,27 @@ $(document).ready(function() {
 		this.src = '/static/uploads/defG.png';
 		});
 	img.style= "width: 10%";
-	div.appendChild(img);
-	const usernode= document.createTextNode(item.firstname + " " + item.lastname);
-	if(usernode === " "){
+	
+	
+	var usernode= document.createTextNode(item.firstname + " " + item.lastname);
+	if(item.firstname === "" && item.lastname=== ""){
 		usernode= document.createTextNode(item.sender.email);
 	}
 	usernode.style= "font-weight: bolder";
-	div.appendChild(br);
-	div.appendChild(usernode);
-	div.appendChild(br);
-	div.appendChild(br);
-	div.appendChild(br);
-	div.appendChild(br);
-	
+	other.appendChild(usernode);
 	const node= document.createTextNode(item.timestamp);
 	span.appendChild(node);
+	img.style= "width: 5%; border-radius: 50%";
 	date.appendChild(span);
+	date.appendChild(img);
+	date.appendChild(br);
+	
 	const text= document.createTextNode(item.message);
+	div.appendChild(br);
 	div.appendChild(text);
 	li.appendChild(date);
+	li.appendChild(other);
+	li.appendChild(br);
 	li.appendChild(div);
 	
 	return li;
@@ -112,20 +145,22 @@ $(document).ready(function() {
 			const chat_history= createMessages(user, m[i]);
 			history.appendChild(chat_history);
 		}	
+		const send_cont= document.createElement("div");
+		send_cont.classList.add("input-group", "mb-0", "row");
 		const send= document.createElement("div");
-		send.classList.add('input-group-prepend');
+		send.classList.add('input-group-prepend', 'col-md-8', 'offset-md-2');
 		const sendbutton= document.createElement("span");
 		const fafa= document.createElement("i");
 		fafa.style= "cursor: pointer";
-		sendbutton.classList.add('input-group-text');
+		sendbutton.classList.add('input-group-text','col-md-8', 'offset-md-2' );
 		fafa.addEventListener('click', (event)=>{
 		//Creates message event handler
 		console.log("message sent");
 		var usermessage= document.getElementById('sendmessage').value;
-		const socket= io.connect();
+		
 		console.log("Socket Open");
 		socket.emit('savemessage', {
-			group : groupchat,
+			group : group._id,
 			message : usermessage
 		});
 		//Creates temporary message and adds to history	
@@ -142,8 +177,7 @@ $(document).ready(function() {
 				history.appendChild(chat_history); 
 				loadmess[0].push(checkmsg);
 		});	
-		console.log("Socket Closed");
-		//socket.on("disconnect");
+		
 		document.getElementById('sendmessage').value= "";
 		
 		//TODO: Add call for appending group messages
@@ -153,12 +187,13 @@ $(document).ready(function() {
 		const input= document.createElement("input");
 		input.id= "sendmessage";
 		input.type= "text";
-		input.classList.add('form-control');
+		input.classList.add('form-control' ,'-lg-6');
 		input.placeholder= "Enter text here...";
 		sendbutton.appendChild(fafa);
+		sendbutton.appendChild(input);
 		send.appendChild(sendbutton);
-		box.appendChild(send);
-		box.appendChild(input);
+		send_cont.appendChild(send);
+		box.appendChild(send_cont);
 		document.getElementById("gc").innerHTML= group.name;
 		document.getElementById("desc").innerHTML= group.description;
 		document.getElementById("gp").src= "/static/uploads/"+group.photo;

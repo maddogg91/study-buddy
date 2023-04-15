@@ -168,7 +168,15 @@ body{
     border-bottom-color: #e8f1f3;
     left: 93%
 }
+.chat .chat-history .other-message-date {
+    
+    text-align: right
+}
 
+.chat .chat-history .other-message-date:after {
+    
+    left: 93%
+}
 .chat .chat-message {
     padding: 20px
 }
