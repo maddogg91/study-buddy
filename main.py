@@ -4,6 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from datetime import datetime
+from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 from google.auth.transport import requests as rq
@@ -57,24 +58,34 @@ Stream messages as they come in
 """
 
 
-def get_user_messages():
+def get_user_messages(user_id):
     """request messages from user"""
-    time= datetime.strptime(session.get("time"),'%Y-%m-%d %H:%M:%S')
+    groups= []
+    time= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     messages = []
-    groups = session.get("groups")
+    # Searches db for groups by user id
+    userchats = db.userchats(user_id)
+    # Need a route to send to a page without userchats for chats under 1
+    if len(userchats) > 0:
+        for userchat in userchats:
+            groups.append(userchat["_id"])
     for i in groups:
-        messages.append(db.messages_by_time(time.timestamp(),i))
+        message= db.messages_by_time(time.timestamp(),i)
+        if message is None:
+            print("No new messages")
+        messages.append(message)
     return messages
 
 
-def background_thread():
-    """Calls in the background updateMessages every 60 seconds"""
-    while True:
-        print("Running get_user_messages")
-        socketio.emit('updateMessages', json.dumps(
-            get_user_messages(), separators=(',', ':')))
-
-        socketio.sleep(60)
+# def background_thread():
+    # """Calls in the background updateMessages every 60 seconds"""
+    # while True:
+        # print("Running get_user_messages")
+        # messages= get_user_messages()
+        # if len(messages) > 0:
+            # socketio.emit('updateMessages', json.dumps(
+                # get_user_messages(), separators=(',', ':')))
+        # socketio.sleep(60)
 
 
 with open('keys/clientid.txt', 'rb') as p:
@@ -89,14 +100,10 @@ SECR = enc.decrypt(s)
 client_secrets_file = os.path.join(
     pathlib.Path(__file__).parent, "client_secret.json")
 
-session = {
-    "time": str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-}
-
-
 @app_init.route("/")
 def index():
     """routing to index html"""
+    session["local"]= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return render_template("index.html")
 
 
@@ -105,7 +112,7 @@ def connect():
     """connecting client"""
     global THREAD # pylint: disable= W0602
     print('Client connected')
-    socketio.start_background_task(background_thread)
+
 
     # global THREAD
     # with thread_lock:
@@ -121,10 +128,15 @@ def disconnect():
 
 
 @socketio.on('updateTime')
-def update_local_time(time):
+def update_local_time(user):
     """updates time"""
-    print('received time: ' + str(time))
-    session["local"]= time
+    print('received user: ' + str(user))
+    print("Running get_user_messages")
+    messages= get_user_messages(user)
+    if len(messages) > 0:
+        socketio.emit('updateMessages', json.dumps(
+            messages, separators=(',', ':')))
+    return user
 
 @app_init.route("/google-login")
 def google_login():
@@ -192,8 +204,7 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
-        session["user"] = change_info
-        return "info updated"
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
@@ -202,8 +213,7 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
-        session["user"] = google_add
-        return "info added"
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
@@ -387,16 +397,23 @@ def current_groups():
     if len(userchats) > 0:
         for userchat in userchats:
             groups.append(userchat["_id"])
-            messages.append(db.loadgroupmessages(userchat["_id"]))
         session["groups"] = groups
         session["load"] = True
         return render_template("existingGroups.html",
                                user=session.get("user"),
                                len=len(userchats),
-                               results=userchats, messages=messages)
+                               results=userchats)
         # Temporary, sending to create group or would it be better to send to search page???
     return redirect("/createGroup")
 
+@app_init.route('/chatbox')
+def chat_box():
+    """routing to chatbox"""
+    messages = []
+    group_id= request.args.get("gid")
+    messages.append(db.loadgroupmessages(group_id))
+    group_info= db.loadgroupchat(ObjectId(group_id))
+    return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
@@ -404,6 +421,7 @@ def save_user_message(message):
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
         socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
+        socketio.emit('broadcastMessage', json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():
@@ -429,12 +447,19 @@ def joingroup(): # pylint: disable= R1710
     if request.method == "POST":
         value = request.form['join']
         db.joingroup(value, session.get("user").get("_id"))
-        return redirect('/existingGroups')
+        return redirect('/loading')
 
 @app_init.route('/loading')
 def loading():
     """adds buffer for existing groups loading page"""
     return render_template("loading.html")
+
+@app_init.route('/chatload')
+def loading_chat():
+    """adds buffer for existing groups loading page"""
+    group_id= request.args.get("gid")
+    return render_template("chatload.html", gid= group_id)    
+    
 
 # created a reloader for easier code running in localhost
 # debug to find bugs

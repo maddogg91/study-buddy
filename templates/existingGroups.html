@@ -23,41 +23,16 @@
                 </ul>
 				
             </div>
-			<div class="chat" id= "chat" value= 0 style= "visibility: hidden">
-                <div class="chat-header clearfix">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                <img id="gp" src="https://www.pngitem.com/pimgs/m/148-1489698_the-main-group-group-chat-group-chat-icon.png" alt="avatar">
-                            </a>
-                            <div class="chat-about">
-                                <h6 id="gc" class="m-b-0">Best Group</h6>
-                                <small id= "desc">First Test Groupchat</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-history" style="height: 400px; width: 800px; overflow:auto;">
-                    <ul id= "history" class="m-b-0">
-                      
-                    </ul>
-					<div class="chat-message clearfix">
-                    <div id="m-box" class="input-group mb-0">
-                                              
-                    </div>
-                </div>
-                </div>
-                
-            </div>
+			
+                <iframe id= "iframe" height="100%" width="100%" name="targetframe" allowTransparency="true" scrolling="yes" frameborder="0" >
+					 </iframe> 
+           
             
         </div>
     </div>
 </div>
 </div>
-<template id="template">
- 
-					
-</template>
+
  <script>
 	//Loads userchats and user 
 	const res = JSON.parse('{{results | tojson}}');
@@ -91,54 +66,10 @@
 	selected= index;
 	return selected;
 	};
-	
-	function findUpdate() {
-		const socket= io.connect();
-		//socket.on("connect");
-		console.log("Socket Open");
-		console.log("Updating..." + selected)
-		socket.emit('updateTime', {
-			updateTime: time
-		} );
-		
-		socket.on("updateMessages", function(msg){
-		msgList= res[selected].messages;
-		const updatedmsg = JSON.parse(msg);
-		const checkmsg= updatedmsg[selected];
-		
-		for(let i= 0; i < checkmsg.length; i++){
-			if(msgList.includes(checkmsg[i].timestamp)){
-				console.log("Message exists")
-				time= checkmsg[i].timestamp
-			}
-			else{
-				console.log(checkmsg[i]);
-				const history= document.querySelector("#history");
-				if(checkmsg[i].sender._id != user._id){
-					const chat_history= createMessages(user, checkmsg[i]);
-					res.push(checkmsg[i])
-					print(res)
-					history.appendChild(chat_history);
-				}
-			}
-		}	
-		if(checkmsg.length > 0){
-		 time= checkmsg[checkmsg.length-1].timestamp;
-		}
-		else{
-		 console.log("No new updates");
-		}
-		});
-		console.log("Socket Closed");
-		//socket.on("disconnect");
-	};
 	 
-	
-
-	
 	//When page loads below function creates chats for users and updates messages should their be 
 	//newer messages.
-  $(window).ready(function() {
+  $(document).ready(function() {
 	  const ul = document.querySelector("#card");
 	  time= res[res.length-1].timestamp;
 	  for(let i=0; i < res.length; i++){
@@ -149,67 +80,7 @@
 	  }
 	
 	  });
-	  
-	  //Creates Temporary message
-	function createPlaceholderMessage(item){
-		const br= document.createElement("br");
-		const li= document.createElement("li");
-		li.classList.add('clearfix');
-		const div = document.createElement("div");
-		div.classList.add("message", "my-message");
-		const text= document.createTextNode(item);
-		div.appendChild(text);
-		li.appendChild(div);
-		li.appendChild(br);
-		li.id= "temporary";
-		return li;
-}
-	//This function creates messages by the format for each chat separately when called.
-   function createMessages(user, item){
-    const date= document.createElement("div");
-	date.classList.add("message-data");
-	const span= document.createElement("span");
-	span.classList.add("message-data-time");
 	
-	const li= document.createElement("li");
-	li.classList.add('clearfix');
-	const div = document.createElement("div");
-	if (user._id === item.sender._id){
-		div.classList.add("message", "my-message");
-		
-	}
-	else{
-		div.classList.add("message", "other-message", "float-right");
-		span.classList.add("float-right");
-	}
-	const img= document.createElement("img");
-	if(item.profilepic== ""){
-		item.profilepic= "defG.png";
-	}	
-	img.src= "/static/uploads/" + item.profilepic;
-	img.style= "width: 10%";
-	div.appendChild(img);
-	const usernode= document.createTextNode(item.firstname + " " + item.lastname);
-	usernode.style= "font-weight: bolder";
-   
-	div.appendChild(usernode);
-	const br= document.createElement("br");
-	div.appendChild(br);
-	div.appendChild(br);
-	div.appendChild(br);
-	
-	
-	div.appendChild(br);
-	
-	const node= document.createTextNode(item.timestamp);
-	span.appendChild(node);
-	date.appendChild(span);
-	const text= document.createTextNode(item.message);
-	div.appendChild(text);
-	li.appendChild(date);
-	li.appendChild(div);
-	return li;
-   }
    //This creates the chat templates
   function createItemTemplate(item) {
   
@@ -231,100 +102,12 @@
   div.appendChild(desc);
   li.appendChild(div);	
   li.addEventListener('click', (event) => {
-		selected= getIndexOfChat();
-		setInterval(findUpdate(), 60000);
-		if(document.getElementById("chat").style.value == 0){
-			document.getElementById("chat").style.value = 1;
-			document.getElementById("chat").style.visibility = "visible";
-			}
-		else{
-			const history= document.querySelector("#history");
-			while (history.firstChild){
-				history.removeChild(history.firstChild);
-				
-			}
-			const loadmess= JSON.parse('{{messages | tojson}}');
-			const m= loadmess[getIndexOfChat()];
-			if(m == null){
-				
-			}
-			else{
-			
-			for(let i=0; i < m.length; i++){
-			const chat_history= createMessages(user, m[i]);
-			history.appendChild(chat_history);
-				}
-			}
-			
-			const box = document.querySelector("#m-box");
-			while (box.firstChild){
-				box.removeChild(box.firstChild);
-				
-			}
-			
-			const send= document.createElement("div");
-			send.classList.add('input-group-prepend');
-			const sendbutton= document.createElement("span");
-			const fafa= document.createElement("i");
-			fafa.style= "cursor: pointer";
-			sendbutton.classList.add('input-group-text');
-			fafa.addEventListener('click', (event)=>{
-				//Creates message event handler
-				console.log("message sent");
-				var usermessage= document.getElementById('sendmessage').value;
-				var groupchat= res[selected]._id;
-				const socket= io.connect();
-				console.log("Socket Open");
-				socket.emit('savemessage', {
-						group : groupchat,
-						message : usermessage
-					});
-				//Creates temporary message and adds to history	
-				const temporary= createPlaceholderMessage(usermessage);
-				history.appendChild(temporary);	
-				socket.on('returnMessageResponse', function(response) {
-						const update = JSON.parse(response);
-						const checkmsg= update[0];
-						const history= document.querySelector("#history");
-						time= checkmsg.timestamp;
-						console.log(time);
-						const chat_history= createMessages(user, checkmsg);
-						history.removeChild(history.lastChild);
-						history.appendChild(chat_history);    
-						res.push(checkmsg);
-				});	
-				console.log("Socket Closed");
-				//socket.on("disconnect");
-				document.getElementById('sendmessage').value= "";
-				
-				//TODO: Add call for appending group messages
-			});
+		document.getElementById("iframe").style.display= "block";
+		document.getElementById("iframe").src= "/chatload?gid=" + item._id
 		
-			fafa.classList.add('fa', 'fa-send');
-			const input= document.createElement("input");
-			input.id= "sendmessage";
-			input.type= "text";
-			input.classList.add('form-control');
-			input.placeholder= "Enter text here...";
-			sendbutton.appendChild(fafa);
-			send.appendChild(sendbutton);
-			box.appendChild(send);
-			box.appendChild(input);
-			document.getElementById("chat").style.visibility = "hidden";
-			document.getElementById("gc").innerHTML= item.name;
-			document.getElementById("desc").innerHTML= item.description;
-			document.getElementById("gp").src= "/static/uploads/"+item.photo;
-			document.getElementById("gp").style= "width: 100px";
-			document.getElementById("chat").style.visibility = "visible";
-			
-		
-			}
-  
-  });
+		});
   return li;
 }
-
-
 
   </script>
 
