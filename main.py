@@ -389,7 +389,6 @@ def current_groups():
     """routing to currentGroups"""
     if not session.get("user"):
         return redirect('/')
-    messages = []
     groups = []
     # Searches db for groups by user id
     userchats = db.userchats(session.get("user").get("_id"))
@@ -413,7 +412,8 @@ def chat_box():
     group_id= request.args.get("gid")
     messages.append(db.loadgroupmessages(group_id))
     group_info= db.loadgroupchat(ObjectId(group_id))
-    return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
+    return render_template("chatbox.html", messages= messages, user= session.get("user"), 
+    group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
@@ -421,7 +421,8 @@ def save_user_message(message):
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
         socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
-        socketio.emit('broadcastMessage', json.dumps(response, separators=(',', ':')), broadcast= True)
+        socketio.emit('broadcastMessage', 
+        json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():
@@ -458,8 +459,8 @@ def loading():
 def loading_chat():
     """adds buffer for existing groups loading page"""
     group_id= request.args.get("gid")
-    return render_template("chatload.html", gid= group_id)    
-    
+    return render_template("chatload.html", gid= group_id)
+
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
