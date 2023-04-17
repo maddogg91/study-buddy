@@ -7,6 +7,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
+import eventlet
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 import requests
@@ -51,7 +52,8 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-socketio = SocketIO(app_init, cors_allowed_origins='*')
+eventlet.monkey_patch()
+socketio = SocketIO(app_init, cors_allowed_origins='*', async_mode= 'eventlet')
 
 """
 Stream messages as they come in 
@@ -110,7 +112,7 @@ def index():
 @socketio.on('connect')
 def connect():
     """connecting client"""
-    global THREAD # pylint: disable= W0602
+   # global THREAD # pylint: disable= W0602
     print('Client connected')
 
 
@@ -384,7 +386,6 @@ def upload(file):
 
 
 @app_init.route('/existingGroups', methods=["GET", "POST"])
-@cache.cached(timeout=50)
 def current_groups():
     """routing to currentGroups"""
     if not session.get("user"):
@@ -420,7 +421,8 @@ def save_user_message(message):
     """saves user messages to the database"""
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
-        socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
+        socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')),
+ broadcast= True)
         socketio.emit('broadcastMessage', 
         json.dumps(response, separators=(',', ':')), broadcast= True)
 
