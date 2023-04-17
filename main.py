@@ -7,7 +7,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
-import eventlet
+import gevent
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 import requests
@@ -52,8 +52,7 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-eventlet.monkey_patch()
-socketio = SocketIO(app_init, cors_allowed_origins='*', async_mode= 'eventlet')
+socketio = SocketIO(app_init, cors_allowed_origins='*', async_mode= 'gevent')
 
 """
 Stream messages as they come in 
