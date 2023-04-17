@@ -4,7 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from datetime import datetime
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, flash, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
@@ -192,8 +192,8 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
-        session["user"] = change_info
-        return "info updated"
+        flash('Information Updated')
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
@@ -202,8 +202,8 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
-        session["user"] = google_add
-        return "info added"
+        flash('Information Updated')
+        return redirect("/home")
     return render_template("settings.html", alarm="1")
 
 
