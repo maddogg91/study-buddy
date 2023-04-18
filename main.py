@@ -7,7 +7,7 @@ from datetime import datetime
 from flask import Flask, flash, session, render_template, request, redirect, url_for
 from bson.objectid import ObjectId
 from flask_caching import Cache
-import gevent
+import gevent # pylint: disable=W0611
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 import requests
@@ -426,7 +426,7 @@ def save_user_message(message):
     """saves user messages to the database"""
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
-        socketio.emit('returnMessageResponse', 
+        socketio.emit('returnMessageResponse',
         json.dumps(response, separators=(',', ':')))
         socketio.emit('broadcastMessage',
         json.dumps(response, separators=(',', ':')), broadcast= True)
