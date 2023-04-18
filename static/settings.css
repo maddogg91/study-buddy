@@ -1,9 +1,8 @@
-body{
-    background: linear-gradient(to right, #5e3023, #f9ca24);
-    overflow-x: hidden;
-    box-sizing: border-box;
-    }
-    /*nav bar*/
+body {
+  background: linear-gradient(to right, #5e3023, #f9ca24);
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
 .navbar {
     background-color: #895737;
     padding-right: 20px;
@@ -127,3 +126,12 @@ body{
         
     }
 
+h6{
+    color: #777;
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    font-size: 4px;
+    width: 80%;
+    letter-spacing: 1px;
+    margin-left: 2px;
+}
