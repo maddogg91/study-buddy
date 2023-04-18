@@ -50,9 +50,11 @@
 const loadmess= JSON.parse('{{messages | tojson}}');
 const user= JSON.parse('{{user | tojson}}');
 const group= JSON.parse('{{group_info | tojson}}');
-const socket= io.connect();
+socket= io.connect("studybuddy.fly.dev");
 $(document).ready(function() {
+		
 		createGroupTemplate();
+		socket.on("connect", () =>{console.log(socket.id)});
 		socket.on("broadcastMessage", function(response) {
 				const broadcast = JSON.parse(response);
 				const newMessage= broadcast[0];
@@ -157,7 +159,7 @@ $(document).ready(function() {
 		//Creates message event handler
 		console.log("message sent");
 		var usermessage= document.getElementById('sendmessage').value;
-		
+		//const socket= io.connect('https://studybuddy.fly.dev');
 		console.log("Socket Open");
 		socket.emit('savemessage', {
 			group : group._id,
