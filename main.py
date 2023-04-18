@@ -6,7 +6,6 @@ import json
 from datetime import datetime
 from flask import Flask, flash, session, render_template, request, redirect, url_for
 from bson.objectid import ObjectId
-from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
 import gevent
 from google.auth.transport import requests as rq
@@ -218,7 +217,7 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
-    
+
         flash('Information Updated')
 
         return redirect("/home")
@@ -419,17 +418,17 @@ def chat_box():
     group_id= request.args.get("gid")
     messages.append(db.loadgroupmessages(group_id))
     group_info= db.loadgroupchat(ObjectId(group_id))
-    return render_template("chatbox.html", messages= messages, user= session.get("user"), 
-    group_info= group_info)
+    return render_template("chatbox.html", messages= messages,
+    user= session.get("user"), group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
     """saves user messages to the database"""
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
-        socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')),
- broadcast= True)
-        socketio.emit('broadcastMessage', 
+        socketio.emit('returnMessageResponse', 
+        json.dumps(response, separators=(',', ':')))
+        socketio.emit('broadcastMessage',
         json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
@@ -468,7 +467,6 @@ def loading_chat():
     """adds buffer for existing groups loading page"""
     group_id= request.args.get("gid")
     return render_template("chatload.html", gid= group_id)
-
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
