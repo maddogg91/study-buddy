@@ -4,6 +4,7 @@ import pathlib
 from threading import Lock
 import json
 from datetime import datetime
+from flask import Flask, flash, session, render_template, request, redirect, url_for
 from bson.objectid import ObjectId
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
@@ -205,6 +206,9 @@ def changeinfo():
     """Changing user info"""
     change_info = Change().change_info(session.get("user").get("_id"))
     if change_info is True:
+
+        flash('Information Updated')
+
         return redirect("/home")
     return render_template("settings.html", alarm="1")
 
@@ -214,6 +218,9 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
+    
+        flash('Information Updated')
+
         return redirect("/home")
     return render_template("settings.html", alarm="1")
 

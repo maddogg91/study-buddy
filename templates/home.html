@@ -31,7 +31,15 @@
       </ul>
       </div>
 
-    
+      {% if get_flashed_messages() %}
+
+      <script>
+       document.addEventListener('DOMContentLoaded', function() {
+        alert('{{ get_flashed_messages()[0] }}');
+   });
+   
+    </script>
+         {% endif %}   
 
   
 
