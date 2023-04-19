@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Study Buddies Matchmaking</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+<link rel="stylesheet" href="/static/buddies.css"> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+</head>
+<body>
+{% include 'header.html' %}
+
+<h2 style= "text-align: center ;color: white"> Match Rating <h2>
+<p style= "text-align: center; color: white"> (Out of 5 Stars)</p>
+<span id="star" class= "star" style="font-size:200%;color:yellow;">&starf;</span>
+<div class="card-container">
+	<img height= 300px class="round" id="current" alt="user" />
+	<h3 id="name">Ricky Park</h3>
+	<h6 id="major">New York</h6>
+	<p id= "bio">User interface designer and front-end developer</p>
+	<p id= "gender">User interface designer and front-end developer</p>
+	<button id= "next" class= "btn btn-outline-dark" >Next Match</button>
+</div>
+
+ <script>
+	//Loads userchats and user 
+	const buddies = JSON.parse({{buddies | tojson}});
+	const best= buddies.best;
+	const second= buddies.second;
+	const third= buddies.third;
+	const fourth= buddies.fourth;
+	const last= buddies.last;
+	const results = [];
+	var indx= 0;
+	var num= 0;
+	//Gets event target and returns
+	function getEventTarget(e) {
+		e = e || window.event;
+		return e.target || e.srcElement; 
+	}
+ 
+  $(document).ready(function() {
+		num= 5;
+		best.forEach(createBuddy);
+		num= 4;
+		second.forEach(createBuddy);
+		num= 3;
+		third.forEach(createBuddy);
+		num= 2;
+		fourth.forEach(createBuddy);
+		num= 1;
+		last.forEach(createBuddy);
+		document.getElementById("current").src="static/uploads/"+ results[indx].photo;
+		document.getElementById("name").innerHTML=results[indx].name;
+		document.getElementById("major").innerHTML="Major: " + results[indx].major;
+		document.getElementById("bio").innerHTML="About me: " + results[indx].bio;
+		document.getElementById("gender").innerHTML=results[indx].gender;
+		document.getElementById("star").innerHTML= "&starf;".repeat(results[indx].rating);
+	  });
+	  
+$(next).click(function() {
+		console.log(results.length-1);
+		console.log(indx);
+		if(results.length-1 > indx){
+			indx= indx + 1;
+		}
+		else{
+			indx= 0;
+		}
+		document.getElementById("current").src="static/uploads/"+ results[indx].photo;
+		document.getElementById("name").innerHTML=results[indx].name;
+		document.getElementById("major").innerHTML="Major: " + results[indx].major;
+		document.getElementById("bio").innerHTML="About me: " + results[indx].bio;
+		document.getElementById("gender").innerHTML=results[indx].gender;
+		document.getElementById("star").innerHTML= "&starf;".repeat(results[indx].rating);
+  });
+	$(current).on('error', function() {
+		this.src = '/static/uploads/defG.png';
+		});
+  function createBuddy(item, index){
+	buddy= {
+	"name" : item.fname + " " + item.lname,
+	"major": item.major,
+	"bio": item.bio, 
+	"gender": item.gender,
+	"photo": item.profilepic,
+	"rating": num
+	}
+	
+	results.push(buddy);
+  }
+  
+  
+  function createBuddyCard(){
+	
+  }
+</script>
+</body>
+</html>
