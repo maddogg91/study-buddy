@@ -387,3 +387,40 @@ def loadgroupchat(gid):
     group_chat= db_connection.groupchat.find_one(gid)
     group_chat["_id"]= str(group_chat["_id"])
     return group_chat
+
+def buddy_search(uid):
+    """db function to find buddies based on matchmaking quiz"""
+    users_perfect= []
+    users_4stars= []
+    users_3stars= []
+    users_2stars= []
+    users_1star= []
+    percentage= 0
+    profile= user_profile(uid)
+    alluser_profile= list(db_connection.profile.find())
+    for user in alluser_profile:
+        user["_id"]= str(user["_id"])
+        percentage= 0
+        if user["quizAnswers"] != "":
+            for i in range(0, 10):
+                if user["quizAnswers"][i] is profile["quizAnswers"][i]:
+                    percentage = percentage + 10
+            if percentage > 81:
+                if user["userId"]!= uid:
+                    users_perfect.append(user)
+            elif 69 < percentage < 81:
+                users_4stars.append(user)
+            elif 49 < percentage < 61:
+                users_3stars.append(user)
+            elif 29 < percentage < 41:
+                users_2stars.append(user)
+            else:
+                users_1star.append(user)
+    buddy_data= {
+    "best": users_perfect,
+    "second": users_4stars,
+    "third": users_3stars,
+    "fourth": users_2stars,
+    "last": users_1star
+    }
+    return buddy_data

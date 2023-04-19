@@ -6,8 +6,8 @@ import json
 from datetime import datetime
 from flask import Flask, flash, session, render_template, request, redirect, url_for
 from bson.objectid import ObjectId
-from flask import Flask, session, render_template, request, redirect, url_for
 from flask_caching import Cache
+import gevent # pylint: disable=W0611
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 import requests
@@ -52,7 +52,7 @@ def create_app():
 
 app_init = create_app()
 cache= Cache(app_init)
-socketio = SocketIO(app_init, cors_allowed_origins='*')
+socketio = SocketIO(app_init, cors_allowed_origins='*', async_mode= 'gevent')
 
 """
 Stream messages as they come in 
@@ -111,7 +111,7 @@ def index():
 @socketio.on('connect')
 def connect():
     """connecting client"""
-    global THREAD # pylint: disable= W0602
+   # global THREAD # pylint: disable= W0602
     print('Client connected')
 
 
@@ -217,7 +217,7 @@ def changegoogleinfo():
     """Changing google account info"""
     google_add = Change().googlesettingsinfo(session.get("user").get("_id"))
     if google_add is True:
-    
+
         flash('Information Updated')
 
         return redirect("/home")
@@ -342,6 +342,7 @@ def savequiz():
     """routing to saved quiz after receiving them"""
     data = request.form
     db.savequiz(data, session.get("user").get("_id"))
+    flash('Information Updated')
     return redirect('quiz')
 
 
@@ -391,12 +392,10 @@ def upload(file):
 
 
 @app_init.route('/existingGroups', methods=["GET", "POST"])
-@cache.cached(timeout=50)
 def current_groups():
     """routing to currentGroups"""
     if not session.get("user"):
         return redirect('/')
-    messages = []
     groups = []
     # Searches db for groups by user id
     userchats = db.userchats(session.get("user").get("_id"))
@@ -420,15 +419,18 @@ def chat_box():
     group_id= request.args.get("gid")
     messages.append(db.loadgroupmessages(group_id))
     group_info= db.loadgroupchat(ObjectId(group_id))
-    return render_template("chatbox.html", messages= messages, user= session.get("user"), group_info= group_info)
+    return render_template("chatbox.html", messages= messages,
+    user= session.get("user"), group_info= group_info)
 
 @socketio.on('savemessage')
 def save_user_message(message):
     """saves user messages to the database"""
     response= db.savemessage(message, session.get("user").get("_id"))
     if len(response) > 0:
-        socketio.emit('returnMessageResponse', json.dumps(response, separators=(',', ':')))
-        socketio.emit('broadcastMessage', json.dumps(response, separators=(',', ':')), broadcast= True)
+        socketio.emit('returnMessageResponse',
+        json.dumps(response, separators=(',', ':')))
+        socketio.emit('broadcastMessage',
+        json.dumps(response, separators=(',', ':')), broadcast= True)
 
 @app_init.route('/profile', methods=["GET", "POST"])
 def user_profile():
@@ -465,8 +467,14 @@ def loading():
 def loading_chat():
     """adds buffer for existing groups loading page"""
     group_id= request.args.get("gid")
-    return render_template("chatload.html", gid= group_id)    
-    
+    return render_template("chatload.html", gid= group_id)
+
+@app_init.route('/buddies')
+def find_buddies():
+    """routes to buddy page"""
+    buddy_data= db.buddy_search(session.get("user").get("_id"))
+    return render_template("buddies.html", buddies=
+    json.dumps(buddy_data, separators=(',', ':')))
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
