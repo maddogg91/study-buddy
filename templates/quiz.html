@@ -9,30 +9,11 @@
 </head>
 <body>
   {% include 'header.html' %}
-
-		<form id= "search" action="/search1" method="GET">
-		<div class= "tooltip">
-		<span class="tooltiptext"> 
-			For users 'user : [username]'
-			For groups 'group: [groupname]'
-			Groups by description 'gdesc : [keywords]'
-		</span>
-		
-		<input placeholder= "search anything" style= "background-color: #5E3023; 
-		border-radius: 60px; position: absolute; right: 1px ; top: 9px ; padding: 10px 30px; backdrop-filter: blur(4px) saturate(180%);" 
-		type="search1" id="form1" class="form-control" name= "query"/>
-		
-		</div>
-		</li>
-       
-		</form>
-		</ul>
 		<script>
-		document.getElementById("f").onclick = function() {
-		document.getElementById("search").submit();
-		}
+	
 		 $(window).ready(function() {
 			const mm = JSON.parse('{{mm | tojson}}');
+			console.log(mm);
 			for(let i= 0; i < mm.length; i++){
 				var ind=i+1;
 			 document.getElementById("q" + ind.toString()).value= mm[i];
@@ -99,5 +80,14 @@
   </form>
 </div>	
 	</div>
+	   {% if get_flashed_messages() %}
+
+      <script>
+       document.addEventListener('DOMContentLoaded', function() {
+        alert('{{ get_flashed_messages()[0] }}');
+   });
+   
+    </script>
+         {% endif %}   
 </body>
 </html>

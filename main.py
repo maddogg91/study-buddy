@@ -7,7 +7,7 @@ from datetime import datetime
 from flask import Flask, flash, session, render_template, request, redirect, url_for
 from bson.objectid import ObjectId
 from flask_caching import Cache
-import gevent # pylint: disable=W0611
+import gevent # pylint: disable=W0611, E0401
 from google.auth.transport import requests as rq
 from google.oauth2 import id_token
 import requests
@@ -342,6 +342,7 @@ def savequiz():
     """routing to saved quiz after receiving them"""
     data = request.form
     db.savequiz(data, session.get("user").get("_id"))
+    flash('Information Updated')
     return redirect('quiz')
 
 
@@ -467,6 +468,13 @@ def loading_chat():
     """adds buffer for existing groups loading page"""
     group_id= request.args.get("gid")
     return render_template("chatload.html", gid= group_id)
+
+@app_init.route('/buddies')
+def find_buddies():
+    """routes to buddy page"""
+    buddy_data= db.buddy_search(session.get("user").get("_id"))
+    return render_template("buddies.html", buddies=
+    json.dumps(buddy_data, separators=(',', ':')))
 
 # created a reloader for easier code running in localhost
 # debug to find bugs
