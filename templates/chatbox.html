@@ -51,10 +51,10 @@ const loadmess= JSON.parse('{{messages | tojson}}');
 const user= JSON.parse('{{user | tojson}}');
 const group= JSON.parse('{{group_info | tojson}}');
 socket= io.connect("studybuddy.fly.dev");
+socket.on("connect", () =>{console.log(socket.id)});
 $(document).ready(function() {
 		
 		createGroupTemplate();
-		socket.on("connect", () =>{console.log(socket.id)});
 		socket.on("broadcastMessage", function(response) {
 				const broadcast = JSON.parse(response);
 				const newMessage= broadcast[0];
@@ -62,8 +62,8 @@ $(document).ready(function() {
 					if(newMessage.group === group._id){
 						console.log("New message alert!");
 						const history= document.querySelector("#history");
-						time= newMessage.timestamp;
 						const chat_history= createMessages(user, newMessage);
+						console.log("Success");
 						loadmess[0].push(newMessage);
 					}
 				}

@@ -289,11 +289,11 @@ ul.thatlist li{
 
 .user-container{
 	background-color: #895737;
-	width: 465px;
+	width: 445px;
 	height: 225px;
 	right: 690px;
-	bottom: 1px;
 	border: none;
+	top: 750px;
 	opacity: 0.6;
 	position: absolute;
 	display: none;

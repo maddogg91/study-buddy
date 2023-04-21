@@ -7,7 +7,18 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/search.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+	<style> label {color: white;}
+	a {color: white;}
+	.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+	</style>
 </head>
 <body>
 	{% include 'header.html' %}
@@ -43,40 +54,63 @@
 	</script>
 	
     </div>
-	<h1 style="text-align: center">Edit User Profile</h1>
-	<button id= "edit" style="position: absolute; right: 10%;">EDIT</button>
+	<h1 style="text-align: center; color: white">Edit User Profile</h1>
+	
 	<br>
 	<br>
 	<br>
+	
 	<span>
 	<label>Profile Picture</label>
 	<br>
-	<img id= "pp" style= "width: 25%" src= "/static/uploads/{{profile.profilepic}}"></img>
+	<img id= "pp"  style= "width: 300px; height: 400px;" src= "/static/uploads/{{profile.profilepic}}"></img>
+	<img style= "position: absolute; left: 600px; width: 300px; height: 400px;"src= "/static/brew.gif">
 	</span>
 	<form id= "updates" action="/profile" method="POST" enctype = "multipart/form-data">
 	<label for="photo"></label>
     <input type="file" accept="image/png, image/jpeg" name="profilepic" class="photoAdder">
+	
 	<br>
 	<br>	
+	<button id= "edit" class="btn btn-info" style="position: absolute; right: 50%;">EDIT</button>
 	<br>
+	<br>
+	<div class="form row">
+    <div class="form-group col-md-2">
 	<label>First Name</label>
-	<input id="update value" type="text" class="form-control form-control-md" name="fname" aria-describedby="user" placeholder= '{{profile.fname}}' readonly>
+	<input id="update value" type="text" class="form-control form-control-sm" name="fname" aria-describedby="user" placeholder= '{{profile.fname}}' readonly>
+	</div>
+	<div class="form-group col-md-2">
 	<label>Last Name</label>
-	<input id="update value2" type="text" class="form-control form-control-md" name="lname" aria-describedby="user" placeholder= '{{profile.lname}}' readonly>
+	<input id="update value2" type="text" class="form-control form-control-sm" name="lname" aria-describedby="user" placeholder= '{{profile.lname}}' readonly>
+	</div>
+	<div class="form-group col-md-2">
 	<label>Major</label>
-	<input id="update value3" type="text" class="form-control form-control-md" name="major" aria-describedby="user" placeholder= '{{profile.major}}' readonly>
+	<input id="update value3" type="text" class="form-control form-control-sm" name="major" aria-describedby="user" placeholder= '{{profile.major}}' readonly>
+	</div>
+	<div class="form-group col-md-2">
 	<label>Minor</label>
-	<input id="update value4" type="text" class="form-control form-control-md" name="minor" aria-describedby="user" placeholder= '{{profile.minor}}' readonly>
+	<input id="update value4" type="text" class="form-control form-control-sm" name="minor" aria-describedby="user" placeholder= '{{profile.minor}}' readonly>
+	</div>
+	</div>
+	<div class="form row">
+    <div class="form-group col-md-2">
 	<label>Gender</label>
-	<input id="update value5"ntype="text" class="form-control form-control-md" name="gender" aria-describedby="user" placeholder= '{{profile.gender}}' readonly>
+	<input id="update value5" type="text" class="form-control form-control-sm" name="gender" aria-describedby="user" placeholder= '{{profile.gender}}' readonly>
+	</div>
+	<div class="form-group col-md-2">
 	<label>Bio</label>
-	<input id="update value6" type="text" class="form-control form-control-md" name="bio" aria-describedby="user" placeholder= '{{profile.bio}}' readonly>
+	<input id="update value6" type="text" class="form-control form-control-sm" name="bio" aria-describedby="user" placeholder= '{{profile.bio}}' readonly>
+	</div>
+	<div class="form-group col-md-2">
 	<label>Status</label>
-	<input id="update value7" type="text" class="form-control form-control-md" name="status" aria-describedby="user" placeholder= '{{profile.status}}' readonly>
+	<input id="update value7" type="text" class="form-control form-control-sm" name="status" aria-describedby="user" placeholder= '{{profile.status}}' readonly>
+	</div>
+	</div>
 	<br><br><br>
-	<button style="position: absolute; right: 50%;" type= "submit">SAVE</button>
+	<button style="position: absolute; right: 50%;" class="btn btn-info"type= "submit">SAVE</button>
 	</form>
-	<a href="templates\quiz.html"><button class="btn">Click Here To Take Quiz</button></a>
+	<a class="blink_me" style= "color:white" href="quiz">Click Here To Take Quiz</a>
 	<script>
 		document.getElementById("edit").onclick = function() {
 		document.getElementById("update value").readOnly= false;
