@@ -11,14 +11,14 @@ This web application functions as an engine in which users can create a groupcha
   * Requirements.txt is applied so no pip install is needed from your end
  
 ## MVP Methods and  Description ##
-MVP Tasks  | Description
+MVP Tasks  | Description | GIF
 ------------- | -------------
-Non Google user Sign Up  | User will sign up with email password birthday and username.Then User information is stored into Users table in mongoDB
-Google user Sign Up | User who signs up with Google will be rerouted to the google login page and will then have their email and a unique id
-Change User information  | Google Users and Non google Users will be rerouted to different pages with different permissions to update specific data. Using mongo db update and inset commands to update user database information
-Create Group | User can create group descriptions, add groupchat photo, and name and it will be inserted into groupchat collection in mongoDB
-Join Group | User can search for groups to join and opt in or out and their unique id will be added to groupchat collection in Mongo DB .
-Groupchat + Chat feautures | User can Post a text message and it will be added into messages collection in Mongo DB and be outputted in a boostrap styled text bubble of real time timestamps from newest to oldest  messages
+Non Google user Sign Up  | User will sign up with email password birthday and username.Then User information is stored into Users table in mongoDB |
+Google user Sign Up | User who signs up with Google will be rerouted to the google login page and will then have their email and a unique id |
+Change User information  | Google Users and Non google Users will be rerouted to different pages with different permissions to update specific data. Using mongo db update and inset commands to update user database information|
+Create Group | User can create group descriptions, add groupchat photo, and name and it will be inserted into groupchat collection in mongoDB |
+Join Group | User can search for groups to join and opt in or out and their unique id will be added to groupchat collection in Mongo DB |
+Groupchat + Chat feautures | User can Post a text message and it will be added into messages collection in Mongo DB and be outputted in a boostrap styled text bubble of real time timestamps from newest to oldest  messages |
 
 ## Stretch goals for the future ##
 * Google Calendar API
