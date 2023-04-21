@@ -55,8 +55,7 @@
 	<br><br><br><br>
 
 	<!-- For loop for group search results -->
-	<div class="container mb-2" id="card-holder" style="display: flex; flex-wrap: wrap; padding: 10px 50px 100px; margin: 10 auto; overflow: auto;
-	white-space: nowrap; font-size: 16px;">
+	<div id="card-holder" style="display: flex; flex-wrap: wrap; padding: 10px 50px 100px; margin: 0 auto;">
 	</div>
 		<form id= "join" action="/join" method="POST"><input id="txt" style="display: none" type="text" class="form-control" name= "join" >
 		</input></form>
@@ -81,7 +80,7 @@
 			const card= document.createElement("div");
 			card.classList.add("card");
 			card.id= "card"+i;
-			card.style= "width: 20rem; margin: 10px;";
+			card.style= "width: 18rem;";
 			card.appendChild(img);
 			card.appendChild(cardbody);
 			div.appendChild(card);
@@ -92,7 +91,6 @@
 		const img= document.createElement("img");
 		//creates image object
 		img.classList.add('card-img-top');
-		img.style= "width: 100%; height: 250px; display: block; margin: auto;"; 
 		if(key=== "group"){
 			img.src= "/static/uploads/"+ item.photo;
 		}
@@ -108,9 +106,7 @@
 		const body= document.createElement("div");
 		const body2= document.createElement("div");
 		const title= document.createElement("h5");
-		title.style = "font-size: 20px;";
 		const p= document.createElement("p");
-		p.style = "font-size: 12px;";
 		const join= document.createElement("a");
 		const exit= document.createElement("a");
 		if(String(key)=== "group"){
@@ -128,7 +124,6 @@
 		title.appendChild(node);
 		p.appendChild(text);
 		p.classList.add('card-text');
-		p.style.wordWrap = "break-word";
 		
 		exit.href= "#";
 		if(String(key)=== "group"){
