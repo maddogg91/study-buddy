@@ -45,7 +45,7 @@ pbr==5.10.0
 platformdirs==3.1.1
 pluggy==1.0.0
 protobuf==4.21.12
-psycopg2==2.9.3
+#psycopg2==2.9.3
 psycopg2-binary==2.9.3
 py==1.11.0
 pyasn1==0.4.8
@@ -81,3 +81,5 @@ wrapt==1.15.0
 wsproto==1.2.0
 zope.event==4.6
 zope.interface==6.0
+pyuwsgi==2.0.21
+
