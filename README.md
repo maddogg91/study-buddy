@@ -15,7 +15,7 @@ https://www.youtube.com/watch?v=4rvgY-5Tog8
  
 ## MVP Methods and  Description ##
 MVP Tasks  | Description | GIFS
-------------- | ------------- 
+------------- | ------------- | ------------- 
 Non Google user Sign Up  | User will sign up with email password birthday and username.Then User information is stored into Users table in mongoDB | 
 Google user Sign Up | User who signs up with Google will be rerouted to the google login page and will then have their email and a unique id | ![](./google_signin.gif)
 Change User information  | Google Users and Non google Users will be rerouted to different pages with different permissions to update specific data. Using mongo db update and inset commands to update user database information | ![](./profile_settings.gif)
