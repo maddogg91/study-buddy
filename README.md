@@ -33,7 +33,7 @@ Match Making Quiz | Allows a user to take a compatability quiz and match with si
 # Message in chat
 ![](https://github.com/maddogg91/study-buddy/chat_message.gif)
 # Matchmaking quiz
- ![](https://github.com/maddogg91/study-buddy/match_quiz.gif)
+ ![(https://github.com/maddogg91/study-buddy/match_quiz.gif)]
 
 ## Stretch goals for the future ##
 * Google Calendar API
