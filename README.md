@@ -25,15 +25,15 @@ Groupchat + Chat feautures | User can Post a text message and it will be added i
 Match Making Quiz | Allows a user to take a compatability quiz and match with similar studiers from 5 stars (best match) to 1 star (worst match) 
 
 # Signup
-![](https://github.com/study-buddy/google_signin.gif)
+![](https://github.com/maddogg91/study-buddy/google_signin.gif)
 # Profile Settings
-![](https://github.com/study-buddy/profile_settings.gif)
+![](https://github.com/maddogg91/study-buddy/profile_settings.gif)
 # Join a group
-![](https://github.com/study-buddy/join_group.gif)
+![](https://github.com/maddogg91/study-buddy/join_group.gif)
 # Message in chat
-![](https://github.com/study-buddy/chat_message.gif)
+![](https://github.com/maddogg91/study-buddy/chat_message.gif)
 # Matchmaking quiz
- ![](https://github.com/study-buddy/match_quiz.gif)
+ ![](https://github.com/maddogg91/study-buddy/match_quiz.gif)
 
 ## Stretch goals for the future ##
 * Google Calendar API
